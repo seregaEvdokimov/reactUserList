@@ -1,0 +1,50 @@
+{
+  "name": "reactuserlist",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/App.jsx",
+  "scripts": {
+    "watch": "webpack --watch",
+    "build": "webpack -d && webpack-dev-server -content-base ./src/ -inline"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/seregaEvdokimov/reactUserList.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/seregaEvdokimov/reactUserList/issues"
+  },
+  "homepage": "https://github.com/seregaEvdokimov/reactUserList#readme",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "del": "^2.2.2",
+    "express": "^4.14.0",
+    "faker": "^3.1.0",
+    "preprocess": "^3.1.0",
+    "react": "^15.4.1",
+    "react-dom": "^15.4.1",
+    "react-redux": "^4.4.6",
+    "react-router": "^3.0.0",
+    "react-router-redux": "^4.0.7",
+    "redux": "^3.6.0",
+    "socket.io": "^1.7.1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.18.2",
+    "babel-loader": "^6.2.8",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-react": "^6.16.0",
+    "babel-preset-stage-2": "^6.18.0",
+    "css-loader": "^0.26.1",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "file-loader": "^0.9.0",
+    "less": "^2.7.1",
+    "less-loader": "^2.2.3",
+    "path": "^0.12.7",
+    "style-loader": "^0.13.1",
+    "webpack": "^1.13.3",
+    "webpack-dev-server": "^1.16.2"
+  }
+}

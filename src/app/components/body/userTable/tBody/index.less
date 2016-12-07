@@ -1,0 +1,48 @@
+tbody {
+
+  tr {
+    border-bottom: 1px solid #ccc;
+    position: relative;
+    transition: transform .35s;
+
+    &:hover {
+      background: #fff;
+    }
+
+    &:nth-child(even){
+      background: #eee;
+    }
+
+    &:nth-child(odd){
+      background: #ddd;
+    }
+
+    &.deleting {
+      transform: translateX(-100%);
+    }
+
+    &.addition {
+      transform: translateX(100%);
+    }
+
+    td {
+      font-size: 12px;
+      padding: 0 5px;
+      text-align: left;
+
+      a {
+        display: block;
+        background: #666;
+        color: #eee;
+        margin: 1px;
+        cursor: pointer;
+        text-align: center;
+        padding: 5px 0;
+
+        &:hover {
+          background: #000;
+        }
+      }
+    }
+  }
+}

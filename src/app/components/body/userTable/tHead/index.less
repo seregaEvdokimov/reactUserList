@@ -1,0 +1,48 @@
+thead {
+  background: #333;
+  color: #ddd;
+
+  tr {
+
+    th{
+      padding: 10px 5px;
+      text-align: center;
+      font-size: 15px;
+
+      &[data-sort-by] {
+        cursor: pointer;
+      }
+
+      &.active {
+        background: #000;
+        position: relative;
+
+        &.asc {
+          &:before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: url("../../../../../media/img/sort-up.png") left top no-repeat;
+            width: 8px;
+            height: 8px;
+            background-size: contain;
+          }
+        }
+        &.desc {
+          &:before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: url("../../../../../media/img/sort-down.png") left top no-repeat;
+            width: 8px;
+            height: 8px;
+            background-size: contain;
+          }
+        }
+      }
+    }
+  }
+}
+
