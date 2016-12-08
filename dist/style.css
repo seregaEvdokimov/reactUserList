@@ -160,14 +160,14 @@ tbody tr {
   position: relative;
   transition: transform .35s;
 }
-tbody tr:hover {
-  background: #fff;
-}
 tbody tr:nth-child(even) {
   background: #eee;
 }
 tbody tr:nth-child(odd) {
   background: #ddd;
+}
+tbody tr:hover {
+  background: #fff;
 }
 tbody tr.deleting {
   transform: translateX(-100%);

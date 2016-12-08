@@ -3,7 +3,6 @@
  */
 
 import React from 'react';
-import {connect} from 'react-redux';
 
 import Header from './header/index.jsx';
 import TableUser from './body/usertable/index.jsx';

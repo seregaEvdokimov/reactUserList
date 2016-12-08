@@ -7,6 +7,7 @@ import Request from '../../../lib/Request';
 export const LOAD_USERS_REQUEST = 'LOAD_USERS_REQUEST';
 export const LOAD_USERS_SUCCESS = 'LOAD_USERS_SUCCESS';
 export const LOAD_USERS_FAILURE = 'LOAD_USERS_FAILURE';
+export const SORT_USERS = 'SORT_USERS';
 
 
 export function loadUsersRequest(dispatch) {
@@ -21,6 +22,11 @@ export function loadUsersSuccess(data) {
 export function loadUsersFailure(error) {
     return { type: LOAD_USERS_FAILURE, error: error};
 }
+
+export function sortUsers(data) {
+    return { type: SORT_USERS, payload: data};
+}
+
 
 
 function loadUsers(dispatch) {
