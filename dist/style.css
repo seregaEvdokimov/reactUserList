@@ -1,8 +1,3 @@
-#app {
-  display: table;
-  margin: 50px auto;
-  min-width: 1160px;
-}
 .header {
   overflow: hidden;
   margin-bottom: 10px;
@@ -18,6 +13,10 @@
   background: #eee;
   color: #999;
   border: 1px solid #999;
+}
+.header .search input:focus,
+.header .search input:hover {
+  outline: 0;
 }
 .header .search button {
   cursor: pointer;
@@ -68,56 +67,6 @@
 .header .languages-wrapper a.active {
   background: #333;
   color: #eee;
-}
-table {
-  border: 1px solid #ccc;
-  border-collapse: collapse;
-}
-table.lazyLoad {
-  display: block;
-}
-table.lazyLoad tbody {
-  display: block;
-  height: 200px;
-  overflow: auto;
-}
-table .id {
-  width: 70px;
-}
-table .name {
-  width: 100px;
-}
-table .email {
-  width: 200px;
-}
-table .birth {
-  width: 145px;
-}
-table .date {
-  width: 355px;
-  position: relative;
-  overflow: hidden;
-}
-table .date .overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-}
-table .overlay.positive {
-  background: rgba(100, 255, 100, 0.4);
-}
-table .overlay.negative {
-  background: rgba(255, 80, 80, 0.4);
-}
-table .del,
-table .delete {
-  width: 130px;
-  padding: 0 !important;
-}
-table .edit {
-  width: 130px;
-  padding: 0 !important;
 }
 thead {
   background: #333;
@@ -192,10 +141,92 @@ tbody tr td a {
 tbody tr td a:hover {
   background: #000;
 }
-* {
-  margin: 0;
-  padding: 0;
-  font-family: 'Arial', sans-serif;
+.option {
+  background: #ddd;
+  padding: 15px 5px;
+}
+.option .add-user {
+  color: #ddd;
+  background: #222;
+  border: 0;
+  padding: 10px 10px;
+  font-size: 14px;
+  margin: 0 5px;
+  min-width: 105px;
+  cursor: pointer;
+}
+.option .add-user:focus {
+  outline: 0;
+}
+.option .pagination {
+  display: inline-block;
+  margin: 0 235px;
+}
+.option .pagination .page {
+  display: inline-block;
+  color: #ddd;
+  background: #666;
+  border: 0;
+  text-align: center;
+  width: 30px;
+  line-height: 35px;
+  font-size: 15px;
+  margin: 0 2px;
+  cursor: pointer;
+}
+.option .pagination .page:hover,
+.option .pagination .page.active {
+  background: #222;
+}
+.userList table {
+  border: 1px solid #ccc;
+  border-collapse: collapse;
+}
+.userList table.lazyLoad {
+  display: block;
+}
+.userList table.lazyLoad tbody {
+  display: block;
+  height: 200px;
+  overflow: auto;
+}
+.userList table .id {
+  width: 70px;
+}
+.userList table .name {
+  width: 100px;
+}
+.userList table .email {
+  width: 200px;
+}
+.userList table .birth {
+  width: 145px;
+}
+.userList table .date {
+  width: 355px;
+  position: relative;
+  overflow: hidden;
+}
+.userList table .date .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+}
+.userList table .overlay.positive {
+  background: rgba(100, 255, 100, 0.4);
+}
+.userList table .overlay.negative {
+  background: rgba(255, 80, 80, 0.4);
+}
+.userList table .del,
+.userList table .delete {
+  width: 130px;
+  padding: 0 !important;
+}
+.userList table .edit {
+  width: 130px;
+  padding: 0 !important;
 }
 .modal {
   position: absolute;
@@ -207,6 +238,10 @@ tbody tr td a:hover {
   align-items: center;
   width: 100%;
   height: 100%;
+  visibility: hidden;
+}
+.modal.show {
+  visibility: visible;
 }
 .modal .modal-window {
   position: absolute;
@@ -246,10 +281,6 @@ tbody tr td a:hover {
 .modal .modal-window .group {
   margin: 10px 10px 0;
 }
-.modal .modal-window .avatar-group img {
-  display: block;
-  margin-bottom: 10px;
-}
 .modal .modal-window .group label {
   display: block;
   color: #ddd;
@@ -265,12 +296,6 @@ tbody tr td a:hover {
   width: 170px;
   height: 25px;
 }
-.modal .modal-window .date-group input {
-  display: block;
-}
-.modal .modal-window .date-group input:nth-child(3) {
-  margin-top: 15px;
-}
 .modal .modal-window .group input.error {
   border-color: red !important;
 }
@@ -279,6 +304,16 @@ tbody tr td a:hover {
 }
 .modal .modal-window .group input:focus {
   outline: 0;
+}
+.modal .modal-window .avatar-group img {
+  display: block;
+  margin-bottom: 10px;
+}
+.modal .modal-window .date-group input {
+  display: block;
+}
+.modal .modal-window .date-group input:nth-child(3) {
+  margin-top: 15px;
 }
 .modal .modal-window .control-group {
   flex-basis: 100%;
@@ -302,42 +337,15 @@ tbody tr td a:hover {
 .modal .modal-window .control-group button:focus {
   outline: 0;
 }
-.option {
-  background: #ddd;
-  padding: 15px 5px;
+#app {
+  display: table;
+  margin: 50px auto;
+  min-width: 1160px;
 }
-.option .add-user {
-  color: #ddd;
-  background: #222;
-  border: 0;
-  padding: 10px 10px;
-  font-size: 14px;
-  margin: 0 5px;
-  min-width: 105px;
-  cursor: pointer;
-}
-.option .add-user:focus {
-  outline: 0;
-}
-.option .pagination {
-  display: inline-block;
-  margin: 0 235px;
-}
-.option .pagination .page {
-  display: inline-block;
-  color: #ddd;
-  background: #666;
-  border: 0;
-  text-align: center;
-  width: 30px;
-  line-height: 35px;
-  font-size: 15px;
-  margin: 0 2px;
-  cursor: pointer;
-}
-.option .pagination .page:hover,
-.option .pagination .page.active {
-  background: #222;
+* {
+  margin: 0;
+  padding: 0;
+  font-family: 'Arial', sans-serif;
 }
 .tooltip {
   display: none;

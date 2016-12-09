@@ -6,53 +6,69 @@ import Xhr from './Xhr';
 var baseUrl = 'http://localhost:4000/';
 
 Request = {
-    load: function(entity, options) {
-        var URL = this.generateFullUrl(entity);
+    load: function(entity, params, callbacks) {
+        var URL = this.generateFullUrl(entity, params);
         var xhr = new Xhr({
             method: 'GET',
             URL: URL,
-            options: {
-                onSuccess: options.success,
-                onFailure: options.failure,
-                dispatch: options.dispatch
+            params: params,
+            callbacks: {
+                onSuccess: callbacks.success,
+                onFailure: callbacks.failure,
+                dispatch: callbacks.dispatch
             }
         });
 
         return xhr.sendRequest();
     },
 
-    // update: function(options) {
-    //     var URL = this.generateFullUrl(options.entity);
-    //     var xhr = new App.Request.XHR({
-    //         method: 'PUT',
-    //         URL: URL,
-    //         options: options
-    //     });
-    //
-    //     return xhr.sendRequest();
-    // },
-    //
-    // delete: function(options) {
-    //     var URL = this.generateFullUrl(options.entity);
-    //     var xhr = new App.Request.XHR({
-    //         method: 'DELETE',
-    //         URL: URL,
-    //         options: options
-    //     });
-    //
-    //     return xhr.sendRequest();
-    // },
-    //
-    // create: function(options) {
-    //     var URL = this.generateFullUrl(options.entity);
-    //     var xhr = new App.Request.XHR({
-    //         method: 'POST',
-    //         URL: URL,
-    //         options: options
-    //     });
-    //
-    //     return xhr.sendRequest();
-    // },
+    update: function(entity, params, callbacks) {
+        var URL = this.generateFullUrl(entity);
+        var xhr = new Xhr({
+            method: 'PUT',
+            URL: URL,
+            params: params,
+            callbacks: {
+                onSuccess: callbacks.success,
+                onFailure: callbacks.failure,
+                dispatch: callbacks.dispatch
+            }
+        });
+
+        return xhr.sendRequest();
+    },
+
+    delete: function(entity, params, callbacks) {
+        var URL = this.generateFullUrl(entity);
+        var xhr = new Xhr({
+            method: 'DELETE',
+            URL: URL,
+            params: params,
+            callbacks: {
+                onSuccess: callbacks.success,
+                onFailure: callbacks.failure,
+                dispatch: callbacks.dispatch
+            }
+        });
+
+        return xhr.sendRequest();
+    },
+
+    create: function(entity, params, callbacks) {
+        var URL = this.generateFullUrl(entity);
+        var xhr = new Xhr({
+            method: 'POST',
+            URL: URL,
+            params: params,
+            callbacks: {
+                onSuccess: callbacks.success,
+                onFailure: callbacks.failure,
+                dispatch: callbacks.dispatch
+            }
+        });
+
+        return xhr.sendRequest();
+    },
 
     generateFullUrl: function(entity, params) {
         var queryString = this.createQueryString(params);

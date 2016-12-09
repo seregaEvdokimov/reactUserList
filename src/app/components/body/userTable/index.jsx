@@ -6,12 +6,16 @@ import React from 'react';
 
 import TableHeader from './tHead/index.jsx';
 import TableBody from './tBody/index.jsx';
+import Footer from './footer/index.jsx';
 
 export default function() {
     return (
-        <table className="table">
-            <TableHeader />
-            <TableBody />
-        </table>
+        <div className="userList">
+            <table className="table">
+                <TableHeader />
+                <TableBody />
+            </table>
+            <Footer />
+        </div>
     )
 }

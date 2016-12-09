@@ -3,8 +3,12 @@
  */
 
 import {combineReducers} from 'redux';
-import users from '../components/body/userTable/reducer';
+import UsersTable from '../components/body/userTable/reducer';
+import HeaderSetting from '../components/header/reducer';
+import ModalWindows from '../components/modal/reducer';
 
 export default combineReducers({
-    usersTable: users
+    UsersTable,
+    HeaderSetting,
+    ModalWindows
 });

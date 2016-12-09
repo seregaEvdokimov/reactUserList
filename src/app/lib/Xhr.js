@@ -6,11 +6,12 @@ function XHR(config) {
     this.xhr = new XMLHttpRequest();
     this.method = config.method;
     this.URL = config.URL;
-    this.config = config.options;
+    this.params = config.params;
+    this.callbacks = config.callbacks;
     this.paramsBody = '';
 
-    if('payload' in this.config) {
-        this.paramsBody = this.createParamsBody(this.config.payload);
+    if('payload' in this.params) {
+        this.paramsBody = this.createParamsBody(this.params.payload);
     }
 }
 
@@ -32,13 +33,12 @@ XHR.prototype.createParamsBody = function(data) {
 XHR.prototype.readyStateChangeHandler = function () {
     if (this.xhr.readyState !== 4)  return;
 
-    var self = this;
     if (this.xhr.status >= 200 && this.xhr.status < 300) {
         var pageResult = JSON.parse(this.xhr.responseText);
-        this.config.dispatch(self.config.onSuccess(pageResult));
+        this.callbacks.dispatch(this.callbacks.onSuccess(pageResult));
     } else {
         var errorText = 'error: ' + (this.xhr.status ? this.xhr.statusText : 'problems with request');
-        this.config.dispatch(self.config.onFailure(errorText));
+        this.callbacks.dispatch(self.callbacks.onFailure(errorText));
     }
 };
 

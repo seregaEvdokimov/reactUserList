@@ -24,6 +24,12 @@ ProgressBarTimer.prototype.stop = function() {
     this.timer.stop();
 };
 
+ProgressBarTimer.prototype.update = function(data) {
+    this.startTime = new Date(data.start).getTime();
+    this.finishTime = new Date(data.end).getTime();
+    this.timer.update(data);
+};
+
 ProgressBarTimer.prototype.timerCb = function() {
     this.progressCalc();
     this.showProgress();

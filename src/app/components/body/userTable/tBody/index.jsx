@@ -5,6 +5,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import * as actions from './../actions';
+import * as modalActions from './../../../modal/actions';
 
 import Timer from '../../../../lib/Timer';
 import ProgressBarTimer from '../../../../lib/ProgressBarTimer';
@@ -55,30 +56,32 @@ class Row extends Component {
         super(props);
 
         let {user} = props;
-        user.timer = new Timer({start: user.birth, end: user.date}, this.calcTime.bind(this));
+        this.timer = new Timer({start: user.birth, end: user.date}, this.calcTime.bind(this));
     }
 
     componentDidMount() {
         let {user} = this.props;
         let {overlay} = this.refs;
 
-        user.timer.start();
-        user.progressBar = new ProgressBarTimer({start: user.birth, end: user.date}, overlay);
-        user.progressBar.start();
+        this.timer.start();
+        this.progressBar = new ProgressBarTimer({start: user.birth, end: user.date}, overlay);
+        this.progressBar.start();
     }
 
-    componentWillUnMount() {
+    componentDidUpdate() {
         let {user} = this.props;
+        this.progressBar.update({start: user.birth, end: user.date});
+        this.timer.update({start: user.birth, end: user.date});
+    }
 
-        user.timer.stop();
-        user.progressBar.stop();
+    componentWillUnmount() {
+        this.timer.stop();
+        this.progressBar.stop();
     }
 
     calcTime() {
-        let {user} = this.props;
         let {date} = this.refs;
-
-        date.textContent = parseTime(user.timer.finishTime);
+        date.textContent = parseTime(this.timer.finishTime);
     }
 
     render() {
@@ -89,7 +92,7 @@ class Row extends Component {
         birth = birth.getDate() + '. ' + (birth.getMonth() + 1) + '. ' + birth.getFullYear();
 
         return (
-            <tr className="">
+            <tr>
                 <td className="id">{user.id}</td>
                 <td className="name">{user.name}</td>
                 <td className="email">{user.email}</td>
@@ -118,31 +121,36 @@ class tBody extends Component {
         if(!users.length) actions.loadUsersRequest(dispatch);
     }
 
-    // componentDidMount() {
-    //
-    // }
-
-    rowBtnControls(event) {
+    rowBtnControls(self, event) {
         let el = event.target;
         if(el.tagName !== 'A') return false;
 
+        let {dispatch, users} = self.props;
+        let id = self.getRowId(el);
+        let userFind = users.filter(function(user) {
+            return user.id === id;
+        })[0];
+
         switch(el.className) {
             case 'delete-btn':
-                alert('delete');
+                dispatch(actions.deleteUserRequest(dispatch, id));
                 break;
             case 'edit-btn':
-                alert('edit');
+                dispatch(modalActions.showModalEdit(userFind));
                 break;
         }
+    }
 
-        // console.log(el.tagName, event);
+    getRowId(element) {
+        if(element.tagName == 'TR') return parseInt(element.querySelector('.id').textContent);
+        return this.getRowId(element.parentNode);
     }
 
     render() {
         let {users} = this.props;
 
         return (
-            <tbody className="tBody" onClick={this.rowBtnControls}>
+            <tbody className="tBody" onClick={this.rowBtnControls.bind(this, this)}>
                 {users.map(user => <Row key={user.id} user={user} />)}
             </tbody>
         )
@@ -151,6 +159,12 @@ class tBody extends Component {
 
 
 export default connect(function(state) {
-    console.log(state.usersTable.users);
-    return {users: state.usersTable.users};
+    let users = state.HeaderSetting.search.users === null
+        ? state.UsersTable.users
+        : state.HeaderSetting.search.users ;
+
+    return {
+        users: users,
+        timeStamp: Date.now()
+    };
 })(tBody);

@@ -75,14 +75,13 @@ var backAPI = {
             return JSON.stringify({user: find[0]});
         }
 
-        // var start = (data.start == 1) ? 0 : data.start;
-        // var limit = data.limit;
-        //
-        // var result = this.userData.filter(function (item, index) {
-        //     return index >= start && index < limit;
-        // });
+        var start = (data.start == 1) ? 0 : data.start;
+        var limit = data.limit;
+        var result = this.userData.filter(function (item, index) {
+            return index >= start && index < limit;
+        });
 
-        return JSON.stringify(this.userData);
+        return JSON.stringify({users: result, count: this.userData.length});
     },
     createUser: function(data) {
         var uniqId = parseInt(this.userData[this.userData.length - 1].id) + 1;

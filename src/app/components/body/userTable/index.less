@@ -1,62 +1,69 @@
-table {
-  border: 1px solid #ccc;
-  border-collapse: collapse;
+@import 'tHead/index'; // tHead
+@import 'tBody/index'; // tBody
+@import 'footer/index'; // footer
 
-  &.lazyLoad {
-    display: block;
+.userList {
 
-    tbody {
+  table {
+    border: 1px solid #ccc;
+    border-collapse: collapse;
+
+    &.lazyLoad {
       display: block;
-      height: 200px;
-      overflow: auto;
+
+      tbody {
+        display: block;
+        height: 200px;
+        overflow: auto;
+      }
     }
-  }
 
-  .id {
-    width: 70px;
-  }
+    .id {
+      width: 70px;
+    }
 
-  .name {
-    width: 100px;
-  }
+    .name {
+      width: 100px;
+    }
 
-  .email {
-    width: 200px;
-  }
+    .email {
+      width: 200px;
+    }
 
-  .birth {
-    width: 145px;
-  }
+    .birth {
+      width: 145px;
+    }
 
-  .date {
-    width: 355px;
-    position: relative;
-    overflow: hidden;
-  }
+    .date {
+      width: 355px;
+      position: relative;
+      overflow: hidden;
+    }
 
 
-  .date .overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-  }
+    .date .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+    }
 
-  .overlay.positive {
-    background: rgba(100, 255, 100, .4);
-  }
+    .overlay.positive {
+      background: rgba(100, 255, 100, .4);
+    }
 
-  .overlay.negative {
-    background: rgba(255, 80, 80, .4);
-  }
+    .overlay.negative {
+      background: rgba(255, 80, 80, .4);
+    }
 
-  .del, .delete {
-    width: 130px;
-    padding: 0 !important;
-  }
+    .del, .delete {
+      width: 130px;
+      padding: 0 !important;
+    }
 
-  .edit {
-    width: 130px;
-    padding: 0 !important;
+    .edit {
+      width: 130px;
+      padding: 0 !important;
+    }
   }
 }

@@ -11,10 +11,6 @@ class tHead extends Component {
         super(props);
     }
 
-    // componentDidMount() {
-    //
-    // }
-
     handlerSortBy(self, event) {
         let el = event.target;
         if(el.className === 'delete' || el.className === 'edit') return false;
@@ -48,5 +44,5 @@ class tHead extends Component {
 }
 
 export default connect(function(state) {
-    return {sort: state.usersTable.sort};
+    return {sort: state.UsersTable.sort};
 })(tHead);
