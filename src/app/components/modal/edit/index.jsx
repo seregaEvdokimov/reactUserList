@@ -153,7 +153,7 @@ class Edit extends Component{
             avatar: avatar.dataset.img
         };
 
-        dispatch(usersActions.editUsersRequest(dispatch, data));
+        dispatch(usersActions.editUsersRequest(dispatch, data)); // TODO если данные не обнавлены не отправлять запрос
     }
 
     beforeHide(actionType) {

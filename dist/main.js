@@ -23430,23 +23430,13 @@
 	    value: true
 	});
 	
-	exports.default = function () {
-	    return _react2.default.createElement(
-	        'div',
-	        { className: 'userList' },
-	        _react2.default.createElement(
-	            'table',
-	            { className: 'table' },
-	            _react2.default.createElement(_index2.default, null),
-	            _react2.default.createElement(_index4.default, null)
-	        ),
-	        _react2.default.createElement(_index6.default, null)
-	    );
-	};
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
 	var _react = __webpack_require__(11);
 	
 	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactRedux = __webpack_require__(190);
 	
 	var _index = __webpack_require__(222);
 	
@@ -23459,8 +23449,53 @@
 	var _index5 = __webpack_require__(230);
 	
 	var _index6 = _interopRequireDefault(_index5);
-
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by s.evdokimov on 06.12.2016.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+	
+	var Table = function (_Component) {
+	    _inherits(Table, _Component);
+	
+	    function Table(props) {
+	        _classCallCheck(this, Table);
+	
+	        // componentWillMount
+	        return _possibleConstructorReturn(this, (Table.__proto__ || Object.getPrototypeOf(Table)).call(this, props));
+	    }
+	
+	    _createClass(Table, [{
+	        key: 'render',
+	        value: function render() {
+	            var pagination = this.props.table.pagination;
+	
+	
+	            return _react2.default.createElement(
+	                'div',
+	                { className: 'userList' },
+	                _react2.default.createElement(
+	                    'table',
+	                    { className: "table " + (pagination.type === 'lazyLoad' ? 'lazyLoad' : '') },
+	                    _react2.default.createElement(_index2.default, null),
+	                    _react2.default.createElement(_index4.default, null)
+	                ),
+	                _react2.default.createElement(_index6.default, null)
+	            );
+	        }
+	    }]);
+	
+	    return Table;
+	}(_react.Component);
+	
+	exports.default = (0, _reactRedux.connect)(function (state) {
+	    return { table: state.UsersTable };
+	})(Table);
 
 /***/ },
 /* 222 */
@@ -24124,6 +24159,25 @@
 	            }
 	        }
 	    }, {
+	        key: 'lazyLoadUsers',
+	        value: function lazyLoadUsers(self, event) {
+	            var _self$props2 = self.props,
+	                pagination = _self$props2.pagination,
+	                dispatch = _self$props2.dispatch;
+	
+	            var el = event.target;
+	            if (pagination.type !== 'lazyLoad') return false;
+	
+	            var currentScroll = el.scrollTop + el.clientHeight;
+	            var maxScroll = el.scrollHeight;
+	
+	            if (currentScroll == maxScroll) {
+	                var start = 0;
+	                var limit = el.childNodes.length + pagination.perPage;
+	                dispatch(actions.changePage(dispatch, start, limit, 1)); // TODO оптимизировать запросы
+	            }
+	        }
+	    }, {
 	        key: 'getRowId',
 	        value: function getRowId(element) {
 	            if (element.tagName == 'TR') return parseInt(element.querySelector('.id').textContent);
@@ -24137,7 +24191,7 @@
 	
 	            return _react2.default.createElement(
 	                'tbody',
-	                { className: 'tBody', onClick: this.rowBtnControls.bind(this, this) },
+	                { className: 'tBody', onScroll: this.lazyLoadUsers.bind(this, this), onClick: this.rowBtnControls.bind(this, this) },
 	                users.map(function (user) {
 	                    return _react2.default.createElement(Row, { key: user.id, user: user });
 	                })
@@ -24153,6 +24207,7 @@
 	
 	    return {
 	        users: users,
+	        pagination: state.UsersTable.pagination,
 	        timeStamp: Date.now()
 	    };
 	})(tBody);
@@ -24442,13 +24497,13 @@
 	                    { className: 'add-user', onClick: this.handlerAddClient.bind(this, this) },
 	                    '\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u043A\u043B\u0438\u0435\u043D\u0442\u0430'
 	                ),
-	                _react2.default.createElement(
+	                pagination.type === 'pagination' ? _react2.default.createElement(
 	                    'div',
 	                    { className: 'pagination', onClick: this.handlerChangePage.bind(this, this) },
 	                    pages.map(function (page) {
 	                        return _react2.default.createElement(Page, { key: page, page: page, currentPage: pagination.currentPage });
 	                    })
-	                )
+	                ) : ''
 	            );
 	        }
 	    }]);
@@ -25040,7 +25095,7 @@
 	                avatar: avatar.dataset.img
 	            };
 	
-	            dispatch(usersActions.editUsersRequest(dispatch, data));
+	            dispatch(usersActions.editUsersRequest(dispatch, data)); // TODO если данные не обнавлены не отправлять запрос
 	        }
 	    }, {
 	        key: 'beforeHide',
@@ -25381,7 +25436,7 @@
 	    var pagination = {};
 	    var findIndex = null;
 	
-	    switch (action.type) {
+	    switch (action.type) {// TODO при добовлении и удалении пользователей возвращать количество пользователей
 	        case actions.LOAD_USERS_REQUEST:
 	            // console.log('ACTION', actions.LOAD_USERS_REQUEST);
 	            return state;
@@ -25423,7 +25478,7 @@
 	            console.warn(action.error);
 	            return state;
 	        case actions.DELETE_USER_REQUEST:
-	            console.log('ACTION', actions.DELETE_USER_REQUEST);
+	            // console.log('ACTION', actions.DELETE_USER_REQUEST);
 	            return state;
 	        case actions.DELETE_USER_SUCCESS:
 	            // console.log('ACTION', actions.DELETE_USER_SUCCESS, action.payload);
@@ -25435,7 +25490,7 @@
 	            users = userSort(state.users, state.sort);
 	            return _extends({}, state, { users: users });
 	        case actions.DELETE_USER_FAILURE:
-	            console.log('ACTION', actions.DELETE_USER_FAILURE);
+	            // console.log('ACTION', actions.DELETE_USER_FAILURE);
 	            console.warn(action.error);
 	            return state;
 	        case actions.SORT_USERS:
@@ -25466,6 +25521,7 @@
 	    },
 	    users: [],
 	    pagination: {
+	        type: 'lazyLoad', // pagination
 	        perPage: 10,
 	        pages: null,
 	        currentPage: 1
@@ -25475,6 +25531,7 @@
 	function calcPagination(count, pagination) {
 	    var pages = Math.ceil(count / pagination.perPage);
 	    return {
+	        type: pagination.type,
 	        perPage: pagination.perPage,
 	        currentPage: pagination.currentPage,
 	        pages: pages

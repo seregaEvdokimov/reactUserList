@@ -141,6 +141,21 @@ class tBody extends Component {
         }
     }
 
+    lazyLoadUsers(self, event) {
+        let {pagination, dispatch} = self.props;
+        let el = event.target;
+        if(pagination.type !== 'lazyLoad') return false;
+
+        let currentScroll = el.scrollTop + el.clientHeight;
+        let maxScroll = el.scrollHeight;
+
+        if(currentScroll == maxScroll) {
+            var start = 0;
+            var limit = el.childNodes.length + pagination.perPage;
+            dispatch(actions.changePage(dispatch, start, limit, 1)); // TODO оптимизировать запросы
+        }
+    }
+
     getRowId(element) {
         if(element.tagName == 'TR') return parseInt(element.querySelector('.id').textContent);
         return this.getRowId(element.parentNode);
@@ -150,7 +165,7 @@ class tBody extends Component {
         let {users} = this.props;
 
         return (
-            <tbody className="tBody" onClick={this.rowBtnControls.bind(this, this)}>
+            <tbody className="tBody" onScroll={this.lazyLoadUsers.bind(this, this)} onClick={this.rowBtnControls.bind(this, this)}>
                 {users.map(user => <Row key={user.id} user={user} />)}
             </tbody>
         )
@@ -165,6 +180,7 @@ export default connect(function(state) {
 
     return {
         users: users,
+        pagination: state.UsersTable.pagination,
         timeStamp: Date.now()
     };
 })(tBody);

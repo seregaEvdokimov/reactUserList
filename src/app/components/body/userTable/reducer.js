@@ -11,6 +11,7 @@ const initialState = {
     },
     users: [],
     pagination: {
+        type: 'lazyLoad', // pagination
         perPage: 10,
         pages: null,
         currentPage: 1
@@ -24,7 +25,7 @@ export default function(state = initialState, action){
     let pagination = {};
     let findIndex = null;
 
-    switch (action.type){
+    switch (action.type){ // TODO при добовлении и удалении пользователей возвращать количество пользователей
         case actions.LOAD_USERS_REQUEST:
             // console.log('ACTION', actions.LOAD_USERS_REQUEST);
             return state;
@@ -66,7 +67,7 @@ export default function(state = initialState, action){
             console.warn(action.error);
             return state;
         case actions.DELETE_USER_REQUEST:
-            console.log('ACTION', actions.DELETE_USER_REQUEST);
+            // console.log('ACTION', actions.DELETE_USER_REQUEST);
             return state;
         case actions.DELETE_USER_SUCCESS:
             // console.log('ACTION', actions.DELETE_USER_SUCCESS, action.payload);
@@ -78,7 +79,7 @@ export default function(state = initialState, action){
             users = userSort(state.users, state.sort);
             return {...state, ...{users}};
         case actions.DELETE_USER_FAILURE:
-            console.log('ACTION', actions.DELETE_USER_FAILURE);
+            // console.log('ACTION', actions.DELETE_USER_FAILURE);
             console.warn(action.error);
             return state;
         case actions.SORT_USERS:
@@ -99,6 +100,7 @@ export default function(state = initialState, action){
 function calcPagination(count, pagination) {
     let pages = Math.ceil(count / pagination.perPage);
     return {
+        type: pagination.type,
         perPage: pagination.perPage,
         currentPage: pagination.currentPage,
         pages
