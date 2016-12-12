@@ -56,7 +56,7 @@ export function editUserSuccess(data) {
 }
 
 export function editUserFailure(error) {
-    return { type: EDIT_USER_FAILURE, error: error };
+    return { type: EDIT_USER_FAILURE, error };
 }
 
 export function createUserRequest(dispatch, data) {
@@ -69,7 +69,7 @@ export function createUserSuccess(data) {
 }
 
 export function createUserFailure(error) {
-    return { type: CREATE_USER_FAILURE, error: error };
+    return { type: CREATE_USER_FAILURE, error };
 }
 
 export function deleteUserRequest(dispatch, data) {
@@ -82,7 +82,7 @@ export function deleteUserSuccess(data) {
 }
 
 export function deleteUserFailure(error) {
-    return { type: DELETE_USER_FAILURE, error: error };
+    return { type: DELETE_USER_FAILURE, error };
 }
 
 

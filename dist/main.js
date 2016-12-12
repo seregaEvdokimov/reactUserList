@@ -58,11 +58,11 @@
 	
 	var _app2 = _interopRequireDefault(_app);
 	
-	__webpack_require__(235);
+	__webpack_require__(238);
 	
 	var _reactRedux = __webpack_require__(190);
 	
-	var _configure = __webpack_require__(236);
+	var _configure = __webpack_require__(239);
 	
 	var _configure2 = _interopRequireDefault(_configure);
 	
@@ -21511,7 +21511,8 @@
 	        null,
 	        _react2.default.createElement(_index2.default, null),
 	        _react2.default.createElement(_index4.default, null),
-	        _react2.default.createElement(_index6.default, null)
+	        _react2.default.createElement(_index6.default, null),
+	        _react2.default.createElement(_index8.default, null)
 	    );
 	};
 	
@@ -21530,6 +21531,10 @@
 	var _index5 = __webpack_require__(231);
 	
 	var _index6 = _interopRequireDefault(_index5);
+	
+	var _index7 = __webpack_require__(253);
+	
+	var _index8 = _interopRequireDefault(_index7);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -23450,6 +23455,16 @@
 	
 	var _index6 = _interopRequireDefault(_index5);
 	
+	var _index7 = __webpack_require__(247);
+	
+	var _index8 = _interopRequireDefault(_index7);
+	
+	var _actions = __webpack_require__(246);
+	
+	var tooltipActions = _interopRequireWildcard(_actions);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -23466,14 +23481,48 @@
 	    function Table(props) {
 	        _classCallCheck(this, Table);
 	
-	        // componentWillMount
-	        return _possibleConstructorReturn(this, (Table.__proto__ || Object.getPrototypeOf(Table)).call(this, props));
+	        var _this = _possibleConstructorReturn(this, (Table.__proto__ || Object.getPrototypeOf(Table)).call(this, props)); // componentWillMount
+	
+	
+	        _this.idTimeout = null;
+	        return _this;
 	    }
 	
 	    _createClass(Table, [{
+	        key: 'handlerTooltip',
+	        value: function handlerTooltip(self, event) {
+	            var el = event.target;
+	            var type = event.type;
+	
+	            if (el.tagName == 'TD' && el.dataset.tooltip) {
+	                (function () {
+	                    var dispatch = self.props.dispatch;
+	
+	                    var tooltipType = el.dataset.tooltip;
+	                    var id = el.parentNode.querySelector('.id').textContent;
+	                    var coords = { x: event.pageX, y: event.pageY };
+	
+	                    switch (type) {
+	                        case 'mouseover':
+	                            self.idTimeout = setTimeout(function () {
+	                                return dispatch(tooltipActions.showTooltip(dispatch, { id: id, type: tooltipType }, coords));
+	                            }, 500);
+	                            break;
+	                        case 'mouseout':
+	                            clearTimeout(self.idTimeout);
+	                            dispatch(tooltipActions.hideTooltip());
+	                            break;
+	                        case 'mousemove':
+	                            dispatch(tooltipActions.moveTooltip(coords));
+	                            break;
+	                    }
+	                })();
+	            }
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
-	            var pagination = this.props.table.pagination;
+	            var pagination = this.props.pagination;
 	
 	
 	            return _react2.default.createElement(
@@ -23481,10 +23530,16 @@
 	                { className: 'userList' },
 	                _react2.default.createElement(
 	                    'table',
-	                    { className: "table " + (pagination.type === 'lazyLoad' ? 'lazyLoad' : '') },
+	                    {
+	                        className: "table " + (pagination.type === 'lazyLoad' ? 'lazyLoad' : ''),
+	                        onMouseMove: this.handlerTooltip.bind(this, this),
+	                        onMouseOut: this.handlerTooltip.bind(this, this),
+	                        onMouseOver: this.handlerTooltip.bind(this, this)
+	                    },
 	                    _react2.default.createElement(_index2.default, null),
 	                    _react2.default.createElement(_index4.default, null)
 	                ),
+	                _react2.default.createElement(_index8.default, null),
 	                _react2.default.createElement(_index6.default, null)
 	            );
 	        }
@@ -23494,7 +23549,7 @@
 	}(_react.Component);
 	
 	exports.default = (0, _reactRedux.connect)(function (state) {
-	    return { table: state.UsersTable };
+	    return state.UsersTable;
 	})(Table);
 
 /***/ },
@@ -23944,6 +23999,10 @@
 	
 	var modalActions = _interopRequireWildcard(_actions2);
 	
+	var _actions3 = __webpack_require__(252);
+	
+	var notifyActions = _interopRequireWildcard(_actions3);
+	
 	var _Timer = __webpack_require__(228);
 	
 	var _Timer2 = _interopRequireDefault(_Timer);
@@ -24021,13 +24080,23 @@
 	    _createClass(Row, [{
 	        key: 'componentDidMount',
 	        value: function componentDidMount() {
-	            var user = this.props.user;
-	            var overlay = this.refs.overlay;
+	            var _props = this.props,
+	                user = _props.user,
+	                isNew = _props.isNew;
+	            var _refs = this.refs,
+	                overlay = _refs.overlay,
+	                el = _refs.el;
 	
 	
 	            this.timer.start();
 	            this.progressBar = new _ProgressBarTimer2.default({ start: user.birth, end: user.date }, overlay);
 	            this.progressBar.start();
+	
+	            if (isNew) {
+	                setTimeout(function () {
+	                    return el.classList.remove('addition');
+	                }, 300);
+	            }
 	        }
 	    }, {
 	        key: 'componentDidUpdate',
@@ -24053,7 +24122,9 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            var user = this.props.user;
+	            var _props2 = this.props,
+	                user = _props2.user,
+	                isNew = _props2.isNew;
 	
 	            var date = parseTime(user.date);
 	
@@ -24062,7 +24133,7 @@
 	
 	            return _react2.default.createElement(
 	                'tr',
-	                null,
+	                { className: isNew ? 'addition' : '', ref: 'el' },
 	                _react2.default.createElement(
 	                    'td',
 	                    { className: 'id' },
@@ -24070,12 +24141,12 @@
 	                ),
 	                _react2.default.createElement(
 	                    'td',
-	                    { className: 'name' },
+	                    { className: 'name', 'data-tooltip': 'name' },
 	                    user.name
 	                ),
 	                _react2.default.createElement(
 	                    'td',
-	                    { className: 'email' },
+	                    { className: 'email', 'data-tooltip': 'email' },
 	                    user.email
 	                ),
 	                _react2.default.createElement(
@@ -24131,6 +24202,8 @@
 	            dispatch = props.dispatch;
 	
 	        if (!users.length) actions.loadUsersRequest(dispatch);
+	
+	        _this2.usersTotal = users.length;
 	        return _this2;
 	    }
 	
@@ -24144,19 +24217,26 @@
 	                dispatch = _self$props.dispatch,
 	                users = _self$props.users;
 	
-	            var id = self.getRowId(el);
+	            var row = self.getRowId(el);
+	            var id = parseInt(row.querySelector('.id').textContent);
 	            var userFind = users.filter(function (user) {
 	                return user.id === id;
 	            })[0];
 	
-	            switch (el.className) {
-	                case 'delete-btn':
-	                    dispatch(actions.deleteUserRequest(dispatch, id));
-	                    break;
-	                case 'edit-btn':
-	                    dispatch(modalActions.showModalEdit(userFind));
-	                    break;
-	            }
+	            (function () {
+	                switch (el.className) {
+	                    case 'delete-btn':
+	                        var str = '\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C ' + userFind.name + ' (\u2116 ' + userFind.id + ') \u0431\u044B\u043B \u0443\u0434\u0430\u043B\u0451\u043D';
+	                        row.classList.add('deleting');+setTimeout(function () {
+	                            dispatch(notifyActions.notifyCreate(str));
+	                            dispatch(actions.deleteUserRequest(dispatch, id));
+	                        }, 300);
+	                        break;
+	                    case 'edit-btn':
+	                        dispatch(modalActions.showModalEdit(userFind));
+	                        break;
+	                }
+	            })();
 	        }
 	    }, {
 	        key: 'lazyLoadUsers',
@@ -24174,24 +24254,29 @@
 	            if (currentScroll == maxScroll) {
 	                var start = 0;
 	                var limit = el.childNodes.length + pagination.perPage;
-	                dispatch(actions.changePage(dispatch, start, limit, 1)); // TODO оптимизировать запросы
+	
+	                if (self.usersTotal != self.props.users.length) dispatch(actions.changePage(dispatch, start, limit, 1));
+	                self.usersTotal = self.props.users.length;
 	            }
 	        }
 	    }, {
 	        key: 'getRowId',
 	        value: function getRowId(element) {
-	            if (element.tagName == 'TR') return parseInt(element.querySelector('.id').textContent);
+	            if (element.tagName == 'TR') return element;
 	            return this.getRowId(element.parentNode);
 	        }
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            var users = this.props.users;
+	            var _props3 = this.props,
+	                users = _props3.users,
+	                newUser = _props3.newUser;
 	
 	
 	            return _react2.default.createElement(
 	                'tbody',
 	                { className: 'tBody', onScroll: this.lazyLoadUsers.bind(this, this), onClick: this.rowBtnControls.bind(this, this) },
+	                newUser ? _react2.default.createElement(Row, { key: newUser.id, user: newUser, isNew: true }) : null,
 	                users.map(function (user) {
 	                    return _react2.default.createElement(Row, { key: user.id, user: user });
 	                })
@@ -24207,6 +24292,7 @@
 	
 	    return {
 	        users: users,
+	        newUser: state.UsersTable.newUser,
 	        pagination: state.UsersTable.pagination,
 	        timeStamp: Date.now()
 	    };
@@ -24541,11 +24627,11 @@
 	
 	var _index2 = _interopRequireDefault(_index);
 	
-	var _index3 = __webpack_require__(233);
+	var _index3 = __webpack_require__(236);
 	
 	var _index4 = _interopRequireDefault(_index3);
 	
-	var _index5 = __webpack_require__(234);
+	var _index5 = __webpack_require__(237);
 	
 	var _index6 = _interopRequireDefault(_index5);
 	
@@ -24628,15 +24714,15 @@
 	
 	var actions = _interopRequireWildcard(_actions);
 	
-	var _actions2 = __webpack_require__(239);
+	var _actions2 = __webpack_require__(233);
 	
 	var usersActions = _interopRequireWildcard(_actions2);
 	
-	var _imageUploader = __webpack_require__(242);
+	var _imageUploader = __webpack_require__(234);
 	
 	var _imageUploader2 = _interopRequireDefault(_imageUploader);
 	
-	var _Validator = __webpack_require__(243);
+	var _Validator = __webpack_require__(235);
 	
 	var _Validator2 = _interopRequireDefault(_Validator);
 	
@@ -24896,6 +24982,284 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
+	exports.CHANGE_PAGE = exports.SORT_USERS = exports.DELETE_USER_FAILURE = exports.DELETE_USER_SUCCESS = exports.DELETE_USER_REQUEST = exports.CREATE_USER_FAILURE = exports.CREATE_USER_SUCCESS = exports.CREATE_USER_REQUEST = exports.EDIT_USER_FAILURE = exports.EDIT_USER_SUCCESS = exports.EDIT_USER_REQUEST = exports.LOAD_USERS_FAILURE = exports.LOAD_USERS_SUCCESS = exports.LOAD_USERS_REQUEST = undefined;
+	exports.loadUsersRequest = loadUsersRequest;
+	exports.loadUsersSuccess = loadUsersSuccess;
+	exports.loadUsersFailure = loadUsersFailure;
+	exports.sortUsers = sortUsers;
+	exports.changePage = changePage;
+	exports.editUsersRequest = editUsersRequest;
+	exports.editUserSuccess = editUserSuccess;
+	exports.editUserFailure = editUserFailure;
+	exports.createUserRequest = createUserRequest;
+	exports.createUserSuccess = createUserSuccess;
+	exports.createUserFailure = createUserFailure;
+	exports.deleteUserRequest = deleteUserRequest;
+	exports.deleteUserSuccess = deleteUserSuccess;
+	exports.deleteUserFailure = deleteUserFailure;
+	
+	var _Request = __webpack_require__(224);
+	
+	var _Request2 = _interopRequireDefault(_Request);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var LOAD_USERS_REQUEST = exports.LOAD_USERS_REQUEST = 'LOAD_USERS_REQUEST'; /**
+	                                                                             * Created by s.evdokimov on 07.12.2016.
+	                                                                             */
+	
+	var LOAD_USERS_SUCCESS = exports.LOAD_USERS_SUCCESS = 'LOAD_USERS_SUCCESS';
+	var LOAD_USERS_FAILURE = exports.LOAD_USERS_FAILURE = 'LOAD_USERS_FAILURE';
+	
+	var EDIT_USER_REQUEST = exports.EDIT_USER_REQUEST = 'EDIT_USER_REQUEST';
+	var EDIT_USER_SUCCESS = exports.EDIT_USER_SUCCESS = 'EDIT_USER_SUCCESS';
+	var EDIT_USER_FAILURE = exports.EDIT_USER_FAILURE = 'EDIT_USER_FAILURE';
+	
+	var CREATE_USER_REQUEST = exports.CREATE_USER_REQUEST = 'CREATE_USER_REQUEST';
+	var CREATE_USER_SUCCESS = exports.CREATE_USER_SUCCESS = 'CREATE_USER_SUCCESS';
+	var CREATE_USER_FAILURE = exports.CREATE_USER_FAILURE = 'CREATE_USER_FAILURE';
+	
+	var DELETE_USER_REQUEST = exports.DELETE_USER_REQUEST = 'DELETE_USER_REQUEST';
+	var DELETE_USER_SUCCESS = exports.DELETE_USER_SUCCESS = 'DELETE_USER_SUCCESS';
+	var DELETE_USER_FAILURE = exports.DELETE_USER_FAILURE = 'DELETE_USER_FAILURE';
+	
+	var SORT_USERS = exports.SORT_USERS = 'SORT_USERS';
+	var CHANGE_PAGE = exports.CHANGE_PAGE = 'CHANGE_PAGE';
+	
+	function loadUsersRequest(dispatch) {
+	    loadUsers(dispatch);
+	    return { type: LOAD_USERS_REQUEST };
+	}
+	
+	function loadUsersSuccess(data) {
+	    return { type: LOAD_USERS_SUCCESS, payload: data };
+	}
+	
+	function loadUsersFailure(error) {
+	    return { type: LOAD_USERS_FAILURE, error: error };
+	}
+	
+	function sortUsers(data) {
+	    return { type: SORT_USERS, payload: data };
+	}
+	
+	function changePage(dispatch, start, limit, page) {
+	    loadUsers(dispatch, start, limit);
+	    return { type: CHANGE_PAGE, payload: page };
+	}
+	
+	function editUsersRequest(dispatch, data) {
+	    editUser(dispatch, data);
+	    return { type: EDIT_USER_REQUEST };
+	}
+	
+	function editUserSuccess(data) {
+	    return { type: EDIT_USER_SUCCESS, payload: data };
+	}
+	
+	function editUserFailure(error) {
+	    return { type: EDIT_USER_FAILURE, error: error };
+	}
+	
+	function createUserRequest(dispatch, data) {
+	    createUser(dispatch, data);
+	    return { type: CREATE_USER_REQUEST };
+	}
+	
+	function createUserSuccess(data) {
+	    return { type: CREATE_USER_SUCCESS, payload: data };
+	}
+	
+	function createUserFailure(error) {
+	    return { type: CREATE_USER_FAILURE, error: error };
+	}
+	
+	function deleteUserRequest(dispatch, data) {
+	    deleteUser(dispatch, data);
+	    return { type: DELETE_USER_REQUEST };
+	}
+	
+	function deleteUserSuccess(data) {
+	    return { type: DELETE_USER_SUCCESS, payload: data };
+	}
+	
+	function deleteUserFailure(error) {
+	    return { type: DELETE_USER_FAILURE, error: error };
+	}
+	
+	function loadUsers(dispatch) {
+	    var start = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+	    var limit = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 11;
+	
+	    _Request2.default.load('user', { start: start, limit: limit }, { dispatch: dispatch, success: loadUsersSuccess, failure: loadUsersFailure });
+	}
+	
+	function editUser(dispatch, data) {
+	    _Request2.default.update('user', { payload: data }, { dispatch: dispatch, success: editUserSuccess, failure: editUserFailure });
+	}
+	
+	function createUser(dispatch, data) {
+	    _Request2.default.create('user', { payload: data }, { dispatch: dispatch, success: createUserSuccess, failure: createUserFailure });
+	}
+	
+	function deleteUser(dispatch, data) {
+	    _Request2.default.delete('user', { payload: { id: data } }, { dispatch: dispatch, success: deleteUserSuccess, failure: deleteUserFailure });
+	}
+
+/***/ },
+/* 234 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _Validator = __webpack_require__(235);
+	
+	var _Validator2 = _interopRequireDefault(_Validator);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function ImageUploader() {
+	    this.fileReader = new FileReader();
+	    this.callback = null;
+	    this.element = null;
+	} /**
+	   * Created by s.evdokimov on 17.11.2016.
+	   */
+	
+	ImageUploader.prototype.read = function (node, callback) {
+	    node.dataset.img = null;
+	    var result = _Validator2.default.checkImage(node);
+	
+	    node.classList.add(result.className);
+	    if (!result.valid) return false;
+	
+	    this.callback = callback;
+	    this.element = node;
+	
+	    var fileList = node.files;
+	    this.fileReader.readAsDataURL(fileList[0]);
+	    this.fileReader.onload = this.insertImage.bind(this);
+	};
+	
+	ImageUploader.prototype.insertImage = function (event) {
+	    var file = event.target.result;
+	    file = this.drawImage(file);
+	
+	    var parent = this.element.parentNode;
+	    var images = parent.querySelector('img');
+	
+	    var img = document.createElement('img');
+	    img.setAttribute('src', file);
+	    this.element.dataset.img = file;
+	
+	    images ? images.replaceWith(img) : parent.insertBefore(img, this.element);
+	    this.callback(file);
+	};
+	
+	ImageUploader.prototype.drawImage = function (file) {
+	
+	    var canvas = document.createElement('canvas');
+	    var ctx = canvas.getContext('2d');
+	
+	    var img = new Image();
+	    img.src = file;
+	
+	    var width = 195;
+	    var height = 135;
+	
+	    var x_ratio = width / img.width;
+	    var y_ratio = height / img.height;
+	
+	    var ratio = Math.min(x_ratio, y_ratio);
+	    var use_ratio = x_ratio < y_ratio ? 1 : 0;
+	
+	    var w = use_ratio ? width : Math.ceil(img.width * ratio);
+	    var h = !use_ratio ? height : Math.ceil(img.height * ratio);
+	
+	    canvas.setAttribute('width', w + 'px');
+	    canvas.setAttribute('height', h + 'px');
+	    ctx.drawImage(img, 0, 0, w, h);
+	
+	    file = canvas.toDataURL();
+	    return file;
+	};
+	
+	exports.default = ImageUploader;
+
+/***/ },
+/* 235 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	/**
+	 * Created by s.evdokimov on 17.11.2016.
+	 */
+	
+	var Validator = {
+	
+	    pattern: {
+	        name: /^\w+\s*\w*$/i,
+	        email: /^[\w\.]+@\w+\.\w+$/i,
+	        image: /^image.+$/i
+	    },
+	
+	    checkImage: function checkImage(node) {
+	        var nameImg = node.dataset.img;
+	        if (nameImg) return { valid: true, className: 'success' };
+	
+	        var fileList = node.files;
+	        if (!fileList[0]) return { valid: false, className: 'error' };
+	
+	        var type = fileList[0].type;
+	        return this.pattern.image.test(type) ? { valid: true, className: 'success' } : { valid: false, className: 'error' };
+	    },
+	    checkName: function checkName(str) {
+	        return this.pattern.name.test(str) ? { valid: true, className: 'success' } : { valid: false, className: 'error' };
+	    },
+	    checkEmail: function checkEmail(str) {
+	        return this.pattern.email.test(str) ? { valid: true, className: 'success' } : { valid: false, className: 'error' };
+	    },
+	    checkStartDate: function checkStartDate(data) {
+	        var date = data.date || '';
+	        var time = data.time || '';
+	        var strTime = date + ' ' + time;
+	
+	        var startDate = new Date(strTime).getTime();
+	        var currentDate = new Date().getTime();
+	
+	        return startDate < currentDate ? { valid: true, className: 'success' } : { valid: false, className: 'error' };
+	    },
+	    checkFinishDate: function checkFinishDate(data) {
+	        var date = data.date || '';
+	        var time = data.time || '';
+	        var strTime = date + ' ' + time;
+	
+	        var finishDate = new Date(strTime).getTime();
+	        var currentDate = new Date().getTime();
+	
+	        return finishDate > currentDate ? { valid: true, className: 'success' } : { valid: false, className: 'error' };
+	    }
+	};
+	
+	exports.default = Validator;
+
+/***/ },
+/* 236 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
@@ -24909,15 +25273,15 @@
 	
 	var actions = _interopRequireWildcard(_actions);
 	
-	var _actions2 = __webpack_require__(239);
+	var _actions2 = __webpack_require__(233);
 	
 	var usersActions = _interopRequireWildcard(_actions2);
 	
-	var _imageUploader = __webpack_require__(242);
+	var _imageUploader = __webpack_require__(234);
 	
 	var _imageUploader2 = _interopRequireDefault(_imageUploader);
 	
-	var _Validator = __webpack_require__(243);
+	var _Validator = __webpack_require__(235);
 	
 	var _Validator2 = _interopRequireDefault(_Validator);
 	
@@ -25243,7 +25607,7 @@
 	})(Edit);
 
 /***/ },
-/* 234 */
+/* 237 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25348,13 +25712,13 @@
 	})(Confirm);
 
 /***/ },
-/* 235 */
+/* 238 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__.p + "style.css";
 
 /***/ },
-/* 236 */
+/* 239 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25365,20 +25729,22 @@
 	
 	var _redux = __webpack_require__(197);
 	
-	var _reducers = __webpack_require__(237);
+	var _reduxThunk = __webpack_require__(248);
+	
+	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
+	
+	var _reducers = __webpack_require__(240);
 	
 	var _reducers2 = _interopRequireDefault(_reducers);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	/**
-	 * Created by s.evdokimov on 07.12.2016.
-	 */
-	
-	exports.default = (0, _redux.createStore)(_reducers2.default);
+	exports.default = (0, _redux.createStore)(_reducers2.default, (0, _redux.applyMiddleware)(_reduxThunk2.default)); /**
+	                                                                                                                   * Created by s.evdokimov on 07.12.2016.
+	                                                                                                                   */
 
 /***/ },
-/* 237 */
+/* 240 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25389,17 +25755,25 @@
 	
 	var _redux = __webpack_require__(197);
 	
-	var _reducer = __webpack_require__(238);
+	var _reducer = __webpack_require__(241);
 	
 	var _reducer2 = _interopRequireDefault(_reducer);
 	
-	var _reducer3 = __webpack_require__(240);
+	var _reducer3 = __webpack_require__(242);
 	
 	var _reducer4 = _interopRequireDefault(_reducer3);
 	
-	var _reducer5 = __webpack_require__(241);
+	var _reducer5 = __webpack_require__(243);
 	
 	var _reducer6 = _interopRequireDefault(_reducer5);
+	
+	var _reducer7 = __webpack_require__(245);
+	
+	var _reducer8 = _interopRequireDefault(_reducer7);
+	
+	var _reducer9 = __webpack_require__(251);
+	
+	var _reducer10 = _interopRequireDefault(_reducer9);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -25410,11 +25784,13 @@
 	exports.default = (0, _redux.combineReducers)({
 	    UsersTable: _reducer2.default,
 	    HeaderSetting: _reducer4.default,
-	    ModalWindows: _reducer6.default
+	    ModalWindows: _reducer6.default,
+	    Tooltip: _reducer8.default,
+	    Notify: _reducer10.default
 	});
 
 /***/ },
-/* 238 */
+/* 241 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25436,7 +25812,7 @@
 	    var pagination = {};
 	    var findIndex = null;
 	
-	    switch (action.type) {// TODO при добовлении и удалении пользователей возвращать количество пользователей
+	    switch (action.type) {
 	        case actions.LOAD_USERS_REQUEST:
 	            // console.log('ACTION', actions.LOAD_USERS_REQUEST);
 	            return state;
@@ -25470,8 +25846,9 @@
 	            return state;
 	        case actions.CREATE_USER_SUCCESS:
 	            // console.log('ACTION', actions.CREATE_USER_SUCCESS, action.payload);
-	            // state.users.push(action.payload);
+	            if (state.newUser) state.users.push(state.newUser);
 	            users = userSort(state.users, state.sort);
+	            state.newUser = action.payload;
 	            return _extends({}, state, { users: users });
 	        case actions.CREATE_USER_FAILURE:
 	            // console.log('ACTION', actions.CREATE_USER_FAILURE);
@@ -25508,7 +25885,7 @@
 	    return state;
 	};
 	
-	var _actions = __webpack_require__(239);
+	var _actions = __webpack_require__(233);
 	
 	var actions = _interopRequireWildcard(_actions);
 	
@@ -25519,6 +25896,7 @@
 	        param: 'id',
 	        direction: 'asc'
 	    },
+	    newUser: null,
 	    users: [],
 	    pagination: {
 	        type: 'lazyLoad', // pagination
@@ -25553,140 +25931,7 @@
 	}
 
 /***/ },
-/* 239 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.CHANGE_PAGE = exports.SORT_USERS = exports.DELETE_USER_FAILURE = exports.DELETE_USER_SUCCESS = exports.DELETE_USER_REQUEST = exports.CREATE_USER_FAILURE = exports.CREATE_USER_SUCCESS = exports.CREATE_USER_REQUEST = exports.EDIT_USER_FAILURE = exports.EDIT_USER_SUCCESS = exports.EDIT_USER_REQUEST = exports.LOAD_USERS_FAILURE = exports.LOAD_USERS_SUCCESS = exports.LOAD_USERS_REQUEST = undefined;
-	exports.loadUsersRequest = loadUsersRequest;
-	exports.loadUsersSuccess = loadUsersSuccess;
-	exports.loadUsersFailure = loadUsersFailure;
-	exports.sortUsers = sortUsers;
-	exports.changePage = changePage;
-	exports.editUsersRequest = editUsersRequest;
-	exports.editUserSuccess = editUserSuccess;
-	exports.editUserFailure = editUserFailure;
-	exports.createUserRequest = createUserRequest;
-	exports.createUserSuccess = createUserSuccess;
-	exports.createUserFailure = createUserFailure;
-	exports.deleteUserRequest = deleteUserRequest;
-	exports.deleteUserSuccess = deleteUserSuccess;
-	exports.deleteUserFailure = deleteUserFailure;
-	
-	var _Request = __webpack_require__(224);
-	
-	var _Request2 = _interopRequireDefault(_Request);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var LOAD_USERS_REQUEST = exports.LOAD_USERS_REQUEST = 'LOAD_USERS_REQUEST'; /**
-	                                                                             * Created by s.evdokimov on 07.12.2016.
-	                                                                             */
-	
-	var LOAD_USERS_SUCCESS = exports.LOAD_USERS_SUCCESS = 'LOAD_USERS_SUCCESS';
-	var LOAD_USERS_FAILURE = exports.LOAD_USERS_FAILURE = 'LOAD_USERS_FAILURE';
-	
-	var EDIT_USER_REQUEST = exports.EDIT_USER_REQUEST = 'EDIT_USER_REQUEST';
-	var EDIT_USER_SUCCESS = exports.EDIT_USER_SUCCESS = 'EDIT_USER_SUCCESS';
-	var EDIT_USER_FAILURE = exports.EDIT_USER_FAILURE = 'EDIT_USER_FAILURE';
-	
-	var CREATE_USER_REQUEST = exports.CREATE_USER_REQUEST = 'CREATE_USER_REQUEST';
-	var CREATE_USER_SUCCESS = exports.CREATE_USER_SUCCESS = 'CREATE_USER_SUCCESS';
-	var CREATE_USER_FAILURE = exports.CREATE_USER_FAILURE = 'CREATE_USER_FAILURE';
-	
-	var DELETE_USER_REQUEST = exports.DELETE_USER_REQUEST = 'DELETE_USER_REQUEST';
-	var DELETE_USER_SUCCESS = exports.DELETE_USER_SUCCESS = 'DELETE_USER_SUCCESS';
-	var DELETE_USER_FAILURE = exports.DELETE_USER_FAILURE = 'DELETE_USER_FAILURE';
-	
-	var SORT_USERS = exports.SORT_USERS = 'SORT_USERS';
-	var CHANGE_PAGE = exports.CHANGE_PAGE = 'CHANGE_PAGE';
-	
-	function loadUsersRequest(dispatch) {
-	    loadUsers(dispatch);
-	    return { type: LOAD_USERS_REQUEST };
-	}
-	
-	function loadUsersSuccess(data) {
-	    return { type: LOAD_USERS_SUCCESS, payload: data };
-	}
-	
-	function loadUsersFailure(error) {
-	    return { type: LOAD_USERS_FAILURE, error: error };
-	}
-	
-	function sortUsers(data) {
-	    return { type: SORT_USERS, payload: data };
-	}
-	
-	function changePage(dispatch, start, limit, page) {
-	    loadUsers(dispatch, start, limit);
-	    return { type: CHANGE_PAGE, payload: page };
-	}
-	
-	function editUsersRequest(dispatch, data) {
-	    editUser(dispatch, data);
-	    return { type: EDIT_USER_REQUEST };
-	}
-	
-	function editUserSuccess(data) {
-	    return { type: EDIT_USER_SUCCESS, payload: data };
-	}
-	
-	function editUserFailure(error) {
-	    return { type: EDIT_USER_FAILURE, error: error };
-	}
-	
-	function createUserRequest(dispatch, data) {
-	    createUser(dispatch, data);
-	    return { type: CREATE_USER_REQUEST };
-	}
-	
-	function createUserSuccess(data) {
-	    return { type: CREATE_USER_SUCCESS, payload: data };
-	}
-	
-	function createUserFailure(error) {
-	    return { type: CREATE_USER_FAILURE, error: error };
-	}
-	
-	function deleteUserRequest(dispatch, data) {
-	    deleteUser(dispatch, data);
-	    return { type: DELETE_USER_REQUEST };
-	}
-	
-	function deleteUserSuccess(data) {
-	    return { type: DELETE_USER_SUCCESS, payload: data };
-	}
-	
-	function deleteUserFailure(error) {
-	    return { type: DELETE_USER_FAILURE, error: error };
-	}
-	
-	function loadUsers(dispatch) {
-	    var start = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-	    var limit = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 11;
-	
-	    _Request2.default.load('user', { start: start, limit: limit }, { dispatch: dispatch, success: loadUsersSuccess, failure: loadUsersFailure });
-	}
-	
-	function editUser(dispatch, data) {
-	    _Request2.default.update('user', { payload: data }, { dispatch: dispatch, success: editUserSuccess, failure: editUserFailure });
-	}
-	
-	function createUser(dispatch, data) {
-	    _Request2.default.create('user', { payload: data }, { dispatch: dispatch, success: createUserSuccess, failure: createUserFailure });
-	}
-	
-	function deleteUser(dispatch, data) {
-	    _Request2.default.delete('user', { payload: { id: data } }, { dispatch: dispatch, success: deleteUserSuccess, failure: deleteUserFailure });
-	}
-
-/***/ },
-/* 240 */
+/* 242 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25743,7 +25988,7 @@
 	};
 
 /***/ },
-/* 241 */
+/* 243 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25831,7 +26076,8 @@
 	}
 
 /***/ },
-/* 242 */
+/* 244 */,
+/* 245 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25840,82 +26086,339 @@
 	    value: true
 	});
 	
-	var _Validator = __webpack_require__(243);
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; /**
+	                                                                                                                                                                                                                                                                   * Created by s.evdokimov on 12.12.2016.
+	                                                                                                                                                                                                                                                                   */
 	
-	var _Validator2 = _interopRequireDefault(_Validator);
+	exports.default = function () {
+	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
+	    var action = arguments[1];
+	
+	    var left = 0;
+	    var top = 0;
+	    switch (action.type) {
+	        case actions.SHOW_TOOLTIP:
+	            // console.log('ACTION', actions.SHOW_TOOLTIP);
+	            left = action.payload.x + 15;
+	            top = action.payload.y + 15;
+	            return _extends({}, state, { left: left, top: top });
+	        case actions.SHOW_TOOLTIP_REQUEST:
+	            // console.log('ACTION', actions.SHOW_TOOLTIP_REQUEST);
+	            return state;
+	        case actions.SHOW_TOOLTIP_SUCCESS:
+	            // console.log('ACTION', actions.SHOW_TOOLTIP_SUCCESS, action.payload);
+	            return _extends({}, state, { show: true, type: action.payload.type, data: action.payload });
+	        case actions.SHOW_TOOLTIP_FAILURE:
+	            // console.log('ACTION', actions.SHOW_TOOLTIP_FAILURE);
+	            console.warn(action.error);
+	            return state;
+	        case actions.MOVE_TOOLTIP:
+	            // console.log('ACTION', actions.MOVE_TOOLTIP);
+	            left = action.payload.x + 15;
+	            top = action.payload.y + 15;
+	            return _extends({}, state, { top: top, left: left });
+	        case actions.HIDE_TOOLTIP:
+	            return _extends({}, state, { show: false });
+	    }
+	
+	    return state;
+	};
+	
+	var _actions = __webpack_require__(246);
+	
+	var actions = _interopRequireWildcard(_actions);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	var initialState = {
+	    top: null,
+	    left: null,
+	    show: false,
+	    type: null,
+	    data: {}
+	};
+
+/***/ },
+/* 246 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.HIDE_TOOLTIP = exports.MOVE_TOOLTIP = exports.SHOW_TOOLTIP_FAILURE = exports.SHOW_TOOLTIP_SUCCESS = exports.SHOW_TOOLTIP_REQUEST = exports.SHOW_TOOLTIP = undefined;
+	exports.showTooltip = showTooltip;
+	exports.loadTooltipSuccess = loadTooltipSuccess;
+	exports.loadTooltipFailure = loadTooltipFailure;
+	exports.moveTooltip = moveTooltip;
+	exports.hideTooltip = hideTooltip;
+	
+	var _Request = __webpack_require__(224);
+	
+	var _Request2 = _interopRequireDefault(_Request);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	function ImageUploader() {
-	    this.fileReader = new FileReader();
-	    this.callback = null;
-	    this.element = null;
-	} /**
-	   * Created by s.evdokimov on 17.11.2016.
-	   */
+	var SHOW_TOOLTIP = exports.SHOW_TOOLTIP = 'SHOW_TOOLTIP'; /**
+	                                                           * Created by s.evdokimov on 12.12.2016.
+	                                                           */
 	
-	ImageUploader.prototype.read = function (node, callback) {
-	    node.dataset.img = null;
-	    var result = _Validator2.default.checkImage(node);
+	var SHOW_TOOLTIP_REQUEST = exports.SHOW_TOOLTIP_REQUEST = 'SHOW_TOOLTIP_REQUEST';
+	var SHOW_TOOLTIP_SUCCESS = exports.SHOW_TOOLTIP_SUCCESS = 'SHOW_TOOLTIP_SUCCESS';
+	var SHOW_TOOLTIP_FAILURE = exports.SHOW_TOOLTIP_FAILURE = 'SHOW_TOOLTIP_FAILURE';
 	
-	    node.classList.add(result.className);
-	    if (!result.valid) return false;
+	var MOVE_TOOLTIP = exports.MOVE_TOOLTIP = 'MOVE_TOOLTIP';
 	
-	    this.callback = callback;
-	    this.element = node;
+	var HIDE_TOOLTIP = exports.HIDE_TOOLTIP = 'HIDE_TOOLTIP';
 	
-	    var fileList = node.files;
-	    this.fileReader.readAsDataURL(fileList[0]);
-	    this.fileReader.onload = this.insertImage.bind(this);
-	};
+	function showTooltip(dispatch, data, coords) {
+	    loadTooltip(dispatch, data);
+	    return { type: SHOW_TOOLTIP, payload: coords };
+	}
 	
-	ImageUploader.prototype.insertImage = function (event) {
-	    var file = event.target.result;
-	    file = this.drawImage(file);
+	function loadTooltipSuccess(data) {
+	    return { type: SHOW_TOOLTIP_SUCCESS, payload: data };
+	}
 	
-	    var parent = this.element.parentNode;
-	    var images = parent.querySelector('img');
+	function loadTooltipFailure(error) {
+	    return { type: SHOW_TOOLTIP_FAILURE, error: error };
+	}
 	
-	    var img = document.createElement('img');
-	    img.setAttribute('src', file);
-	    this.element.dataset.img = file;
+	function moveTooltip(data) {
+	    return { type: MOVE_TOOLTIP, payload: data };
+	}
 	
-	    images ? images.replaceWith(img) : parent.insertBefore(img, this.element);
-	    this.callback(file);
-	};
+	function hideTooltip() {
+	    return { type: HIDE_TOOLTIP };
+	}
 	
-	ImageUploader.prototype.drawImage = function (file) {
-	
-	    var canvas = document.createElement('canvas');
-	    var ctx = canvas.getContext('2d');
-	
-	    var img = new Image();
-	    img.src = file;
-	
-	    var width = 195;
-	    var height = 135;
-	
-	    var x_ratio = width / img.width;
-	    var y_ratio = height / img.height;
-	
-	    var ratio = Math.min(x_ratio, y_ratio);
-	    var use_ratio = x_ratio < y_ratio ? 1 : 0;
-	
-	    var w = use_ratio ? width : Math.ceil(img.width * ratio);
-	    var h = !use_ratio ? height : Math.ceil(img.height * ratio);
-	
-	    canvas.setAttribute('width', w + 'px');
-	    canvas.setAttribute('height', h + 'px');
-	    ctx.drawImage(img, 0, 0, w, h);
-	
-	    file = canvas.toDataURL();
-	    return file;
-	};
-	
-	exports.default = ImageUploader;
+	function loadTooltip(dispatch, data) {
+	    dispatch({ type: SHOW_TOOLTIP_REQUEST });
+	    _Request2.default.load('tooltip', { id: data.id, type: data.type }, { dispatch: dispatch, success: loadTooltipSuccess, failure: loadTooltipFailure });
+	}
 
 /***/ },
-/* 243 */
+/* 247 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(11);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactRedux = __webpack_require__(190);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by s.evdokimov on 12.12.2016.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+	
+	var Tooltip = function (_Component) {
+	    _inherits(Tooltip, _Component);
+	
+	    function Tooltip(props) {
+	        _classCallCheck(this, Tooltip);
+	
+	        return _possibleConstructorReturn(this, (Tooltip.__proto__ || Object.getPrototypeOf(Tooltip)).call(this, props));
+	    }
+	
+	    _createClass(Tooltip, [{
+	        key: 'getStructureTooltip',
+	        value: function getStructureTooltip(type, data) {
+	            var html = null;
+	            switch (type) {
+	                case 'name':
+	                    html = _react2.default.createElement(
+	                        'div',
+	                        { className: "tooltip-" + type },
+	                        _react2.default.createElement('img', { src: data.img }),
+	                        _react2.default.createElement(
+	                            'p',
+	                            null,
+	                            data.text
+	                        )
+	                    );
+	                    break;
+	                case 'email':
+	                    html = _react2.default.createElement(
+	                        'div',
+	                        { className: "tooltip-" + type },
+	                        _react2.default.createElement(
+	                            'p',
+	                            null,
+	                            '\u041A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u043E \u043D\u0435\u043F\u0440\u043E\u0447\u0438\u0442\u0430\u043D\u043D\u044B\u0445 \u043F\u0438\u0441\u0435\u043C ',
+	                            _react2.default.createElement(
+	                                'mark',
+	                                null,
+	                                data.text
+	                            )
+	                        )
+	                    );
+	                    break;
+	            }
+	
+	            return html;
+	        }
+	    }, {
+	        key: 'getX',
+	        value: function getX(x) {
+	            var tooltip = this.refs.tooltip;
+	
+	            if (tooltip) {
+	                var widthEl = tooltip.clientWidth;
+	                var widthPage = window.innerWidth < document.body.clientWidth ? window.innerWidth : document.body.clientWidth;
+	
+	                if (x + widthEl > widthPage) {
+	                    x = x - widthEl < 0 ? 0 : x - widthEl;
+	                }
+	            }
+	
+	            return x + 'px';
+	        }
+	    }, {
+	        key: 'getY',
+	        value: function getY(y) {
+	            var tooltip = this.refs.tooltip;
+	
+	            if (tooltip) {
+	                var heightEl = tooltip.clientHeight;
+	                var heightPage = window.innerHeight < document.body.clientHeight ? window.innerHeight : document.body.clientHeight;
+	
+	                if (y + heightEl > heightPage) {
+	                    y = y - heightEl < 0 ? 0 : y - heightEl;
+	                }
+	            }
+	
+	            return y + 'px';
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var _props = this.props,
+	                type = _props.type,
+	                data = _props.data,
+	                show = _props.show,
+	                left = _props.left,
+	                top = _props.top;
+	
+	            return _react2.default.createElement(
+	                'div',
+	                { ref: 'tooltip', className: "tooltip " + (show ? 'show' : ''), style: { top: this.getY(top), left: this.getX(left) } },
+	                this.getStructureTooltip(type, data)
+	            );
+	        }
+	    }]);
+	
+	    return Tooltip;
+	}(_react.Component);
+	
+	exports.default = (0, _reactRedux.connect)(function (state) {
+	    return state.Tooltip;
+	})(Tooltip);
+
+/***/ },
+/* 248 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	exports.__esModule = true;
+	function createThunkMiddleware(extraArgument) {
+	  return function (_ref) {
+	    var dispatch = _ref.dispatch;
+	    var getState = _ref.getState;
+	    return function (next) {
+	      return function (action) {
+	        if (typeof action === 'function') {
+	          return action(dispatch, getState, extraArgument);
+	        }
+	
+	        return next(action);
+	      };
+	    };
+	  };
+	}
+	
+	var thunk = createThunkMiddleware();
+	thunk.withExtraArgument = createThunkMiddleware;
+	
+	exports['default'] = thunk;
+
+/***/ },
+/* 249 */,
+/* 250 */,
+/* 251 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; /**
+	                                                                                                                                                                                                                                                                   * Created by s.evdokimov on 12.12.2016.
+	                                                                                                                                                                                                                                                                   */
+	
+	exports.default = function () {
+	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
+	    var action = arguments[1];
+	
+	    switch (action.type) {
+	        case actions.NOTIFY_SHOW:
+	            // console.log('ACTION', actions.NOTIFY_SHOW, action.payload);
+	            state.items.push(state.newItem);
+	            state.newItem = null;
+	            return _extends({}, state);
+	        case actions.NOTIFY_CREATE:
+	            // console.log('ACTION', actions.NOTIFY_CREATE, action.payload);
+	            state.newItem = {
+	                id: Date.now(),
+	                text: action.payload.str
+	            };
+	            return _extends({}, state);
+	        case actions.NOTIFY_HIDE:
+	            // console.log('ACTION', actions.NOTIFY_HIDE, action.payload);
+	            return state;
+	        case actions.NOTIFY_REMOVE:
+	            // console.log('ACTION', actions.NOTIFY_REMOVE, action.payload);
+	            var items = state.items.reduce(function (acc, item) {
+	                if (item.id != parseInt(action.payload.id)) acc.push(item);
+	                return acc;
+	            }, []);
+	
+	            return _extends({}, state, { items: items });
+	    }
+	
+	    return state;
+	};
+	
+	var _actions = __webpack_require__(252);
+	
+	var actions = _interopRequireWildcard(_actions);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	var initialState = {
+	    newItem: null,
+	    items: []
+	};
+
+/***/ },
+/* 252 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -25923,57 +26426,191 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
+	exports.notifyShow = notifyShow;
+	exports.notifyCreate = notifyCreate;
+	exports.notifyHide = notifyHide;
+	exports.notifyRemove = notifyRemove;
 	/**
-	 * Created by s.evdokimov on 17.11.2016.
+	 * Created by s.evdokimov on 12.12.2016.
 	 */
 	
-	var Validator = {
+	var NOTIFY_SHOW = exports.NOTIFY_SHOW = 'NOTIFY_SHOW';
+	var NOTIFY_CREATE = exports.NOTIFY_CREATE = 'NOTIFY_CREATE';
 	
-	    pattern: {
-	        name: /^\w+\s*\w*$/i,
-	        email: /^[\w\.]+@\w+\.\w+$/i,
-	        image: /^image.+$/i
-	    },
+	var NOTIFY_HIDE = exports.NOTIFY_HIDE = 'NOTIFY_HIDE';
+	var NOTIFY_REMOVE = exports.NOTIFY_REMOVE = 'NOTIFY_REMOVE';
 	
-	    checkImage: function checkImage(node) {
-	        var nameImg = node.dataset.img;
-	        if (nameImg) return { valid: true, className: 'success' };
+	function notifyShow(data) {
+	    return { type: NOTIFY_SHOW, payload: { id: data } };
+	}
 	
-	        var fileList = node.files;
-	        if (!fileList[0]) return { valid: false, className: 'error' };
+	function notifyCreate(data) {
+	    return { type: NOTIFY_CREATE, payload: { str: data } };
+	}
 	
-	        var type = fileList[0].type;
-	        return this.pattern.image.test(type) ? { valid: true, className: 'success' } : { valid: false, className: 'error' };
-	    },
-	    checkName: function checkName(str) {
-	        return this.pattern.name.test(str) ? { valid: true, className: 'success' } : { valid: false, className: 'error' };
-	    },
-	    checkEmail: function checkEmail(str) {
-	        return this.pattern.email.test(str) ? { valid: true, className: 'success' } : { valid: false, className: 'error' };
-	    },
-	    checkStartDate: function checkStartDate(data) {
-	        var date = data.date || '';
-	        var time = data.time || '';
-	        var strTime = date + ' ' + time;
+	function notifyHide(data) {
+	    return { type: NOTIFY_HIDE, payload: { id: data } };
+	}
 	
-	        var startDate = new Date(strTime).getTime();
-	        var currentDate = new Date().getTime();
+	function notifyRemove(data) {
+	    return { type: NOTIFY_REMOVE, payload: { id: data } };
+	}
+
+/***/ },
+/* 253 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
 	
-	        return startDate < currentDate ? { valid: true, className: 'success' } : { valid: false, className: 'error' };
-	    },
-	    checkFinishDate: function checkFinishDate(data) {
-	        var date = data.date || '';
-	        var time = data.time || '';
-	        var strTime = date + ' ' + time;
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
 	
-	        var finishDate = new Date(strTime).getTime();
-	        var currentDate = new Date().getTime();
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	        return finishDate > currentDate ? { valid: true, className: 'success' } : { valid: false, className: 'error' };
+	var _react = __webpack_require__(11);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactRedux = __webpack_require__(190);
+	
+	var _actions = __webpack_require__(252);
+	
+	var actions = _interopRequireWildcard(_actions);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by s.evdokimov on 12.12.2016.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+	
+	var Item = function (_Component) {
+	    _inherits(Item, _Component);
+	
+	    function Item(props) {
+	        _classCallCheck(this, Item);
+	
+	        var _this = _possibleConstructorReturn(this, (Item.__proto__ || Object.getPrototypeOf(Item)).call(this, props));
+	
+	        _this.idTimeout = null;
+	        return _this;
 	    }
-	};
 	
-	exports.default = Validator;
+	    _createClass(Item, [{
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	            var _props = this.props,
+	                dispatch = _props.dispatch,
+	                item = _props.item,
+	                isNew = _props.isNew;
+	            var el = this.refs.el;
+	
+	
+	            this.idTimeout = setTimeout(function () {
+	                dispatch(actions.notifyHide(item.id));
+	                el.style.opacity = 0;
+	            }, 50000);
+	
+	            if (isNew) {
+	                el.style.opacity = 1;
+	                dispatch(actions.notifyShow(item.id));
+	            }
+	        }
+	    }, {
+	        key: 'componentWillUnmount',
+	        value: function componentWillUnmount() {
+	            clearTimeout(this.idTimeout);
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var _props2 = this.props,
+	                item = _props2.item,
+	                isNew = _props2.isNew;
+	
+	            var style = {};
+	
+	            if (isNew) style.opacity = 0;
+	
+	            return _react2.default.createElement(
+	                'div',
+	                { className: 'notify', ref: 'el', style: style, 'data-notify-id': item.id },
+	                item.text
+	            );
+	        }
+	    }]);
+	
+	    return Item;
+	}(_react.Component);
+	
+	var Notify = function (_Component2) {
+	    _inherits(Notify, _Component2);
+	
+	    function Notify(props) {
+	        _classCallCheck(this, Notify);
+	
+	        var _this2 = _possibleConstructorReturn(this, (Notify.__proto__ || Object.getPrototypeOf(Notify)).call(this, props));
+	
+	        _this2.handlerNotifyHide = function (self, event) {
+	            var el = event.target;
+	            if (el.tagName !== 'DIV') return false;
+	
+	            var dispatch = this.props.dispatch;
+	
+	            var id = el.dataset.notifyId;
+	
+	            dispatch(actions.notifyHide(id));
+	            el.style.opacity = 0;
+	        };
+	
+	        _this2.handlerNotifyRemove = function (self, event) {
+	            var el = event.target;
+	
+	            var dispatch = self.props.dispatch;
+	
+	            var id = el.dataset.notifyId;
+	
+	            dispatch(actions.notifyRemove(id));
+	        };
+	
+	        return _this2;
+	    }
+	
+	    _createClass(Notify, [{
+	        key: 'render',
+	        value: function render() {
+	            var _props3 = this.props,
+	                items = _props3.items,
+	                newItem = _props3.newItem,
+	                dispatch = _props3.dispatch;
+	
+	
+	            return _react2.default.createElement(
+	                'section',
+	                { className: 'notify-wrapper', onClick: this.handlerNotifyHide.bind(this, this), onTransitionEnd: this.handlerNotifyRemove.bind(this, this) },
+	                newItem ? _react2.default.createElement(Item, { key: newItem.id, item: newItem, dispatch: dispatch, isNew: true }) : null,
+	                items.map(function (item) {
+	                    return _react2.default.createElement(Item, { key: item.id, item: item, dispatch: dispatch });
+	                })
+	            );
+	        }
+	    }]);
+	
+	    return Notify;
+	}(_react.Component);
+	
+	exports.default = (0, _reactRedux.connect)(function (state) {
+	    return {
+	        items: state.Notify.items,
+	        newItem: state.Notify.newItem
+	    };
+	})(Notify);
 
 /***/ }
 /******/ ]);

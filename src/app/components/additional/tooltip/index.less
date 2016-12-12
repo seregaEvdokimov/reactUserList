@@ -1,0 +1,49 @@
+.tooltip {
+  display: none;
+  padding: 2px;
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  &.show {
+    display: block;
+  }
+
+  .tooltip-name {
+    background: #333;
+
+    p {
+      text-align: center;
+      color: #fff;
+      padding: 10px 5px;
+      font-size: 14px;
+    }
+
+    img {
+      display: table;
+      margin: 0 auto;
+      max-width: 100%;
+    }
+  }
+
+  .tooltip-email {
+    width: 275px;
+    background: #333;
+
+    p {
+      color: #fff;
+      padding: 10px 0;
+      font-size: 14px;
+      text-align: center;
+
+      mark {
+        background: none;
+        color: #fff;
+        display: block;
+        font-size: 22px;
+        text-align: center;
+        padding: 5px 0;
+      }
+    }
+  }
+}

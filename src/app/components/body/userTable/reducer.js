@@ -9,6 +9,7 @@ const initialState = {
         param: 'id',
         direction: 'asc'
     },
+    newUser: null,
     users: [],
     pagination: {
         type: 'lazyLoad', // pagination
@@ -25,7 +26,7 @@ export default function(state = initialState, action){
     let pagination = {};
     let findIndex = null;
 
-    switch (action.type){ // TODO при добовлении и удалении пользователей возвращать количество пользователей
+    switch (action.type){
         case actions.LOAD_USERS_REQUEST:
             // console.log('ACTION', actions.LOAD_USERS_REQUEST);
             return state;
@@ -59,8 +60,9 @@ export default function(state = initialState, action){
             return state;
         case actions.CREATE_USER_SUCCESS:
             // console.log('ACTION', actions.CREATE_USER_SUCCESS, action.payload);
-            // state.users.push(action.payload);
+            if(state.newUser) state.users.push(state.newUser);
             users = userSort(state.users, state.sort);
+            state.newUser = action.payload;
             return {...state, ...{users}};
         case actions.CREATE_USER_FAILURE:
             // console.log('ACTION', actions.CREATE_USER_FAILURE);

@@ -187,7 +187,7 @@ tbody tr td a:hover {
 }
 .userList table.lazyLoad tbody {
   display: block;
-  height: 300px;
+  height: 250px;
   overflow: auto;
 }
 .userList table .id {
@@ -337,16 +337,6 @@ tbody tr td a:hover {
 .modal .modal-window .control-group button:focus {
   outline: 0;
 }
-#app {
-  display: table;
-  margin: 50px auto;
-  min-width: 1160px;
-}
-* {
-  margin: 0;
-  padding: 0;
-  font-family: 'Arial', sans-serif;
-}
 .tooltip {
   display: none;
   padding: 2px;
@@ -354,31 +344,34 @@ tbody tr td a:hover {
   top: 0;
   left: 0;
 }
-.tooltip-name {
+.tooltip.show {
+  display: block;
+}
+.tooltip .tooltip-name {
   background: #333;
 }
-.tooltip-name p {
+.tooltip .tooltip-name p {
   text-align: center;
   color: #fff;
   padding: 10px 5px;
   font-size: 14px;
 }
-.tooltip-name img {
+.tooltip .tooltip-name img {
   display: table;
   margin: 0 auto;
   max-width: 100%;
 }
-.tooltip-email {
+.tooltip .tooltip-email {
   width: 275px;
   background: #333;
 }
-.tooltip-email p {
+.tooltip .tooltip-email p {
   color: #fff;
   padding: 10px 0;
   font-size: 14px;
   text-align: center;
 }
-.tooltip-email p mark {
+.tooltip .tooltip-email p mark {
   background: none;
   color: #fff;
   display: block;
@@ -400,8 +393,17 @@ tbody tr td a:hover {
   margin-bottom: 8px;
   color: #fff;
   cursor: pointer;
-  opacity: 0;
   transition: opacity .75s;
+}
+#app {
+  display: table;
+  margin: 50px auto;
+  min-width: 1160px;
+}
+* {
+  margin: 0;
+  padding: 0;
+  font-family: 'Arial', sans-serif;
 }
 #app .person-wrapper {
   width: 100%;

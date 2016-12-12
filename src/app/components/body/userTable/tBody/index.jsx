@@ -4,8 +4,10 @@
 
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+
 import * as actions from './../actions';
 import * as modalActions from './../../../modal/actions';
+import * as notifyActions from './../../../additional/notify/actions';
 
 import Timer from '../../../../lib/Timer';
 import ProgressBarTimer from '../../../../lib/ProgressBarTimer';
@@ -60,12 +62,16 @@ class Row extends Component {
     }
 
     componentDidMount() {
-        let {user} = this.props;
-        let {overlay} = this.refs;
+        let {user, isNew} = this.props;
+        let {overlay, el} = this.refs;
 
         this.timer.start();
         this.progressBar = new ProgressBarTimer({start: user.birth, end: user.date}, overlay);
         this.progressBar.start();
+
+        if(isNew) {
+            setTimeout(() => el.classList.remove('addition'), 300);
+        }
     }
 
     componentDidUpdate() {
@@ -85,17 +91,17 @@ class Row extends Component {
     }
 
     render() {
-        let {user} = this.props;
+        let {user, isNew} = this.props;
         let date = parseTime(user.date);
 
         let birth = new Date(user.birth);
         birth = birth.getDate() + '. ' + (birth.getMonth() + 1) + '. ' + birth.getFullYear();
 
         return (
-            <tr>
+            <tr className={isNew ? 'addition' : ''} ref="el">
                 <td className="id">{user.id}</td>
-                <td className="name">{user.name}</td>
-                <td className="email">{user.email}</td>
+                <td className="name" data-tooltip="name">{user.name}</td>
+                <td className="email" data-tooltip="email">{user.email}</td>
                 <td className="birth">{birth}</td>
                 <td className="date">
                     <div className="left-time" ref='date'>{date}</div>
@@ -119,6 +125,8 @@ class tBody extends Component {
 
         let {users, dispatch} = props;
         if(!users.length) actions.loadUsersRequest(dispatch);
+
+        this.usersTotal = users.length;
     }
 
     rowBtnControls(self, event) {
@@ -126,14 +134,20 @@ class tBody extends Component {
         if(el.tagName !== 'A') return false;
 
         let {dispatch, users} = self.props;
-        let id = self.getRowId(el);
+        let row = self.getRowId(el);
+        let id = parseInt(row.querySelector('.id').textContent);
         let userFind = users.filter(function(user) {
             return user.id === id;
         })[0];
 
         switch(el.className) {
             case 'delete-btn':
-                dispatch(actions.deleteUserRequest(dispatch, id));
+                let str = `Пользователь ${userFind.name} (№ ${userFind.id}) был удалён`;
+                row.classList.add('deleting');+
+                setTimeout(() => {
+                    dispatch(notifyActions.notifyCreate(str));
+                    dispatch(actions.deleteUserRequest(dispatch, id));
+                }, 300);
                 break;
             case 'edit-btn':
                 dispatch(modalActions.showModalEdit(userFind));
@@ -150,22 +164,25 @@ class tBody extends Component {
         let maxScroll = el.scrollHeight;
 
         if(currentScroll == maxScroll) {
-            var start = 0;
-            var limit = el.childNodes.length + pagination.perPage;
-            dispatch(actions.changePage(dispatch, start, limit, 1)); // TODO оптимизировать запросы
+            let start = 0;
+            let limit = el.childNodes.length + pagination.perPage;
+
+            if(self.usersTotal != self.props.users.length) dispatch(actions.changePage(dispatch, start, limit, 1));
+            self.usersTotal = self.props.users.length;
         }
     }
 
     getRowId(element) {
-        if(element.tagName == 'TR') return parseInt(element.querySelector('.id').textContent);
+        if(element.tagName == 'TR') return element;
         return this.getRowId(element.parentNode);
     }
 
     render() {
-        let {users} = this.props;
+        let {users, newUser} = this.props;
 
         return (
             <tbody className="tBody" onScroll={this.lazyLoadUsers.bind(this, this)} onClick={this.rowBtnControls.bind(this, this)}>
+                {(newUser) ? <Row key={newUser.id} user={newUser} isNew={true} /> : null}
                 {users.map(user => <Row key={user.id} user={user} />)}
             </tbody>
         )
@@ -180,6 +197,7 @@ export default connect(function(state) {
 
     return {
         users: users,
+        newUser: state.UsersTable.newUser,
         pagination: state.UsersTable.pagination,
         timeStamp: Date.now()
     };

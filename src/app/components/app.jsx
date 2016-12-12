@@ -7,6 +7,7 @@ import React from 'react';
 import Header from './header/index.jsx';
 import TableUser from './body/usertable/index.jsx';
 import Modal from './modal/index.jsx';
+import Notify from './additional/notify/index.jsx';
 
 
 export default function() {
@@ -15,6 +16,7 @@ export default function() {
             <Header />
             <TableUser />
             <Modal />
+            <Notify />
         </div>
     )
 }

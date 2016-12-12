@@ -125,11 +125,9 @@ var backAPI = {
 
         var find = this.userData.filter(function (item, index) {
             return item.id === id;
-        });
+        })[0];
 
-        find = find[0];
-
-        var result = {};
+        var result = {type: type};
         switch(type) {
             case 'name':
                 result.img = find.avatar;
