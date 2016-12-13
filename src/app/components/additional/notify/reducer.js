@@ -5,6 +5,7 @@
 import * as actions from './actions';
 
 let initialState = {
+    isShow: true,
     newItem: null,
     items: []
 };
@@ -18,10 +19,7 @@ export default function(state = initialState, action) {
             return {...state};
         case actions.NOTIFY_CREATE:
             // console.log('ACTION', actions.NOTIFY_CREATE, action.payload);
-            state.newItem = {
-                id: Date.now(),
-                text: action.payload.str
-            };
+            if(state.isShow) state.newItem = {id: Date.now(), text: action.payload.str};
             return {...state};
         case actions.NOTIFY_HIDE:
             // console.log('ACTION', actions.NOTIFY_HIDE, action.payload);
@@ -34,6 +32,10 @@ export default function(state = initialState, action) {
             }, []);
 
             return {...state, ...{items}};
+        case actions.NOTIFY_TRIGGER:
+            // console.log('ACTION', actions.NOTIFY_TRIGGER);
+            state.isShow = !state.isShow;
+            return {...state};
     }
 
     return state;

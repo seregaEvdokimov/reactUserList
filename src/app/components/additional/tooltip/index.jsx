@@ -5,13 +5,17 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
+import Dictionary from './../../../lib/Dictionary';
+
 class Tooltip extends Component {
     constructor(props) {
         super(props)
     }
 
     getStructureTooltip(type, data) {
+        let {lang} = this.props;
         let html = null;
+
         switch(type) {
             case 'name':
                 html = <div className={"tooltip-" + type}>
@@ -20,8 +24,9 @@ class Tooltip extends Component {
                         </div>;
                 break;
             case 'email':
+                let str = Dictionary.getMessage({number: data.text}, ['tooltip', 'email'], lang);
                 html = <div className={"tooltip-" + type}>
-                            <p>Количество непрочитанных писем <mark>{data.text}</mark></p>
+                            <p>{str}</p>
                         </div>;
                 break;
         }
@@ -58,7 +63,8 @@ class Tooltip extends Component {
     };
 
     render() {
-        let {type, data, show, left, top} = this.props;
+        let {tooltip} = this.props;
+        let {type, data, show, left, top} = tooltip;
         return (
             <div ref="tooltip" className={"tooltip " + (show ? 'show' : '')} style={{top: this.getY(top), left: this.getX(left)}}>
                 {this.getStructureTooltip(type, data)}
@@ -68,5 +74,8 @@ class Tooltip extends Component {
 }
 
 export default connect(function(state) {
-    return state.Tooltip;
+    return {
+        lang: state.HeaderSetting.currentLang,
+        tooltip: state.Tooltip
+    };
 })(Tooltip);

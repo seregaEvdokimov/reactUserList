@@ -8,7 +8,8 @@ const initialState = {
     search: {
         str: '',
         users: null
-    }
+    },
+    currentLang: 'ru'
 };
 
 export default function(state = initialState, action){
@@ -26,6 +27,9 @@ export default function(state = initialState, action){
             };
 
             return {...state, ...{search}};
+        case actions.CHANGE_LANGUAGE:
+            // console.log('Action', actions.CHANGE_LANGUAGE, action.payload);
+            return {...state, ...{currentLang: action.payload.lang}};
     }
 
     return state

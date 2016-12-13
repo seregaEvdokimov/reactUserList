@@ -4,11 +4,14 @@
 
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+
 import * as actions from './../actions';
 import * as usersActions from './../../body/userTable/actions';
+import * as notifyActions from './../../additional/notify/actions';
 
 import ImageUploader from './../../../lib/imageUploader';
 import Validator from './../../../lib/Validator';
+import Dictionary from './../../../lib/Dictionary';
 
 
 class Create extends Component {
@@ -104,7 +107,7 @@ class Create extends Component {
     };
 
     saveClient() {
-        let {dispatch} = this.props;
+        let {dispatch, lang} = this.props;
         let {name, email, birth, date, time, avatar} = this.refs;
         date = date.valueAsNumber || 0;
         time = time.valueAsNumber || 0;
@@ -118,6 +121,8 @@ class Create extends Component {
             avatar: avatar.dataset.img
         };
 
+        let str = Dictionary.getMessage(data, ['notify', 'createUser'], lang);
+        dispatch(notifyActions.notifyCreate(str));
         dispatch(usersActions.createUserRequest(dispatch, data));
     }
 
@@ -134,35 +139,35 @@ class Create extends Component {
     }
 
     render() {
-        let {params} = this.props;
+        let {params, lang} = this.props;
 
         return (
             <div className={"modal-window modal-create " + (params.show ? 'show' : '')}>
-                <h3 className="caption">Добавить нового клиента</h3>
+                <h3 className="caption">{Dictionary.t(['modal', 'create', 'caption'], lang)}</h3>
                 <div className="group avatar-group">
-                    <label className="avatar-label">Загрузить аватар</label>
+                    <label className="avatar-label">{Dictionary.t(['modal', 'create', 'avatar'], lang)}</label>
                     <input type="file" name="avatar" ref="avatar" className="file-input" onChange={this.handlerUploadFile.bind(this, this)} />
                 </div>
                 <div className="group name-group">
-                    <label className="name-label">Введите имя</label>
+                    <label className="name-label">{Dictionary.t(['modal', 'create', 'name'], lang)}</label>
                     <input type="text" name="name" ref="name" className="name-input" />
                 </div>
                 <div className="group email-group">
-                    <label className="email-label">Введите email</label>
+                    <label className="email-label">{Dictionary.t(['modal', 'create', 'email'], lang)}</label>
                     <input type="text" name="email" ref="email" className="email-input" />
                 </div>
                 <div className="group date-group">
-                    <label className="date-label">Укажите день рождения</label>
+                    <label className="date-label">{Dictionary.t(['modal', 'create', 'birth'], lang)}</label>
                     <input type="date" name="birth" ref="birth" className="birth-input" />
                 </div>
                 <div className="group date-group">
-                    <label className="date-label">Укажите расчётное время</label>
+                    <label className="date-label">{Dictionary.t(['modal', 'create', 'time'], lang)}</label>
                     <input type="date" name="date" ref="date" className="date-input"/>
                     <input type="time" name="time" ref="time" className="time-input" />
                 </div>
                 <div className="group control-group" onClick={this.handlerBtnControls.bind(this, this)}>
-                    <button className="add-btn">Сохранить</button>
-                    <button className="cancel-btn">Отмена</button>
+                    <button className="add-btn">{Dictionary.t(['modal', 'create', 'save'], lang)}</button>
+                    <button className="cancel-btn">{Dictionary.t(['modal', 'create', 'cancel'], lang)}</button>
                 </div>
             </div>
         )
@@ -171,6 +176,8 @@ class Create extends Component {
 
 
 export default connect(function(state) {
-    let {create} = state.ModalWindows;
-    return {params: create};
+    return {
+        lang: state.HeaderSetting.currentLang,
+        params: state.ModalWindows.create
+    };
 })(Create);

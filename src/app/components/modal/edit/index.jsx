@@ -4,11 +4,14 @@
 
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+
 import * as actions from './../actions';
 import * as usersActions from './../../body/userTable/actions';
+import * as notifyActions from './../../additional/notify/actions';
 
 import ImageUploader from './../../../lib/imageUploader';
 import Validator from './../../../lib/Validator';
+import Dictionary from './../../../lib/Dictionary';
 
 
 class Edit extends Component{
@@ -142,7 +145,7 @@ class Edit extends Component{
 
 
     saveClient() {
-        let {dispatch} = this.props;
+        let {dispatch, lang} = this.props;
         let {id, name, email, birth, date, time, avatar} = this.refs;
         let data = {
             id: parseInt(id.value),
@@ -153,7 +156,9 @@ class Edit extends Component{
             avatar: avatar.dataset.img
         };
 
-        dispatch(usersActions.editUsersRequest(dispatch, data)); // TODO если данные не обнавлены не отправлять запрос
+        let str = Dictionary.getMessage(data, ['notify', 'updateUser'], lang);
+        dispatch(notifyActions.notifyCreate(str));
+        dispatch(usersActions.editUsersRequest(dispatch, data));
     }
 
     beforeHide(actionType) {
@@ -182,7 +187,7 @@ class Edit extends Component{
     }
 
     render() {
-        let {params} = this.props;
+        let {params, lang} = this.props;
         let {data, show} = params;
 
         if(show) {
@@ -200,32 +205,32 @@ class Edit extends Component{
 
         return (
             <div className={"modal-window modal-edit " + (show ? 'show' : '')}>
-                <h3 className="caption">Редактировать клиента</h3>
+                <h3 className="caption">{Dictionary.t(['modal', 'edit', 'caption'], lang)}</h3>
                 <div className="group avatar-group">
-                    <label className="avatar-label">Загрузить аватар</label>
+                    <label className="avatar-label">{Dictionary.t(['modal', 'edit', 'avatar'], lang)}</label>
                     <img src="" alt="" ref="imgAvatar" />
                     <input type="file" ref="avatar" name="avatar" className="file-input" onChange={this.handlerUploadFile.bind(this, this)} />
                 </div>
                 <div className="group name-group">
-                    <label className="name-label">Введите новое имя</label>
+                    <label className="name-label">{Dictionary.t(['modal', 'edit', 'name'], lang)}</label>
                     <input type="text" name="name" className="name-input" ref="name" />
                 </div>
                 <div className="group email-group">
-                    <label className="email-label">Введите новый email</label>
+                    <label className="email-label">{Dictionary.t(['modal', 'edit', 'email'], lang)}</label>
                     <input type="text" name="email" className="email-input" ref="email" />
                 </div>
                 <div className="group date-group">
-                    <label className="date-label">Изменить день рождения</label>
+                    <label className="date-label">{Dictionary.t(['modal', 'edit', 'birth'], lang)}</label>
                     <input type="date" name="birth" className="birth-input" ref="birth" />
                 </div>
                 <div className="group date-group">
-                    <label className="date-label">Изменить расчётное время</label>
+                    <label className="date-label">{Dictionary.t(['modal', 'edit', 'time'], lang)}</label>
                     <input type="date" name="date" className="date-input" ref="date" />
                     <input type="time" name="time" className="time-input" ref="time" />
                 </div>
                 <div className="group control-group" onClick={this.handlerBtnControls.bind(this, this)}>
-                    <button className="add-btn">Сохранить</button>
-                    <button className="cancel-btn">Отмена</button>
+                    <button className="add-btn">{Dictionary.t(['modal', 'edit', 'save'], lang)}</button>
+                    <button className="cancel-btn">{Dictionary.t(['modal', 'edit', 'cancel'], lang)}</button>
                 </div>
                 <input type="hidden" name="id" className="id-input" ref="id" />
             </div>
@@ -234,6 +239,8 @@ class Edit extends Component{
 }
 
 export default connect(function(state) {
-    let {edit} = state.ModalWindows;
-    return {params: edit};
+    return {
+        lang: state.HeaderSetting.currentLang,
+        params: state.ModalWindows.edit
+    };
 })(Edit);

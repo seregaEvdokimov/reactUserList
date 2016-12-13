@@ -4,7 +4,10 @@
 
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+
 import * as actions from '../actions';
+
+import Dictionary from './../../../lib/Dictionary'
 
 class Confirm extends Component {
     constructor(props) { // ComponentWillMount
@@ -29,14 +32,14 @@ class Confirm extends Component {
 
 
     render() {
-        let {params} = this.props;
+        let {params, lang} = this.props;
 
         return (
             <div className={"modal-window modal-confirm " + (params.show ? 'show' : '')}>
-                <h3 className="caption">Есть изменения. Сохранить?</h3>
+                <h3 className="caption">{Dictionary.t(['modal', 'confirm', 'message'], lang)}</h3>
                 <div className="control-group" onClick={this.handlerControlsBtn.bind(this, this)}>
-                    <button className="ok">Сохранить</button>
-                    <button className="cancel">Отмена</button>
+                    <button className="ok">{Dictionary.t(['modal', 'confirm', 'save'], lang)}</button>
+                    <button className="cancel">{Dictionary.t(['modal', 'confirm', 'cancel'], lang)}</button>
                 </div>
             </div>
         )
@@ -45,6 +48,8 @@ class Confirm extends Component {
 
 
 export default connect(function(state) {
-    let {confirm} = state.ModalWindows;
-    return {params: confirm};
+    return {
+        lang: state.HeaderSetting.currentLang,
+        params: state.ModalWindows.confirm
+    };
 })(Confirm);

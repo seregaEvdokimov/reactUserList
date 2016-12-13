@@ -54,23 +54,27 @@
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _app = __webpack_require__(188);
-	
-	var _app2 = _interopRequireDefault(_app);
-	
-	__webpack_require__(238);
-	
 	var _reactRedux = __webpack_require__(190);
 	
 	var _configure = __webpack_require__(239);
 	
 	var _configure2 = _interopRequireDefault(_configure);
 	
+	__webpack_require__(238);
+	
+	var _app = __webpack_require__(188);
+	
+	var _app2 = _interopRequireDefault(_app);
+	
+	var _sharedWorker = __webpack_require__(256);
+	
+	var _sharedWorker2 = _interopRequireDefault(_sharedWorker);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	/**
-	 * Created by s.evdokimov on 06.12.2016.
-	 */
+	(0, _sharedWorker2.default)(_configure2.default.dispatch, _configure2.default.getState()); /**
+	                                                                                            * Created by s.evdokimov on 06.12.2016.
+	                                                                                            */
 	
 	_reactDom2.default.render(_react2.default.createElement(
 	    _reactRedux.Provider,
@@ -21554,8 +21558,8 @@
 	    return _react2.default.createElement(
 	        'div',
 	        { className: 'header' },
-	        _react2.default.createElement(Switcher, null),
-	        _react2.default.createElement(Language, null),
+	        _react2.default.createElement(SwitcherComponent, null),
+	        _react2.default.createElement(LanguageComponent, null),
 	        _react2.default.createElement(SearchComponent, null)
 	    );
 	};
@@ -21570,6 +21574,14 @@
 	
 	var actions = _interopRequireWildcard(_actions);
 	
+	var _actions2 = __webpack_require__(252);
+	
+	var notifyActions = _interopRequireWildcard(_actions2);
+	
+	var _Dictionary = __webpack_require__(254);
+	
+	var _Dictionary2 = _interopRequireDefault(_Dictionary);
+	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -21582,38 +21594,109 @@
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by s.evdokimov on 06.12.2016.
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
 	
-	var Switcher = function Switcher() {
-	    return _react2.default.createElement(
-	        'div',
-	        { className: 'switch-notify' },
-	        _react2.default.createElement('input', { type: 'checkbox', id: 'switch' }),
-	        _react2.default.createElement(
-	            'label',
-	            null,
-	            '\u0412\u044B\u043A\u043B\u044E\u0447\u0438\u0442\u044C \u043E\u043F\u043E\u0432\u0435\u0449\u0435\u043D\u0438\u0435'
-	        )
-	    );
-	};
+	var Switcher = function (_Component) {
+	    _inherits(Switcher, _Component);
 	
-	var Language = function Language() {
-	    return _react2.default.createElement(
-	        'div',
-	        { className: 'languages-wrapper' },
-	        _react2.default.createElement(
-	            'a',
-	            null,
-	            'EN'
-	        ),
-	        _react2.default.createElement(
-	            'a',
-	            { className: 'active' },
-	            'RU'
-	        )
-	    );
-	};
+	    function Switcher(props) {
+	        _classCallCheck(this, Switcher);
 	
-	var Search = function (_Component) {
-	    _inherits(Search, _Component);
+	        return _possibleConstructorReturn(this, (Switcher.__proto__ || Object.getPrototypeOf(Switcher)).call(this, props));
+	    }
+	
+	    _createClass(Switcher, [{
+	        key: 'handlerTriggerNotify',
+	        value: function handlerTriggerNotify(self, event) {
+	            var dispatch = this.props.dispatch;
+	
+	            dispatch(notifyActions.notifyTrigger());
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var _props = this.props,
+	                lang = _props.lang,
+	                notify = _props.notify;
+	
+	
+	            return _react2.default.createElement(
+	                'div',
+	                { className: 'switch-notify' },
+	                _react2.default.createElement('input', { type: 'checkbox', id: 'switch', checked: !notify, onChange: this.handlerTriggerNotify.bind(this, this) }),
+	                _react2.default.createElement(
+	                    'label',
+	                    { htmlFor: 'switch' },
+	                    _Dictionary2.default.t(['header', 'settings', 'label'], lang)
+	                )
+	            );
+	        }
+	    }]);
+	
+	    return Switcher;
+	}(_react.Component);
+	
+	;
+	
+	var SwitcherComponent = (0, _reactRedux.connect)(function (state) {
+	    return {
+	        lang: state.HeaderSetting.currentLang,
+	        notify: state.Notify.isShow
+	    };
+	})(Switcher);
+	
+	var Language = function (_Component2) {
+	    _inherits(Language, _Component2);
+	
+	    function Language(props) {
+	        _classCallCheck(this, Language);
+	
+	        return _possibleConstructorReturn(this, (Language.__proto__ || Object.getPrototypeOf(Language)).call(this, props));
+	    }
+	
+	    _createClass(Language, [{
+	        key: 'handlerChangeLanguage',
+	        value: function handlerChangeLanguage(self, event) {
+	            var el = event.target;
+	            if (el.tagName !== 'A') return false;
+	
+	            var lang = el.dataset.language;
+	            var dispatch = self.props.dispatch;
+	
+	            dispatch(actions.changeLanguage({ lang: lang }));
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var lang = this.props.lang;
+	
+	
+	            return _react2.default.createElement(
+	                'div',
+	                { className: 'languages-wrapper', onClick: this.handlerChangeLanguage.bind(this, this) },
+	                _react2.default.createElement(
+	                    'a',
+	                    { 'data-language': 'en', className: lang === 'en' ? 'active' : null },
+	                    'EN'
+	                ),
+	                _react2.default.createElement(
+	                    'a',
+	                    { 'data-language': 'ru', className: lang === 'ru' ? 'active' : null },
+	                    'RU'
+	                )
+	            );
+	        }
+	    }]);
+	
+	    return Language;
+	}(_react.Component);
+	
+	;
+	
+	var LanguageComponent = (0, _reactRedux.connect)(function (state) {
+	    return { lang: state.HeaderSetting.currentLang };
+	})(Language);
+	
+	var Search = function (_Component3) {
+	    _inherits(Search, _Component3);
 	
 	    function Search(props) {
 	        _classCallCheck(this, Search);
@@ -21637,6 +21720,9 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
+	            var lang = this.props.lang;
+	
+	
 	            return _react2.default.createElement(
 	                'div',
 	                { className: 'search' },
@@ -21644,7 +21730,7 @@
 	                _react2.default.createElement(
 	                    'button',
 	                    { onClick: this.handlerSearchBtn.bind(this, this) },
-	                    '\u041F\u043E\u0438\u0441\u043A'
+	                    _Dictionary2.default.t(['header', 'search', 'button'], lang)
 	                )
 	            );
 	        }
@@ -21654,7 +21740,10 @@
 	}(_react.Component);
 	
 	var SearchComponent = (0, _reactRedux.connect)(function (state) {
-	    return { users: state.UsersTable.users };
+	    return {
+	        users: state.UsersTable.users,
+	        lang: state.HeaderSetting.currentLang
+	    };
 	})(Search);
 
 /***/ },
@@ -23412,17 +23501,23 @@
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 	exports.searchUsers = searchUsers;
+	exports.changeLanguage = changeLanguage;
 	/**
 	 * Created by s.evdokimov on 08.12.2016.
 	 */
 	
 	var SEARCH_USERS = exports.SEARCH_USERS = 'SEARCH_USERS';
+	var CHANGE_LANGUAGE = exports.CHANGE_LANGUAGE = 'CHANGE_LANGUAGE';
 	
 	function searchUsers(data) {
-	  return { type: SEARCH_USERS, payload: data };
+	    return { type: SEARCH_USERS, payload: data };
+	}
+	
+	function changeLanguage(data) {
+	    return { type: CHANGE_LANGUAGE, payload: data };
 	}
 
 /***/ },
@@ -23531,7 +23626,7 @@
 	                _react2.default.createElement(
 	                    'table',
 	                    {
-	                        className: "table " + (pagination.type === 'lazyLoad' ? 'lazyLoad' : ''),
+	                        className: "table " + (pagination.type === 'lazyLoad' ? 'lazyLoad' : null),
 	                        onMouseMove: this.handlerTooltip.bind(this, this),
 	                        onMouseOut: this.handlerTooltip.bind(this, this),
 	                        onMouseOver: this.handlerTooltip.bind(this, this)
@@ -23574,6 +23669,10 @@
 	
 	var actions = _interopRequireWildcard(_actions);
 	
+	var _Dictionary = __webpack_require__(254);
+	
+	var _Dictionary2 = _interopRequireDefault(_Dictionary);
+	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -23614,9 +23713,12 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            var sort = this.props.sort;
+	            var _props = this.props,
+	                sort = _props.sort,
+	                lang = _props.lang;
 	
 	            var className = ' active ' + sort.direction;
+	
 	            return _react2.default.createElement(
 	                'thead',
 	                { className: 'tHead', onClick: this.handlerSortBy.bind(this, this) },
@@ -23626,37 +23728,37 @@
 	                    _react2.default.createElement(
 	                        'th',
 	                        { className: "id" + (sort.param === 'id' ? className : ''), 'data-sort-by': 'id' },
-	                        '\u2116'
+	                        _Dictionary2.default.t(['userTable', 'tHead', 'id'], lang)
 	                    ),
 	                    _react2.default.createElement(
 	                        'th',
 	                        { className: "name" + (sort.param === 'name' ? className : ''), 'data-sort-by': 'name' },
-	                        '\u0418\u043C\u044F'
+	                        _Dictionary2.default.t(['userTable', 'tHead', 'name'], lang)
 	                    ),
 	                    _react2.default.createElement(
 	                        'th',
 	                        { className: "email" + (sort.param === 'email' ? className : ''), 'data-sort-by': 'email' },
-	                        'Email'
+	                        _Dictionary2.default.t(['userTable', 'tHead', 'email'], lang)
 	                    ),
 	                    _react2.default.createElement(
 	                        'th',
 	                        { className: "birth" + (sort.param === 'birth' ? className : ''), 'data-sort-by': 'birth' },
-	                        '\u0414\u0435\u043D\u044C \u0440\u043E\u0436\u0434\u0435\u043D\u0438\u044F'
+	                        _Dictionary2.default.t(['userTable', 'tHead', 'birth'], lang)
 	                    ),
 	                    _react2.default.createElement(
 	                        'th',
 	                        { className: "date" + (sort.param === 'date' ? className : ''), 'data-sort-by': 'date' },
-	                        '\u0420\u0430\u0441\u0447\u0435\u0442\u043D\u043E\u0435 \u0432\u0440\u0435\u043C\u044F'
+	                        _Dictionary2.default.t(['userTable', 'tHead', 'time'], lang)
 	                    ),
 	                    _react2.default.createElement(
 	                        'th',
 	                        { className: 'delete' },
-	                        '\u0423\u0434\u0430\u043B\u0438\u0442\u044C'
+	                        _Dictionary2.default.t(['userTable', 'tHead', 'delete'], lang)
 	                    ),
 	                    _react2.default.createElement(
 	                        'th',
 	                        { className: 'edit' },
-	                        '\u0420\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u043E\u0432\u0430\u0442\u044C'
+	                        _Dictionary2.default.t(['userTable', 'tHead', 'edit'], lang)
 	                    )
 	                )
 	            );
@@ -23667,7 +23769,10 @@
 	}(_react.Component);
 	
 	exports.default = (0, _reactRedux.connect)(function (state) {
-	    return { sort: state.UsersTable.sort };
+	    return {
+	        lang: state.HeaderSetting.currentLang,
+	        sort: state.UsersTable.sort
+	    };
 	})(tHead);
 
 /***/ },
@@ -24011,6 +24116,10 @@
 	
 	var _ProgressBarTimer2 = _interopRequireDefault(_ProgressBarTimer);
 	
+	var _Dictionary = __webpack_require__(254);
+	
+	var _Dictionary2 = _interopRequireDefault(_Dictionary);
+	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -24124,7 +24233,8 @@
 	        value: function render() {
 	            var _props2 = this.props,
 	                user = _props2.user,
-	                isNew = _props2.isNew;
+	                isNew = _props2.isNew,
+	                lang = _props2.lang;
 	
 	            var date = parseTime(user.date);
 	
@@ -24133,7 +24243,7 @@
 	
 	            return _react2.default.createElement(
 	                'tr',
-	                { className: isNew ? 'addition' : '', ref: 'el' },
+	                { className: isNew ? 'addition' : null, ref: 'el' },
 	                _react2.default.createElement(
 	                    'td',
 	                    { className: 'id' },
@@ -24170,7 +24280,7 @@
 	                    _react2.default.createElement(
 	                        'a',
 	                        { className: 'delete-btn' },
-	                        '\u0423\u0434\u0430\u043B\u0438\u0442\u044C'
+	                        _Dictionary2.default.t(['userTable', 'tBody', 'delete'], lang)
 	                    )
 	                ),
 	                _react2.default.createElement(
@@ -24179,7 +24289,7 @@
 	                    _react2.default.createElement(
 	                        'a',
 	                        { className: 'edit-btn' },
-	                        '\u0420\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u043E\u0432\u0430\u0442\u044C'
+	                        _Dictionary2.default.t(['userTable', 'tBody', 'edit'], lang)
 	                    )
 	                )
 	            );
@@ -24215,7 +24325,8 @@
 	
 	            var _self$props = self.props,
 	                dispatch = _self$props.dispatch,
-	                users = _self$props.users;
+	                users = _self$props.users,
+	                lang = _self$props.lang;
 	
 	            var row = self.getRowId(el);
 	            var id = parseInt(row.querySelector('.id').textContent);
@@ -24226,8 +24337,9 @@
 	            (function () {
 	                switch (el.className) {
 	                    case 'delete-btn':
-	                        var str = '\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C ' + userFind.name + ' (\u2116 ' + userFind.id + ') \u0431\u044B\u043B \u0443\u0434\u0430\u043B\u0451\u043D';
-	                        row.classList.add('deleting');+setTimeout(function () {
+	                        var str = _Dictionary2.default.getMessage(userFind, ['notify', 'deleteUser'], lang);
+	                        row.classList.add('deleting');
+	                        setTimeout(function () {
 	                            dispatch(notifyActions.notifyCreate(str));
 	                            dispatch(actions.deleteUserRequest(dispatch, id));
 	                        }, 300);
@@ -24270,15 +24382,16 @@
 	        value: function render() {
 	            var _props3 = this.props,
 	                users = _props3.users,
-	                newUser = _props3.newUser;
+	                newUser = _props3.newUser,
+	                lang = _props3.lang;
 	
 	
 	            return _react2.default.createElement(
 	                'tbody',
 	                { className: 'tBody', onScroll: this.lazyLoadUsers.bind(this, this), onClick: this.rowBtnControls.bind(this, this) },
-	                newUser ? _react2.default.createElement(Row, { key: newUser.id, user: newUser, isNew: true }) : null,
+	                newUser ? _react2.default.createElement(Row, { key: newUser.id, user: newUser, lang: lang, isNew: true }) : null,
 	                users.map(function (user) {
-	                    return _react2.default.createElement(Row, { key: user.id, user: user });
+	                    return _react2.default.createElement(Row, { key: user.id, user: user, lang: lang });
 	                })
 	            );
 	        }
@@ -24291,6 +24404,7 @@
 	    var users = state.HeaderSetting.search.users === null ? state.UsersTable.users : state.HeaderSetting.search.users;
 	
 	    return {
+	        lang: state.HeaderSetting.currentLang,
 	        users: users,
 	        newUser: state.UsersTable.newUser,
 	        pagination: state.UsersTable.pagination,
@@ -24506,6 +24620,10 @@
 	
 	var modalActions = _interopRequireWildcard(_actions2);
 	
+	var _Dictionary = __webpack_require__(254);
+	
+	var _Dictionary2 = _interopRequireDefault(_Dictionary);
+	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -24568,7 +24686,9 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            var pagination = this.props.pagination;
+	            var _props = this.props,
+	                pagination = _props.pagination,
+	                lang = _props.lang;
 	
 	            var pages = [];
 	            for (var i = 1; i < pagination.pages; i++) {
@@ -24581,7 +24701,7 @@
 	                _react2.default.createElement(
 	                    'button',
 	                    { className: 'add-user', onClick: this.handlerAddClient.bind(this, this) },
-	                    '\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u043A\u043B\u0438\u0435\u043D\u0442\u0430'
+	                    _Dictionary2.default.t(['option', 'adduser'], lang)
 	                ),
 	                pagination.type === 'pagination' ? _react2.default.createElement(
 	                    'div',
@@ -24589,7 +24709,7 @@
 	                    pages.map(function (page) {
 	                        return _react2.default.createElement(Page, { key: page, page: page, currentPage: pagination.currentPage });
 	                    })
-	                ) : ''
+	                ) : null
 	            );
 	        }
 	    }]);
@@ -24598,7 +24718,10 @@
 	}(_react.Component);
 	
 	exports.default = (0, _reactRedux.connect)(function (state) {
-	    return { pagination: state.UsersTable.pagination };
+	    return {
+	        lang: state.HeaderSetting.currentLang,
+	        pagination: state.UsersTable.pagination
+	    };
 	})(Footer);
 
 /***/ },
@@ -24687,9 +24810,7 @@
 	}(_react.Component);
 	
 	exports.default = (0, _reactRedux.connect)(function (state) {
-	    var main = state.ModalWindows.main;
-	
-	    return { params: main };
+	    return { params: state.ModalWindows.main };
 	})(Modal);
 
 /***/ },
@@ -24718,6 +24839,10 @@
 	
 	var usersActions = _interopRequireWildcard(_actions2);
 	
+	var _actions3 = __webpack_require__(252);
+	
+	var notifyActions = _interopRequireWildcard(_actions3);
+	
 	var _imageUploader = __webpack_require__(234);
 	
 	var _imageUploader2 = _interopRequireDefault(_imageUploader);
@@ -24725,6 +24850,10 @@
 	var _Validator = __webpack_require__(235);
 	
 	var _Validator2 = _interopRequireDefault(_Validator);
+	
+	var _Dictionary = __webpack_require__(254);
+	
+	var _Dictionary2 = _interopRequireDefault(_Dictionary);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -24844,7 +24973,9 @@
 	    }, {
 	        key: 'saveClient',
 	        value: function saveClient() {
-	            var dispatch = this.props.dispatch;
+	            var _props = this.props,
+	                dispatch = _props.dispatch,
+	                lang = _props.lang;
 	            var _refs2 = this.refs,
 	                name = _refs2.name,
 	                email = _refs2.email,
@@ -24865,6 +24996,8 @@
 	                avatar: avatar.dataset.img
 	            };
 	
+	            var str = _Dictionary2.default.getMessage(data, ['notify', 'createUser'], lang);
+	            dispatch(notifyActions.notifyCreate(str));
 	            dispatch(usersActions.createUserRequest(dispatch, data));
 	        }
 	    }, {
@@ -24884,7 +25017,9 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            var params = this.props.params;
+	            var _props2 = this.props,
+	                params = _props2.params,
+	                lang = _props2.lang;
 	
 	
 	            return _react2.default.createElement(
@@ -24893,7 +25028,7 @@
 	                _react2.default.createElement(
 	                    'h3',
 	                    { className: 'caption' },
-	                    '\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u043D\u043E\u0432\u043E\u0433\u043E \u043A\u043B\u0438\u0435\u043D\u0442\u0430'
+	                    _Dictionary2.default.t(['modal', 'create', 'caption'], lang)
 	                ),
 	                _react2.default.createElement(
 	                    'div',
@@ -24901,7 +25036,7 @@
 	                    _react2.default.createElement(
 	                        'label',
 	                        { className: 'avatar-label' },
-	                        '\u0417\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u044C \u0430\u0432\u0430\u0442\u0430\u0440'
+	                        _Dictionary2.default.t(['modal', 'create', 'avatar'], lang)
 	                    ),
 	                    _react2.default.createElement('input', { type: 'file', name: 'avatar', ref: 'avatar', className: 'file-input', onChange: this.handlerUploadFile.bind(this, this) })
 	                ),
@@ -24911,7 +25046,7 @@
 	                    _react2.default.createElement(
 	                        'label',
 	                        { className: 'name-label' },
-	                        '\u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u0438\u043C\u044F'
+	                        _Dictionary2.default.t(['modal', 'create', 'name'], lang)
 	                    ),
 	                    _react2.default.createElement('input', { type: 'text', name: 'name', ref: 'name', className: 'name-input' })
 	                ),
@@ -24921,7 +25056,7 @@
 	                    _react2.default.createElement(
 	                        'label',
 	                        { className: 'email-label' },
-	                        '\u0412\u0432\u0435\u0434\u0438\u0442\u0435 email'
+	                        _Dictionary2.default.t(['modal', 'create', 'email'], lang)
 	                    ),
 	                    _react2.default.createElement('input', { type: 'text', name: 'email', ref: 'email', className: 'email-input' })
 	                ),
@@ -24931,7 +25066,7 @@
 	                    _react2.default.createElement(
 	                        'label',
 	                        { className: 'date-label' },
-	                        '\u0423\u043A\u0430\u0436\u0438\u0442\u0435 \u0434\u0435\u043D\u044C \u0440\u043E\u0436\u0434\u0435\u043D\u0438\u044F'
+	                        _Dictionary2.default.t(['modal', 'create', 'birth'], lang)
 	                    ),
 	                    _react2.default.createElement('input', { type: 'date', name: 'birth', ref: 'birth', className: 'birth-input' })
 	                ),
@@ -24941,7 +25076,7 @@
 	                    _react2.default.createElement(
 	                        'label',
 	                        { className: 'date-label' },
-	                        '\u0423\u043A\u0430\u0436\u0438\u0442\u0435 \u0440\u0430\u0441\u0447\u0451\u0442\u043D\u043E\u0435 \u0432\u0440\u0435\u043C\u044F'
+	                        _Dictionary2.default.t(['modal', 'create', 'time'], lang)
 	                    ),
 	                    _react2.default.createElement('input', { type: 'date', name: 'date', ref: 'date', className: 'date-input' }),
 	                    _react2.default.createElement('input', { type: 'time', name: 'time', ref: 'time', className: 'time-input' })
@@ -24952,12 +25087,12 @@
 	                    _react2.default.createElement(
 	                        'button',
 	                        { className: 'add-btn' },
-	                        '\u0421\u043E\u0445\u0440\u0430\u043D\u0438\u0442\u044C'
+	                        _Dictionary2.default.t(['modal', 'create', 'save'], lang)
 	                    ),
 	                    _react2.default.createElement(
 	                        'button',
 	                        { className: 'cancel-btn' },
-	                        '\u041E\u0442\u043C\u0435\u043D\u0430'
+	                        _Dictionary2.default.t(['modal', 'create', 'cancel'], lang)
 	                    )
 	                )
 	            );
@@ -24968,9 +25103,10 @@
 	}(_react.Component);
 	
 	exports.default = (0, _reactRedux.connect)(function (state) {
-	    var create = state.ModalWindows.create;
-	
-	    return { params: create };
+	    return {
+	        lang: state.HeaderSetting.currentLang,
+	        params: state.ModalWindows.create
+	    };
 	})(Create);
 
 /***/ },
@@ -25277,6 +25413,10 @@
 	
 	var usersActions = _interopRequireWildcard(_actions2);
 	
+	var _actions3 = __webpack_require__(252);
+	
+	var notifyActions = _interopRequireWildcard(_actions3);
+	
 	var _imageUploader = __webpack_require__(234);
 	
 	var _imageUploader2 = _interopRequireDefault(_imageUploader);
@@ -25284,6 +25424,10 @@
 	var _Validator = __webpack_require__(235);
 	
 	var _Validator2 = _interopRequireDefault(_Validator);
+	
+	var _Dictionary = __webpack_require__(254);
+	
+	var _Dictionary2 = _interopRequireDefault(_Dictionary);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -25440,7 +25584,9 @@
 	    }, {
 	        key: 'saveClient',
 	        value: function saveClient() {
-	            var dispatch = this.props.dispatch;
+	            var _props = this.props,
+	                dispatch = _props.dispatch,
+	                lang = _props.lang;
 	            var _refs2 = this.refs,
 	                id = _refs2.id,
 	                name = _refs2.name,
@@ -25459,7 +25605,9 @@
 	                avatar: avatar.dataset.img
 	            };
 	
-	            dispatch(usersActions.editUsersRequest(dispatch, data)); // TODO если данные не обнавлены не отправлять запрос
+	            var str = _Dictionary2.default.getMessage(data, ['notify', 'updateUser'], lang);
+	            dispatch(notifyActions.notifyCreate(str));
+	            dispatch(usersActions.editUsersRequest(dispatch, data));
 	        }
 	    }, {
 	        key: 'beforeHide',
@@ -25491,7 +25639,9 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            var params = this.props.params;
+	            var _props2 = this.props,
+	                params = _props2.params,
+	                lang = _props2.lang;
 	            var data = params.data,
 	                show = params.show;
 	
@@ -25524,7 +25674,7 @@
 	                _react2.default.createElement(
 	                    'h3',
 	                    { className: 'caption' },
-	                    '\u0420\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u043A\u043B\u0438\u0435\u043D\u0442\u0430'
+	                    _Dictionary2.default.t(['modal', 'edit', 'caption'], lang)
 	                ),
 	                _react2.default.createElement(
 	                    'div',
@@ -25532,7 +25682,7 @@
 	                    _react2.default.createElement(
 	                        'label',
 	                        { className: 'avatar-label' },
-	                        '\u0417\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u044C \u0430\u0432\u0430\u0442\u0430\u0440'
+	                        _Dictionary2.default.t(['modal', 'edit', 'avatar'], lang)
 	                    ),
 	                    _react2.default.createElement('img', { src: '', alt: '', ref: 'imgAvatar' }),
 	                    _react2.default.createElement('input', { type: 'file', ref: 'avatar', name: 'avatar', className: 'file-input', onChange: this.handlerUploadFile.bind(this, this) })
@@ -25543,7 +25693,7 @@
 	                    _react2.default.createElement(
 	                        'label',
 	                        { className: 'name-label' },
-	                        '\u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u043D\u043E\u0432\u043E\u0435 \u0438\u043C\u044F'
+	                        _Dictionary2.default.t(['modal', 'edit', 'name'], lang)
 	                    ),
 	                    _react2.default.createElement('input', { type: 'text', name: 'name', className: 'name-input', ref: 'name' })
 	                ),
@@ -25553,7 +25703,7 @@
 	                    _react2.default.createElement(
 	                        'label',
 	                        { className: 'email-label' },
-	                        '\u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u043D\u043E\u0432\u044B\u0439 email'
+	                        _Dictionary2.default.t(['modal', 'edit', 'email'], lang)
 	                    ),
 	                    _react2.default.createElement('input', { type: 'text', name: 'email', className: 'email-input', ref: 'email' })
 	                ),
@@ -25563,7 +25713,7 @@
 	                    _react2.default.createElement(
 	                        'label',
 	                        { className: 'date-label' },
-	                        '\u0418\u0437\u043C\u0435\u043D\u0438\u0442\u044C \u0434\u0435\u043D\u044C \u0440\u043E\u0436\u0434\u0435\u043D\u0438\u044F'
+	                        _Dictionary2.default.t(['modal', 'edit', 'birth'], lang)
 	                    ),
 	                    _react2.default.createElement('input', { type: 'date', name: 'birth', className: 'birth-input', ref: 'birth' })
 	                ),
@@ -25573,7 +25723,7 @@
 	                    _react2.default.createElement(
 	                        'label',
 	                        { className: 'date-label' },
-	                        '\u0418\u0437\u043C\u0435\u043D\u0438\u0442\u044C \u0440\u0430\u0441\u0447\u0451\u0442\u043D\u043E\u0435 \u0432\u0440\u0435\u043C\u044F'
+	                        _Dictionary2.default.t(['modal', 'edit', 'time'], lang)
 	                    ),
 	                    _react2.default.createElement('input', { type: 'date', name: 'date', className: 'date-input', ref: 'date' }),
 	                    _react2.default.createElement('input', { type: 'time', name: 'time', className: 'time-input', ref: 'time' })
@@ -25584,12 +25734,12 @@
 	                    _react2.default.createElement(
 	                        'button',
 	                        { className: 'add-btn' },
-	                        '\u0421\u043E\u0445\u0440\u0430\u043D\u0438\u0442\u044C'
+	                        _Dictionary2.default.t(['modal', 'edit', 'save'], lang)
 	                    ),
 	                    _react2.default.createElement(
 	                        'button',
 	                        { className: 'cancel-btn' },
-	                        '\u041E\u0442\u043C\u0435\u043D\u0430'
+	                        _Dictionary2.default.t(['modal', 'edit', 'cancel'], lang)
 	                    )
 	                ),
 	                _react2.default.createElement('input', { type: 'hidden', name: 'id', className: 'id-input', ref: 'id' })
@@ -25601,9 +25751,10 @@
 	}(_react.Component);
 	
 	exports.default = (0, _reactRedux.connect)(function (state) {
-	    var edit = state.ModalWindows.edit;
-	
-	    return { params: edit };
+	    return {
+	        lang: state.HeaderSetting.currentLang,
+	        params: state.ModalWindows.edit
+	    };
 	})(Edit);
 
 /***/ },
@@ -25627,6 +25778,10 @@
 	var _actions = __webpack_require__(227);
 	
 	var actions = _interopRequireWildcard(_actions);
+	
+	var _Dictionary = __webpack_require__(254);
+	
+	var _Dictionary2 = _interopRequireDefault(_Dictionary);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -25673,7 +25828,9 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            var params = this.props.params;
+	            var _props2 = this.props,
+	                params = _props2.params,
+	                lang = _props2.lang;
 	
 	
 	            return _react2.default.createElement(
@@ -25682,7 +25839,7 @@
 	                _react2.default.createElement(
 	                    'h3',
 	                    { className: 'caption' },
-	                    '\u0415\u0441\u0442\u044C \u0438\u0437\u043C\u0435\u043D\u0435\u043D\u0438\u044F. \u0421\u043E\u0445\u0440\u0430\u043D\u0438\u0442\u044C?'
+	                    _Dictionary2.default.t(['modal', 'confirm', 'message'], lang)
 	                ),
 	                _react2.default.createElement(
 	                    'div',
@@ -25690,12 +25847,12 @@
 	                    _react2.default.createElement(
 	                        'button',
 	                        { className: 'ok' },
-	                        '\u0421\u043E\u0445\u0440\u0430\u043D\u0438\u0442\u044C'
+	                        _Dictionary2.default.t(['modal', 'confirm', 'save'], lang)
 	                    ),
 	                    _react2.default.createElement(
 	                        'button',
 	                        { className: 'cancel' },
-	                        '\u041E\u0442\u043C\u0435\u043D\u0430'
+	                        _Dictionary2.default.t(['modal', 'confirm', 'cancel'], lang)
 	                    )
 	                )
 	            );
@@ -25706,9 +25863,10 @@
 	}(_react.Component);
 	
 	exports.default = (0, _reactRedux.connect)(function (state) {
-	    var confirm = state.ModalWindows.confirm;
-	
-	    return { params: confirm };
+	    return {
+	        lang: state.HeaderSetting.currentLang,
+	        params: state.ModalWindows.confirm
+	    };
 	})(Confirm);
 
 /***/ },
@@ -25967,6 +26125,11 @@
 	                return {
 	                    v: _extends({}, state, { search: search })
 	                };
+	            case actions.CHANGE_LANGUAGE:
+	                // console.log('Action', actions.CHANGE_LANGUAGE, action.payload);
+	                return {
+	                    v: _extends({}, state, { currentLang: action.payload.lang })
+	                };
 	        }
 	    }();
 	
@@ -25984,7 +26147,8 @@
 	    search: {
 	        str: '',
 	        users: null
-	    }
+	    },
+	    currentLang: 'ru'
 	};
 
 /***/ },
@@ -26216,6 +26380,10 @@
 	
 	var _reactRedux = __webpack_require__(190);
 	
+	var _Dictionary = __webpack_require__(254);
+	
+	var _Dictionary2 = _interopRequireDefault(_Dictionary);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -26238,7 +26406,10 @@
 	    _createClass(Tooltip, [{
 	        key: 'getStructureTooltip',
 	        value: function getStructureTooltip(type, data) {
+	            var lang = this.props.lang;
+	
 	            var html = null;
+	
 	            switch (type) {
 	                case 'name':
 	                    html = _react2.default.createElement(
@@ -26253,18 +26424,14 @@
 	                    );
 	                    break;
 	                case 'email':
+	                    var str = _Dictionary2.default.getMessage({ number: data.text }, ['tooltip', 'email'], lang);
 	                    html = _react2.default.createElement(
 	                        'div',
 	                        { className: "tooltip-" + type },
 	                        _react2.default.createElement(
 	                            'p',
 	                            null,
-	                            '\u041A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u043E \u043D\u0435\u043F\u0440\u043E\u0447\u0438\u0442\u0430\u043D\u043D\u044B\u0445 \u043F\u0438\u0441\u0435\u043C ',
-	                            _react2.default.createElement(
-	                                'mark',
-	                                null,
-	                                data.text
-	                            )
+	                            str
 	                        )
 	                    );
 	                    break;
@@ -26307,12 +26474,12 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            var _props = this.props,
-	                type = _props.type,
-	                data = _props.data,
-	                show = _props.show,
-	                left = _props.left,
-	                top = _props.top;
+	            var tooltip = this.props.tooltip;
+	            var type = tooltip.type,
+	                data = tooltip.data,
+	                show = tooltip.show,
+	                left = tooltip.left,
+	                top = tooltip.top;
 	
 	            return _react2.default.createElement(
 	                'div',
@@ -26326,7 +26493,10 @@
 	}(_react.Component);
 	
 	exports.default = (0, _reactRedux.connect)(function (state) {
-	    return state.Tooltip;
+	    return {
+	        lang: state.HeaderSetting.currentLang,
+	        tooltip: state.Tooltip
+	    };
 	})(Tooltip);
 
 /***/ },
@@ -26385,10 +26555,7 @@
 	            return _extends({}, state);
 	        case actions.NOTIFY_CREATE:
 	            // console.log('ACTION', actions.NOTIFY_CREATE, action.payload);
-	            state.newItem = {
-	                id: Date.now(),
-	                text: action.payload.str
-	            };
+	            if (state.isShow) state.newItem = { id: Date.now(), text: action.payload.str };
 	            return _extends({}, state);
 	        case actions.NOTIFY_HIDE:
 	            // console.log('ACTION', actions.NOTIFY_HIDE, action.payload);
@@ -26401,6 +26568,10 @@
 	            }, []);
 	
 	            return _extends({}, state, { items: items });
+	        case actions.NOTIFY_TRIGGER:
+	            // console.log('ACTION', actions.NOTIFY_TRIGGER);
+	            state.isShow = !state.isShow;
+	            return _extends({}, state);
 	    }
 	
 	    return state;
@@ -26413,6 +26584,7 @@
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
 	var initialState = {
+	    isShow: true,
 	    newItem: null,
 	    items: []
 	};
@@ -26430,6 +26602,7 @@
 	exports.notifyCreate = notifyCreate;
 	exports.notifyHide = notifyHide;
 	exports.notifyRemove = notifyRemove;
+	exports.notifyTrigger = notifyTrigger;
 	/**
 	 * Created by s.evdokimov on 12.12.2016.
 	 */
@@ -26439,6 +26612,8 @@
 	
 	var NOTIFY_HIDE = exports.NOTIFY_HIDE = 'NOTIFY_HIDE';
 	var NOTIFY_REMOVE = exports.NOTIFY_REMOVE = 'NOTIFY_REMOVE';
+	
+	var NOTIFY_TRIGGER = exports.NOTIFY_TRIGGER = 'NOTIFY_TRIGGER';
 	
 	function notifyShow(data) {
 	    return { type: NOTIFY_SHOW, payload: { id: data } };
@@ -26454,6 +26629,10 @@
 	
 	function notifyRemove(data) {
 	    return { type: NOTIFY_REMOVE, payload: { id: data } };
+	}
+	
+	function notifyTrigger() {
+	    return { type: NOTIFY_TRIGGER };
 	}
 
 /***/ },
@@ -26611,6 +26790,239 @@
 	        newItem: state.Notify.newItem
 	    };
 	})(Notify);
+
+/***/ },
+/* 254 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	/**
+	 * Created by s.evdokimov on 28.11.2016.
+	 */
+	
+	var Dictionary = {
+	    ru: {
+	        header: {
+	            settings: {
+	                label: 'Выключить оповещение'
+	            },
+	            languages: {},
+	            search: {
+	                button: 'Поиск'
+	            }
+	        },
+	        userTable: {
+	            tHead: {
+	                id: '№',
+	                name: 'Имя',
+	                email: 'Email',
+	                birth: 'День рождения',
+	                time: 'Расчетное время',
+	                delete: 'Удалить',
+	                edit: 'Редактировать'
+	            },
+	            tBody: {
+	                delete: 'Удалить',
+	                edit: 'Редактировать'
+	            }
+	        },
+	        modal: {
+	            create: {
+	                caption: 'Добавить нового клиента',
+	                avatar: 'Загрузить аватар',
+	                name: 'Введите имя',
+	                email: 'Введите email',
+	                birth: 'Укажите день рождения',
+	                time: 'Укажите расчётное время',
+	                save: 'Сохранить',
+	                cancel: 'Отмена'
+	            },
+	            edit: {
+	                caption: 'Редактировать клиента',
+	                avatar: 'Загрузить аватар',
+	                name: 'Введите новое имя',
+	                email: 'Введите новый email',
+	                birth: 'Изменить день рождения',
+	                time: 'Изменить расчётное время',
+	                save: 'Сохранить',
+	                cancel: 'Отмена'
+	            },
+	            confirm: {
+	                message: 'Есть изменения. Сохранить?',
+	                save: 'Сохранить',
+	                cancel: 'Отмена'
+	            }
+	        },
+	        option: {
+	            adduser: 'Добавить клиента'
+	        },
+	        notify: {
+	            createUser: 'Добавлен пользователь: %name',
+	            updateUser: 'Пользователь %name (№ %id) обновлён',
+	            timePassed: 'У пользователя %name (№ %id) вышло время!',
+	            deleteUser: 'Удалён пользователь: %name (№ %id)'
+	        },
+	        tooltip: {
+	            email: 'Количество непрочитанных сообщение: %number'
+	        }
+	    },
+	    en: {
+	        header: {
+	            settings: {
+	                label: 'Turn off notifications'
+	            },
+	            languages: {},
+	            search: {
+	                button: 'Search'
+	            }
+	        },
+	        userTable: {
+	            tHead: {
+	                id: 'ID',
+	                name: 'Name',
+	                email: 'Email',
+	                birth: 'Date of birth',
+	                time: 'Estimated time',
+	                delete: 'Delete',
+	                edit: 'Edit'
+	            },
+	            tBody: {
+	                delete: 'Delete',
+	                edit: 'Edit'
+	            }
+	        },
+	        modal: {
+	            create: {
+	                caption: 'Add new client',
+	                avatar: 'Upload Avatar',
+	                name: 'Enter name',
+	                email: 'Enter email',
+	                birth: 'Enter birthday',
+	                time: 'Enter the estimated time',
+	                save: 'Save',
+	                cancel: 'Cancel'
+	            },
+	            edit: {
+	                caption: 'Edit client',
+	                avatar: 'Upload Avatar',
+	                name: 'Enter name',
+	                email: 'Enter email',
+	                birth: 'Enter birthday',
+	                time: 'Enter the estimated time',
+	                save: 'Save',
+	                cancel: 'Cancel'
+	            },
+	            confirm: {
+	                message: 'There are changes. Save?',
+	                save: 'save',
+	                cancel: 'cancel'
+	            }
+	        },
+	        option: {
+	            adduser: 'Add client'
+	        },
+	        notify: {
+	            createUser: 'User added: %name',
+	            updateUser: 'User %name (№ %id) updated',
+	            timePassed: 'User Name %name (№ %id) came time!',
+	            deleteUser: 'Deleted user: %name (№ %id)'
+	        },
+	        tooltip: {
+	            email: 'The number of unread message: %number'
+	        }
+	    },
+	    patterns: {
+	        name: /(%name)/g,
+	        id: /(%id)/g,
+	        number: /(%number)/g
+	    },
+	    t: function t(keys, lang) {
+	        // translate
+	        var words = this[lang];
+	
+	        var iter = function iter(list, acc) {
+	            if (list.length <= 1) return acc[list[0]];
+	
+	            if (list.length > 1) acc = acc[list.shift()];
+	            return iter(list, acc);
+	        };
+	
+	        return iter(keys, words);
+	    },
+	    getMessage: function getMessage(params, keys, lang) {
+	        var str = this.t(keys, lang);
+	        for (var index in params) {
+	            str = str.replace(this.patterns[index], params[index]);
+	        }
+	
+	        return str;
+	    }
+	};
+	
+	exports.default = Dictionary;
+
+/***/ },
+/* 255 */,
+/* 256 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (dispatch, state) {
+	    var sharedWorker = new SharedWorker('../worker.js');
+	    sharedWorker.port.addEventListener("message", function (e) {
+	        var data = JSON.parse(e.data);
+	        console.log('worker say: ' + data.type);
+	        switch (data.type) {
+	            case 'connect':
+	                console.info('connect');
+	                break;
+	            case 'new user':
+	                var str = _Dictionary2.default.getMessage(data.payload, ['notify', 'createUser'], state.HeaderSetting.currentLang);
+	                dispatch(notifyActions.notifyCreate(str));
+	                dispatch(usersActions.createUserSuccess(data.payload));
+	                break;
+	            case 'time passed':
+	                data.payload.forEach(function (item) {
+	                    var str = _Dictionary2.default.getMessage(item, ['notify', 'timePassed'], state.HeaderSetting.currentLang);
+	                    dispatch(notifyActions.notifyCreate(str));
+	                });
+	                break;
+	        }
+	    }, false);
+	
+	    sharedWorker.port.start();
+	};
+	
+	var _Dictionary = __webpack_require__(254);
+	
+	var _Dictionary2 = _interopRequireDefault(_Dictionary);
+	
+	var _actions = __webpack_require__(252);
+	
+	var notifyActions = _interopRequireWildcard(_actions);
+	
+	var _actions2 = __webpack_require__(233);
+	
+	var usersActions = _interopRequireWildcard(_actions2);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	/**
+	 * Created by s.evdokimov on 13.12.2016.
+	 */
+	
+	;
 
 /***/ }
 /******/ ]);

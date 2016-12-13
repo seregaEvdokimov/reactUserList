@@ -4,9 +4,11 @@
 
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+
 import * as actions from './../actions';
 import * as modalActions from './../../../modal/actions';
 
+import Dictionary from './../../../../lib/Dictionary';
 
 function Page({page, currentPage}) {
     return(
@@ -40,7 +42,7 @@ class Footer extends Component {
     }
 
     render() {
-        let {pagination} = this.props;
+        let {pagination, lang} = this.props;
         let pages = [];
         for(let i = 1; i < pagination.pages; i++) {
             pages.push(i);
@@ -48,17 +50,20 @@ class Footer extends Component {
 
         return (
             <div className="option">
-                <button className="add-user" onClick={this.handlerAddClient.bind(this, this)}>Добавить клиента</button>
+                <button className="add-user" onClick={this.handlerAddClient.bind(this, this)}>{Dictionary.t(['option', 'adduser'], lang)}</button>
                 { (pagination.type === 'pagination')
                     ?  <div className="pagination" onClick={this.handlerChangePage.bind(this, this)}>
                             {pages.map((page) => <Page key={page} page={page} currentPage={pagination.currentPage} />)}
                         </div>
-                    : '' }
+                    : null}
             </div>
         )
     }
 }
 
 export default connect(function(state) {
-    return {pagination: state.UsersTable.pagination};
+    return {
+        lang: state.HeaderSetting.currentLang,
+        pagination: state.UsersTable.pagination
+    };
 })(Footer);

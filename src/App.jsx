@@ -4,11 +4,14 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './app/components/app.jsx';
-import './App.less';
 
 import {Provider} from 'react-redux';
 import store from './app/config/configure';
+
+import './App.less';
+import App from './app/components/app.jsx';
+import sharedWorker from './sharedWorker';
+sharedWorker(store.dispatch, store.getState());
 
 ReactDOM.render(
     <Provider store={store}>
@@ -16,3 +19,5 @@ ReactDOM.render(
     </Provider>,
     document.getElementById('app')
 );
+
+

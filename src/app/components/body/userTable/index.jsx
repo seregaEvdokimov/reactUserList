@@ -50,7 +50,7 @@ class Table extends Component {
         return (
             <div className="userList">
                 <table
-                    className={"table " + (pagination.type === 'lazyLoad' ? 'lazyLoad' : '')}
+                    className={"table " + (pagination.type === 'lazyLoad' ? 'lazyLoad' : null)}
                     onMouseMove={this.handlerTooltip.bind(this, this)}
                     onMouseOut={this.handlerTooltip.bind(this, this)}
                     onMouseOver={this.handlerTooltip.bind(this, this)}

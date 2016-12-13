@@ -4,6 +4,7 @@
 
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+
 import * as actions from './actions';
 
 import Create from './create/index.jsx';
@@ -27,7 +28,7 @@ class Modal extends Component {
         let {params} = this.props;
 
         return (
-            <section className={"modal " + (params.show ? 'show' : '' )} onClick={this.handlerHideModalAll.bind(this, this)}>
+            <section className={"modal " + (params.show ? 'show' : '')} onClick={this.handlerHideModalAll.bind(this, this)}>
                 <Create />
                 <Edit />
                 <Confirm />
@@ -37,6 +38,5 @@ class Modal extends Component {
 }
 
 export default connect(function(state) {
-    let {main} = state.ModalWindows;
-    return {params: main};
+    return {params: state.ModalWindows.main};
 })(Modal);

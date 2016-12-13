@@ -11,6 +11,7 @@ import * as notifyActions from './../../../additional/notify/actions';
 
 import Timer from '../../../../lib/Timer';
 import ProgressBarTimer from '../../../../lib/ProgressBarTimer';
+import Dictionary from './../../../../lib/Dictionary';
 
 
 function parseTime (endTime) {
@@ -91,14 +92,14 @@ class Row extends Component {
     }
 
     render() {
-        let {user, isNew} = this.props;
+        let {user, isNew, lang} = this.props;
         let date = parseTime(user.date);
 
         let birth = new Date(user.birth);
         birth = birth.getDate() + '. ' + (birth.getMonth() + 1) + '. ' + birth.getFullYear();
 
         return (
-            <tr className={isNew ? 'addition' : ''} ref="el">
+            <tr className={isNew ? 'addition' : null} ref="el">
                 <td className="id">{user.id}</td>
                 <td className="name" data-tooltip="name">{user.name}</td>
                 <td className="email" data-tooltip="email">{user.email}</td>
@@ -108,10 +109,10 @@ class Row extends Component {
                     <div className="overlay positive" ref='overlay' style={{width: '0%'}}></div>
                 </td>
                 <td className="del">
-                    <a className="delete-btn">Удалить</a>
+                    <a className="delete-btn">{Dictionary.t(['userTable', 'tBody', 'delete'], lang)}</a>
                 </td>
                 <td className="edit">
-                    <a className="edit-btn">Редактировать</a>
+                    <a className="edit-btn">{Dictionary.t(['userTable', 'tBody', 'edit'], lang)}</a>
                 </td>
             </tr>
         );
@@ -133,7 +134,7 @@ class tBody extends Component {
         let el = event.target;
         if(el.tagName !== 'A') return false;
 
-        let {dispatch, users} = self.props;
+        let {dispatch, users, lang} = self.props;
         let row = self.getRowId(el);
         let id = parseInt(row.querySelector('.id').textContent);
         let userFind = users.filter(function(user) {
@@ -142,8 +143,8 @@ class tBody extends Component {
 
         switch(el.className) {
             case 'delete-btn':
-                let str = `Пользователь ${userFind.name} (№ ${userFind.id}) был удалён`;
-                row.classList.add('deleting');+
+                let str = Dictionary.getMessage(userFind, ['notify', 'deleteUser'], lang);
+                row.classList.add('deleting');
                 setTimeout(() => {
                     dispatch(notifyActions.notifyCreate(str));
                     dispatch(actions.deleteUserRequest(dispatch, id));
@@ -178,12 +179,12 @@ class tBody extends Component {
     }
 
     render() {
-        let {users, newUser} = this.props;
+        let {users, newUser, lang} = this.props;
 
         return (
             <tbody className="tBody" onScroll={this.lazyLoadUsers.bind(this, this)} onClick={this.rowBtnControls.bind(this, this)}>
-                {(newUser) ? <Row key={newUser.id} user={newUser} isNew={true} /> : null}
-                {users.map(user => <Row key={user.id} user={user} />)}
+                {(newUser) ? <Row key={newUser.id} user={newUser} lang={lang} isNew={true} /> : null}
+                {users.map(user => <Row key={user.id} user={user} lang={lang} />)}
             </tbody>
         )
     }
@@ -196,6 +197,7 @@ export default connect(function(state) {
         : state.HeaderSetting.search.users ;
 
     return {
+        lang: state.HeaderSetting.currentLang,
         users: users,
         newUser: state.UsersTable.newUser,
         pagination: state.UsersTable.pagination,
