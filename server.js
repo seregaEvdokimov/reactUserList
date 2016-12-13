@@ -202,8 +202,8 @@ function checkForUpdates(socket) {
             timePassed: false
         };
 
-        backAPI.user('create', user);
-        socket.emit('new user', user);
+        var res = JSON.parse(backAPI.user('create', user));
+        socket.emit('new user', res);
     }, 150000);
 
     socketIntervals.timePassedInterval = setInterval(function() {

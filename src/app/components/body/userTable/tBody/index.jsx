@@ -134,12 +134,12 @@ class tBody extends Component {
         let el = event.target;
         if(el.tagName !== 'A') return false;
 
-        let {dispatch, users, lang} = self.props;
+        let {dispatch, users, newUser, lang} = self.props;
         let row = self.getRowId(el);
         let id = parseInt(row.querySelector('.id').textContent);
         let userFind = users.filter(function(user) {
             return user.id === id;
-        })[0];
+        })[0] || newUser;
 
         switch(el.className) {
             case 'delete-btn':

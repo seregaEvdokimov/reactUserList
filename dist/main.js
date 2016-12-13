@@ -24326,13 +24326,14 @@
 	            var _self$props = self.props,
 	                dispatch = _self$props.dispatch,
 	                users = _self$props.users,
+	                newUser = _self$props.newUser,
 	                lang = _self$props.lang;
 	
 	            var row = self.getRowId(el);
 	            var id = parseInt(row.querySelector('.id').textContent);
 	            var userFind = users.filter(function (user) {
 	                return user.id === id;
-	            })[0];
+	            })[0] || newUser;
 	
 	            (function () {
 	                switch (el.className) {
