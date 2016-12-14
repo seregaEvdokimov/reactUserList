@@ -9,7 +9,6 @@ const initialState = {
         param: 'id',
         direction: 'asc'
     },
-    newUser: null,
     users: [],
     pagination: {
         type: 'lazyLoad', // pagination
@@ -60,14 +59,8 @@ export default function(state = initialState, action){
             return state;
         case actions.CREATE_USER_SUCCESS:
             // console.log('ACTION', actions.CREATE_USER_SUCCESS, action.payload);
-            if(state.newUser) {
-                state.users = state.users.reduce(function(acc, item) {
-                    if(item.id !== state.newUser.id) acc.push(item);
-                    return acc;
-                }, []);
-            }
             users = userSort(state.users, state.sort);
-            state.newUser = action.payload;
+            users.unshift(action.payload);
             return {...state, ...{users}};
         case actions.CREATE_USER_FAILURE:
             // console.log('ACTION', actions.CREATE_USER_FAILURE);

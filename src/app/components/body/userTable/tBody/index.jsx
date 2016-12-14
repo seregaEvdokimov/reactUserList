@@ -180,7 +180,10 @@ class tBody extends Component {
     }
 
     render() {
-        let {users, newUser, lang} = this.props;
+        let {users, lang} = this.props;
+
+        users = users.slice();
+        let newUser = users.shift();
 
         return (
             <tbody className="tBody" onScroll={this.lazyLoadUsers.bind(this, this)} onClick={this.rowBtnControls.bind(this, this)}>
@@ -200,7 +203,6 @@ export default connect(function(state) {
     return {
         lang: state.HeaderSetting.currentLang,
         users: users,
-        newUser: state.UsersTable.newUser,
         pagination: state.UsersTable.pagination,
         timeStamp: Date.now()
     };

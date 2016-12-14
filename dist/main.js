@@ -28579,14 +28579,8 @@
 	            return state;
 	        case actions.CREATE_USER_SUCCESS:
 	            // console.log('ACTION', actions.CREATE_USER_SUCCESS, action.payload);
-	            if (state.newUser) {
-	                state.users = state.users.reduce(function (acc, item) {
-	                    if (item.id !== state.newUser.id) acc.push(item);
-	                    return acc;
-	                }, []);
-	            }
 	            users = userSort(state.users, state.sort);
-	            state.newUser = action.payload;
+	            users.unshift(action.payload);
 	            return _extends({}, state, { users: users });
 	        case actions.CREATE_USER_FAILURE:
 	            // console.log('ACTION', actions.CREATE_USER_FAILURE);
@@ -28634,7 +28628,6 @@
 	        param: 'id',
 	        direction: 'asc'
 	    },
-	    newUser: null,
 	    users: [],
 	    pagination: {
 	        type: 'lazyLoad', // pagination
@@ -31713,9 +31706,11 @@
 	        value: function render() {
 	            var _props3 = this.props,
 	                users = _props3.users,
-	                newUser = _props3.newUser,
 	                lang = _props3.lang;
 	
+	
+	            users = users.slice();
+	            var newUser = users.shift();
 	
 	            return _react2.default.createElement(
 	                'tbody',
@@ -31737,7 +31732,6 @@
 	    return {
 	        lang: state.HeaderSetting.currentLang,
 	        users: users,
-	        newUser: state.UsersTable.newUser,
 	        pagination: state.UsersTable.pagination,
 	        timeStamp: Date.now()
 	    };
