@@ -4,18 +4,16 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-
+import {Router} from "react-router";
 import {Provider} from 'react-redux';
-import store from './app/config/configure';
 
 import './App.less';
-import App from './app/components/app.jsx';
-import sharedWorker from './sharedWorker';
-sharedWorker(store.dispatch, store.getState());
+import {store, history} from './app/config/configure';
+import routes from './app/config/routes.jsx';
 
 ReactDOM.render(
     <Provider store={store}>
-        <App />
+        <Router history={history} routes={routes} />
     </Provider>,
     document.getElementById('app')
 );

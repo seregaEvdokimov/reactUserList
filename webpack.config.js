@@ -49,13 +49,13 @@ var config = {
     //     new extractTextPlugin('style.css')
     // ],
 
-    watch: true,
+    // watch: true,
 
-    // devServer: {
-    //     host: 'localhost',
-    //     port: 8080,
-    //     contentBase: DIST_DIR
-    // }
+    devServer: {
+        host: 'localhost',
+        port: 8080,
+        contentBase: DIST_DIR
+    }
 };
 
 module.exports = config;

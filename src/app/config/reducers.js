@@ -3,6 +3,8 @@
  */
 
 import {combineReducers} from 'redux';
+import {routerReducer as routing} from 'react-router-redux';
+
 import UsersTable from '../components/body/userTable/reducer';
 import HeaderSetting from '../components/header/reducer';
 import ModalWindows from '../components/modal/reducer';
@@ -14,5 +16,6 @@ export default combineReducers({
     HeaderSetting,
     ModalWindows,
     Tooltip,
-    Notify
+    Notify,
+    routing
 });

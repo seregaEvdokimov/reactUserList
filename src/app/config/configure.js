@@ -4,6 +4,15 @@
 
 import {createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
-import rootReducers from './reducers';
 
-export default createStore(rootReducers, applyMiddleware(thunk));
+import {browserHistory} from "react-router";
+import {syncHistoryWithStore} from "react-router-redux";
+
+import rootReducers from './reducers';
+import sharedWorker from './sharedWorker';
+
+export const store = createStore(rootReducers, applyMiddleware(thunk));
+export const history = syncHistoryWithStore(browserHistory, store);
+
+sharedWorker(store.dispatch, store.getState());
+export default store;

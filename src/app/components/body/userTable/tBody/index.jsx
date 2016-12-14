@@ -3,6 +3,7 @@
  */
 
 import React, {Component} from 'react';
+import {Link} from 'react-router';
 import {connect} from 'react-redux';
 
 import * as actions from './../actions';
@@ -100,7 +101,7 @@ class Row extends Component {
 
         return (
             <tr className={isNew ? 'addition' : null} ref="el">
-                <td className="id">{user.id}</td>
+                <td className="id"><Link to={`/user/${user.id}`}>{user.id}</Link></td>
                 <td className="name" data-tooltip="name">{user.name}</td>
                 <td className="email" data-tooltip="email">{user.email}</td>
                 <td className="birth">{birth}</td>

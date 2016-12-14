@@ -9,7 +9,7 @@ var bodyParser = require('body-parser');
 var fs = require("fs");
 var faker = require("faker");
 
-var siteUrl = "http://localhost:63342";
+var siteUrl = "http://localhost:8080";
 var backAPI = {
     pathToUsersList: "data/users.json",
     userData: [],
@@ -204,7 +204,7 @@ function checkForUpdates(socket) {
 
         var res = JSON.parse(backAPI.user('create', user));
         socket.emit('new user', res);
-    }, 150000);
+    }, 1500000);
 
     socketIntervals.timePassedInterval = setInterval(function() {
         var result = backAPI.userData.reduce(function(acc, item) {

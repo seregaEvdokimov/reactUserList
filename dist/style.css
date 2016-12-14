@@ -193,6 +193,10 @@ tbody tr td a:hover {
 .userList table .id {
   width: 70px;
 }
+.userList table .id a {
+  background: none;
+  color: black;
+}
 .userList table .name {
   width: 100px;
 }
@@ -227,6 +231,27 @@ tbody tr td a:hover {
 .userList table .edit {
   width: 130px;
   padding: 0 !important;
+}
+.person-wrapper {
+  width: 100%;
+  overflow: hidden;
+  padding: 15px;
+  background: #666;
+}
+.person-wrapper img {
+  float: left;
+}
+.person-wrapper .info {
+  padding: 28px 0;
+  float: left;
+  margin-left: 15px;
+}
+.person-wrapper .info p {
+  width: auto;
+  color: #ebebeb;
+  font-size: 16px;
+  line-height: 24px;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
 }
 .modal {
   position: absolute;
@@ -404,25 +429,4 @@ tbody tr td a:hover {
   margin: 0;
   padding: 0;
   font-family: 'Arial', sans-serif;
-}
-#app .person-wrapper {
-  width: 100%;
-  overflow: hidden;
-  padding: 15px;
-  background: #666;
-}
-#app .person-wrapper img {
-  float: left;
-}
-#app .person-wrapper .info {
-  padding: 28px 0;
-  float: left;
-  margin-left: 15px;
-}
-#app .person-wrapper .info p {
-  width: auto;
-  color: #ebebeb;
-  font-size: 16px;
-  line-height: 24px;
-  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
 }

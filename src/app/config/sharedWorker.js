@@ -2,13 +2,13 @@
  * Created by s.evdokimov on 13.12.2016.
  */
 
-import Dictionary from './app/lib/Dictionary';
+import Dictionary from '../lib/Dictionary';
 
-import * as notifyActions from './app/components/additional/notify/actions';
-import * as usersActions from './app/components/body/userTable/actions';
+import * as notifyActions from '../components/additional/notify/actions';
+import * as usersActions from '../components/body/userTable/actions';
 
 export default function(dispatch, state) {
-    var sharedWorker = new SharedWorker('../worker.js');
+    var sharedWorker = new SharedWorker('./worker.js');
     sharedWorker.port.addEventListener("message", function(e) {
         var data = JSON.parse(e.data);
         console.log('worker say: ' + data.type);

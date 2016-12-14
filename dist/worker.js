@@ -12,6 +12,7 @@
     var ports = [];
 
     self.addEventListener("connect", function (e) {
+        console.log('YESSSSS');
         var port = e.ports[0];
         ports.push(port);
         port.start();
