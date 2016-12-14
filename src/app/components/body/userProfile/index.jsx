@@ -6,17 +6,22 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
+import * as userTableActions from '../userTable/actions';
+
 
 class UserProfile extends Component {
     constructor(props) {
         super(props);
+
+        let {users, dispatch} = props;
+        if(!users.length) userTableActions.loadUsersRequest(dispatch);
     }
 
     render() {
         let {users, params} = this.props;
         let find = users.filter(function(item) {
             return item.id == params.id;
-        })[0];
+        })[0] || {};
 
         return (
             <div className="person-wrapper">

@@ -28077,7 +28077,7 @@
 	 */
 	
 	var store = exports.store = (0, _redux.createStore)(_reducers2.default, (0, _redux.applyMiddleware)(_reduxThunk2.default));
-	var history = exports.history = (0, _reactRouterRedux.syncHistoryWithStore)(_reactRouter.browserHistory, store);
+	var history = exports.history = (0, _reactRouterRedux.syncHistoryWithStore)(_reactRouter.hashHistory, store);
 	
 	(0, _sharedWorker2.default)(store.dispatch, store.getState());
 	exports.default = store;
@@ -32148,6 +32148,12 @@
 	
 	var _reactRedux = __webpack_require__(246);
 	
+	var _actions = __webpack_require__(284);
+	
+	var userTableActions = _interopRequireWildcard(_actions);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -32164,7 +32170,13 @@
 	    function UserProfile(props) {
 	        _classCallCheck(this, UserProfile);
 	
-	        return _possibleConstructorReturn(this, (UserProfile.__proto__ || Object.getPrototypeOf(UserProfile)).call(this, props));
+	        var _this = _possibleConstructorReturn(this, (UserProfile.__proto__ || Object.getPrototypeOf(UserProfile)).call(this, props));
+	
+	        var users = props.users,
+	            dispatch = props.dispatch;
+	
+	        if (!users.length) userTableActions.loadUsersRequest(dispatch);
+	        return _this;
 	    }
 	
 	    _createClass(UserProfile, [{
@@ -32176,7 +32188,7 @@
 	
 	            var find = users.filter(function (item) {
 	                return item.id == params.id;
-	            })[0];
+	            })[0] || {};
 	
 	            return _react2.default.createElement(
 	                'div',
