@@ -29813,7 +29813,7 @@
 	            var dispatch = this.props.dispatch;
 	
 	            var container = document.body.querySelector('#app');
-	            var containerWidth = window.innerWidth;
+	            var containerWidth = screen.width;
 	
 	            var device = this.getDevice(containerWidth);
 	            var orientation = this.getOrientation(containerWidth, device);

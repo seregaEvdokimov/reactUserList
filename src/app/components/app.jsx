@@ -46,7 +46,7 @@ import Notify from './additional/notify/index.jsx';
     componentWillMount() {
         let {dispatch} = this.props;
         let container = document.body.querySelector('#app');
-        let containerWidth = window.innerWidth;
+        let containerWidth = screen.width;
 
         let device = this.getDevice(containerWidth);
         let orientation = this.getOrientation(containerWidth, device);
