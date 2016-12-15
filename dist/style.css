@@ -65,8 +65,9 @@
   cursor: pointer;
 }
 .header {
+  background: #fff;
+  padding: 50px 0 10px 0;
   overflow: hidden;
-  margin-bottom: 10px;
 }
 .header .toggle-icon {
   width: 30px;
@@ -81,7 +82,6 @@
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 1;
   min-height: 100vh;
   width: 320px;
   background: #333;
@@ -374,13 +374,14 @@ tbody tr.block td.controls a:hover {
   width: 100%;
   height: 100%;
   visibility: hidden;
+  z-index: 3;
 }
 .modal.show {
   visibility: visible;
 }
 .modal .modal-window {
   position: absolute;
-  z-index: 1;
+  z-index: 3;
   top: -50%;
   background: #333;
   padding: 20px;
@@ -404,7 +405,7 @@ tbody tr.block td.controls a:hover {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 1;
+  z-index: 4;
   background: rgba(0, 0, 0, 0.7);
 }
 .modal .modal-window .caption {
@@ -516,6 +517,7 @@ tbody tr.block td.controls a:hover {
 }
 .notify-wrapper {
   position: fixed;
+  z-index: 2;
   top: 13px;
   left: 3px;
 }
@@ -532,16 +534,60 @@ tbody tr.block td.controls a:hover {
 }
 #app {
   display: table;
-  margin: 50px auto;
+  margin: 0 auto;
   min-width: 1090px;
 }
 #app.tablet {
   min-width: inherit;
   width: 100%;
 }
+#app.tablet .header {
+  overflow: inherit;
+  position: fixed;
+  top: 0;
+  z-index: 2;
+  width: 100%;
+  padding: 10px 0;
+}
+#app.tablet .userList table.lazyLoad tbody {
+  height: 92vh;
+  padding: 50px 0 0 0;
+}
+#app.tablet .userList .option {
+  position: fixed;
+  bottom: 0;
+  z-index: 1;
+  width: 100%;
+}
+#app.tablet .modal .modal-window {
+  width: 100%;
+  justify-content: center;
+}
 #app.phone {
   min-width: inherit;
   width: 100%;
+}
+#app.phone .header {
+  overflow: inherit;
+  position: fixed;
+  top: 0;
+  z-index: 2;
+  width: 100%;
+  padding: 10px 0;
+}
+#app.phone .userList table.lazyLoad tbody {
+  height: 85vh;
+  padding: 50px 0 0 0;
+}
+#app.phone .userList .option {
+  position: fixed;
+  bottom: 0;
+  z-index: 1;
+  width: 100%;
+}
+#app.phone .modal .modal-window {
+  width: 100%;
+  justify-content: center;
 }
 * {
   margin: 0;

@@ -29801,7 +29801,7 @@
 	                    break;
 	                case 'phone':
 	                    // if(width > 480 && width <= 740) orientation = 'landscape';
-	                    if (width > 320 && width <= 480) orientation = 'portrait';
+	                    if (width > 319 && width <= 480) orientation = 'portrait';
 	                    break;
 	            }
 	
