@@ -6,112 +6,64 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
 import * as actions from './actions'
-import * as notifyActions from './../additional/notify/actions'
 
-import Dictionary from './../../lib/Dictionary';
-
-class Switcher extends Component {
-    constructor(props) {
-        super(props)
-    }
-
-    handlerTriggerNotify(self, event) {
-        let {dispatch} = this.props;
-        dispatch(notifyActions.notifyTrigger());
-    }
-
-    render() {
-        let {lang, notify} = this.props;
-
-        return (
-            <div className="switch-notify">
-                <input type="checkbox" id="switch" checked={!notify} onChange={this.handlerTriggerNotify.bind(this,  this)} />
-                <label htmlFor="switch">{Dictionary.t(['header', 'settings', 'label'], lang)}</label>
-            </div>
-        )
-    }
-};
-
-const SwitcherComponent = connect(function(state) {
-    return {
-        lang: state.HeaderSetting.currentLang,
-        notify: state.Notify.isShow
-    };
-})(Switcher);
+import Language from './language/index.jsx';
+import TriggerNotify from './trigger/index.jsx';
+import Search from './search/index.jsx';
 
 
-class Language extends Component {
-    constructor(props) {
-        super(props);
-    }
-
-    handlerChangeLanguage(self, event) {
-        let el = event.target;
-        if (el.tagName !== 'A') return false;
-
-        let lang = el.dataset.language;
-        let {dispatch} = self.props;
-        dispatch(actions.changeLanguage({lang}));
-    }
-
-    render() {
-        let {lang} = this.props;
-
-        return (
-            <div className="languages-wrapper" onClick={this.handlerChangeLanguage.bind(this,  this)}>
-                <a data-language="en" className={lang === 'en' ? 'active' : null }>EN</a>
-                <a data-language="ru" className={lang === 'ru' ? 'active' : null }>RU</a>
-            </div>
-        )
-    }
-};
-
-const LanguageComponent = connect(function(state) {
-    return {lang: state.HeaderSetting.currentLang};
-})(Language);
-
-
-
-class Search extends Component {
-    constructor(props) { // componentWillUpdate
-        super(props);
-    }
-
-    handlerSearchBtn(self, event) {
-        let {dispatch, users} = self.props;
-        let {search} = self.refs;
-        let strSearch = search.value;
-
-        dispatch(actions.searchUsers({strSearch, users}));
-    }
-
-    render() {
-        let {lang} = this.props;
-
-        return (
-            <div className="search">
-                <input name="search" ref="search" />
-                <button onClick={this.handlerSearchBtn.bind(this,  this)}>{Dictionary.t(['header', 'search', 'button'], lang)}</button>
-            </div>
-        )
-    }
+function HeaderMenu() {
+    return (<div className="header-menu">
+        <TriggerNotify />
+        <Language />
+        <Search />
+    </div>)
 }
 
-const SearchComponent = connect(function(state) {
-    return {
-        users: state.UsersTable.users,
-        lang: state.HeaderSetting.currentLang
-    };
-})(Search);
+function HamburgerMenu({active, onclick}) {
+    return (<div className={"hamburger-menu " + (active ? 'show' : '')}>
+        <TriggerNotify />
+        <Language />
+        <Search />
+        <div className="close" onClick={onclick}></div>
+    </div>)
+}
 
-
-export default function() {
+function ToggleHumburger({onclick}) {
     return (
-        <div className="header">
-            <SwitcherComponent />
-            <LanguageComponent />
-            <SearchComponent />
-        </div>
-    );
+        <div className="toggle-icon" onClick={onclick}></div>
+    )
 }
 
+
+class Header extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    handlerToggleMenu(self, event) {
+        let {dispatch} = self.props;
+        dispatch(actions.toggleHamburger());
+    }
+
+    render() {
+        let {responsive, menuActive} = this.props;
+
+        return (
+            <div className="header">
+                {(responsive.device === 'tablet' || responsive.device === 'phone') ? <ToggleHumburger onclick={this.handlerToggleMenu.bind(this, this)}/> : null}
+                {(responsive.device === 'tablet' || responsive.device === 'phone')
+                    ? <HamburgerMenu onclick={this.handlerToggleMenu.bind(this, this)} active={menuActive}/>
+                    : <HeaderMenu />}
+            </div>
+        );
+    }
+}
+
+
+export default connect(function(state) {
+    return {
+        responsive: state.HeaderSetting.responsive,
+        menuActive: state.HeaderSetting.menuActive
+    }
+})(Header);

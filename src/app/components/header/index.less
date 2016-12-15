@@ -1,81 +1,87 @@
+@import 'language/index'; // languages
+@import 'search/index'; // search
+@import 'trigger/index'; // trigger
+
 .header {
   overflow: hidden;
   margin-bottom: 10px;
 
-  .search {
-    float: right;
-    overflow: hidden;
+  .toggle-icon {
+    width: 30px;
+    height: 30px;
+    background: url("../../../media/img/menu.png") left top no-repeat;
+    background-size: contain;
+    position: relative;
+    left: 15px;
+    cursor: pointer;
+  }
 
-    input {
-      float: left;
-      padding: 4px 5px;
-      margin: 1px;
-      background: #eee;
-      color: #999;
-      border: 1px solid #999;
+  .header-menu {
 
-      &:focus,
-      &:hover {
-        outline: 0;
-      }
+  }
+
+  .hamburger-menu {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    min-height: 100vh;
+    width: 320px;
+    background: #333;
+    color: #ebebeb;
+    display: flex;
+    flex-direction: column;
+    transform: translateX(-100%);
+    transition: transform .25s;
+
+    &.show {
+      transform: translateX(0%);
+      transition: transform .25s;
     }
 
-    button {
-      cursor: pointer;
-      float: right;
+    div {
       display: block;
-      background: #666;
-      color: #eee;
-      margin: 1px;
-      text-align: center;
-      padding: 5px 0;
-      border: 0;
-      width: 100px;
+      float: none;
+    }
 
-      &:focus,
-      &:hover {
-        outline: 0;
+    .switch-notify {
+      order: 1;
+      padding: 10px 5px;
+      label {
+        color: #ebebeb;
       }
     }
-  }
 
-  .switch-notify {
-    display: inline-block;
-    float: left;
-
-    input {
-      position: relative;
-      top: 2px;
-      margin: 0 5px;
-    }
-
-    label {
-      color: #333;
-      font-size: 14px;
-      display: inline-block;
-      font-weight: bold;
-      cursor: pointer;
-    }
-  }
-
-  .languages-wrapper {
-    display: inline-block;
-    float: left;
-    margin-left: 245px;
-
-    a {
-      color: #333;
-      font-size: 14px;
-      cursor: pointer;
-      text-transform: uppercase;
-      margin: 0 3px;
-      padding: 6px;
-      display: inline-block;
-
-      &.active {
-        background: #333;
+    .languages-wrapper {
+      order: 0;
+      margin-left: 0;
+      padding: 10px 5px;
+      a {
         color: #eee;
+        &.active {
+          background: #eee;
+          color: #333;
+        }
       }
+    }
+
+    .search {
+      order: 2;
+      padding: 10px 5px;
+      button {
+        float: left;
+      }
+    }
+
+    .close {
+      width: 30px;
+      height: 30px;
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      cursor: pointer;
+      background: url("../../../media/img/close.png") left top no-repeat;
+      background-size: contain;
     }
   }
 }

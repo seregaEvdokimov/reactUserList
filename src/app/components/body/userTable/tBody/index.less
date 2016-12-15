@@ -25,22 +25,76 @@ tbody {
       transform: translateX(100%);
     }
 
-    td {
-      font-size: 12px;
-      padding: 0 5px;
-      text-align: left;
+    &.row {
+      td {
+        font-size: 12px;
+        padding: 0 2px;
+        text-align: left;
 
-      a {
-        display: block;
-        background: #666;
-        color: #eee;
-        margin: 1px;
-        cursor: pointer;
-        text-align: center;
-        padding: 5px 0;
+        a {
+          display: block;
+          background: #666;
+          color: #eee;
+          margin: 1px;
+          cursor: pointer;
+          text-align: center;
+          padding: 5px 0;
 
-        &:hover {
-          background: #000;
+          &:hover {
+            background: #000;
+          }
+        }
+
+        .left-time {
+          font-size: 10px;
+        }
+      }
+    }
+
+    &.block {
+      border-bottom: 2px solid #ccc;
+      overflow: hidden;
+      padding: 4px 0;
+      display: block;
+
+      td {
+        font-size: 12px;
+        line-height: 20px;
+        padding: 0 15px;
+
+
+        &.avatar {
+          float: left;
+          img {
+            max-width: 100px;
+          }
+        }
+
+        &.info {
+          display: table;
+
+          .id {
+            display: none;
+          }
+        }
+
+        &.controls {
+          float: left;
+          padding: 4px 0;
+          a {
+            width: 110px;
+            text-align: center;
+            background: #333;
+            color: #ebebeb;
+            display: inline-block;
+            margin: 4px;
+            padding: 2px 0;
+            cursor: pointer;
+
+            &:hover {
+              background: #000;
+            }
+          }
         }
       }
     }

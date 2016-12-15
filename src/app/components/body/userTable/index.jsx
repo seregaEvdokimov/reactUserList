@@ -45,7 +45,7 @@ class Table extends Component {
     }
 
     render() {
-        let {pagination} = this.props;
+        let {pagination, responsive} = this.props;
 
         return (
             <div className="userList">
@@ -55,7 +55,7 @@ class Table extends Component {
                     onMouseOut={this.handlerTooltip.bind(this, this)}
                     onMouseOver={this.handlerTooltip.bind(this, this)}
                 >
-                    <TableHeader />
+                    {(responsive.device === 'tablet' || responsive.device === 'phone') ? null : <TableHeader /> }
                     <TableBody />
                 </table>
                 <Tooltip />
@@ -66,5 +66,8 @@ class Table extends Component {
 }
 
 export default connect(function(state) {
-    return state.UsersTable;
+    return {
+        pagination: state.UsersTable.pagination,
+        responsive: state.HeaderSetting.responsive
+    };
 })(Table);

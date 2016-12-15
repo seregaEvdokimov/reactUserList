@@ -14,18 +14,8 @@ class Item extends Component {
     }
 
     componentDidMount() {
-        let {dispatch, item, isNew} = this.props;
-        let {el} = this.refs;
-
-        this.idTimeout = setTimeout(() => {
-            dispatch(actions.notifyHide(item.id));
-            el.style.opacity = 0;
-        }, 50000);
-
-        if(isNew) {
-            el.style.opacity = 1;
-            dispatch(actions.notifyShow(item.id));
-        }
+        let {item, dispatch} = this.props;
+        this.idTimeout = setTimeout(() => dispatch(actions.notifyRemove({id: item.id})), 50000);
     }
 
     componentWillUnmount() {
@@ -33,13 +23,10 @@ class Item extends Component {
     }
 
     render() {
-        let {item, isNew} = this.props;
-        let style = {};
-
-        if(isNew) style.opacity = 0;
+        let {item} = this.props;
 
         return (
-            <div className="notify" ref="el" style={style} data-notify-id={item.id}>
+            <div className="notify" data-notify-id={item.id}>
                 {item.text}
             </div>
         )
@@ -57,26 +44,14 @@ class Notify extends Component {
 
         let {dispatch} = this.props;
         let id = el.dataset.notifyId;
-
-        dispatch(actions.notifyHide(id));
-        el.style.opacity = 0;
-    };
-
-    handlerNotifyRemove = function(self, event) {
-        let el = event.target;
-
-        let {dispatch} = self.props;
-        let id = el.dataset.notifyId;
-
-        dispatch(actions.notifyRemove(id));
+        dispatch(actions.notifyRemove({id}));
     };
 
     render() {
-        let {items, newItem, dispatch} = this.props;
+        let {items, dispatch} = this.props;
 
         return (
-            <section className="notify-wrapper" onClick={this.handlerNotifyHide.bind(this,  this)} onTransitionEnd={this.handlerNotifyRemove.bind(this,  this)}>
-                {(newItem) ? <Item key={newItem.id} item={newItem} dispatch={dispatch} isNew={true} /> : null}
+            <section className="notify-wrapper" onClick={this.handlerNotifyHide.bind(this,  this)}>
                 {items.map(item => <Item key={item.id} item={item} dispatch={dispatch} /> )}
             </section>
         )
@@ -86,6 +61,6 @@ class Notify extends Component {
 export default connect(function(state) {
     return {
         items: state.Notify.items,
-        newItem: state.Notify.newItem
+        timeStamp: Date.now()
     };
 })(Notify);

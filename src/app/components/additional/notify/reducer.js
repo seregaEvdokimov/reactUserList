@@ -6,7 +6,6 @@ import * as actions from './actions';
 
 let initialState = {
     isShow: true,
-    newItem: null,
     items: []
 };
 
@@ -14,12 +13,9 @@ export default function(state = initialState, action) {
     switch(action.type) {
         case actions.NOTIFY_SHOW:
             // console.log('ACTION', actions.NOTIFY_SHOW, action.payload);
-            state.items.push(state.newItem);
-            state.newItem = null;
             return {...state};
         case actions.NOTIFY_CREATE:
-            // console.log('ACTION', actions.NOTIFY_CREATE, action.payload);
-            if(state.isShow) state.newItem = {id: Date.now(), text: action.payload.str};
+            if(state.isShow) state.items.push({id: Date.now(), text: action.payload.str, active: true});
             return {...state};
         case actions.NOTIFY_HIDE:
             // console.log('ACTION', actions.NOTIFY_HIDE, action.payload);

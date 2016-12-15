@@ -32,7 +32,7 @@
     }
 
     .email {
-      width: 200px;
+      width: 160px;
     }
 
     .birth {
@@ -40,25 +40,24 @@
     }
 
     .date {
-      width: 355px;
+      width: 300px;
       position: relative;
       overflow: hidden;
-    }
 
+      .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
 
-    .date .overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      height: 100%;
-    }
+        &.positive {
+          background: rgba(100, 255, 100, .4);
+        }
 
-    .overlay.positive {
-      background: rgba(100, 255, 100, .4);
-    }
-
-    .overlay.negative {
-      background: rgba(255, 80, 80, .4);
+        &.negative {
+          background: rgba(255, 80, 80, .4);
+        }
+      }
     }
 
     .del, .delete {

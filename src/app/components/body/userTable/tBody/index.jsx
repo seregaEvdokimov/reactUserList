@@ -55,6 +55,35 @@ function parseTime (endTime) {
 }
 
 
+class Block extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        let {lang, user, responsive} = this.props;
+
+        let date = new Date(user.date);
+        date = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
+
+        return (
+            <tr className="block">
+                {(responsive.device !== 'phone') ? <td className="avatar"><img src={user.avatar} alt=""/></td> : null }
+                <td className="info">
+                    <p className="id">{user.id}</p>
+                    <p>Date/Time: {date}</p>
+                    <p>Person: {user.name}</p>
+                    <p>Email: {user.email}</p>
+                </td>
+                <td className="controls">
+                    <a className="delete-btn">{Dictionary.t(['userTable', 'tBody', 'delete'], lang)}</a>
+                    <a className="edit-btn">{Dictionary.t(['userTable', 'tBody', 'edit'], lang)}</a>
+                </td>
+            </tr>
+        );
+    }
+}
+
 class Row extends Component {
     constructor(props) { // componentWillMount
         super(props);
@@ -100,7 +129,7 @@ class Row extends Component {
         birth = birth.getDate() + '. ' + (birth.getMonth() + 1) + '. ' + birth.getFullYear();
 
         return (
-            <tr className={isNew ? 'addition' : null} ref="el">
+            <tr className={'row ' + (isNew ? 'addition' : '')} ref="el">
                 <td className="id"><Link to={`/user/${user.id}`}>{user.id}</Link></td>
                 <td className="name" data-tooltip="name">{user.name}</td>
                 <td className="email" data-tooltip="email">{user.email}</td>
@@ -135,12 +164,12 @@ class tBody extends Component {
         let el = event.target;
         if(el.tagName !== 'A') return false;
 
-        let {dispatch, users, newUser, lang} = self.props;
+        let {dispatch, users, lang} = self.props;
         let row = self.getRowId(el);
         let id = parseInt(row.querySelector('.id').textContent);
         let userFind = users.filter(function(user) {
             return user.id === id;
-        })[0] || newUser;
+        })[0];
 
         switch(el.className) {
             case 'delete-btn':
@@ -180,15 +209,22 @@ class tBody extends Component {
     }
 
     render() {
-        let {users, lang} = this.props;
+        let {users, lang, responsive} = this.props;
 
         users = users.slice();
-        let newUser = users.shift();
+        let newUser = users.shift() || {};
 
         return (
             <tbody className="tBody" onScroll={this.lazyLoadUsers.bind(this, this)} onClick={this.rowBtnControls.bind(this, this)}>
-                {(newUser) ? <Row key={newUser.id} user={newUser} lang={lang} isNew={true} /> : null}
-                {users.map(user => <Row key={user.id} user={user} lang={lang} />)}
+                {(responsive.device === 'tablet' || responsive.device === 'phone')
+                    ? <Block key={newUser.id} user={newUser} lang={lang} responsive={responsive} isNew={true}/>
+                    : <Row key={newUser.id} user={newUser} lang={lang} responsive={responsive} isNew={true}/>
+                }
+
+                {(responsive.device === 'tablet' || responsive.device === 'phone')
+                    ? users.map(user => <Block key={user.id} user={user} responsive={responsive} lang={lang}/>)
+                    : users.map(user => <Row key={user.id} user={user} responsive={responsive} lang={lang}/>)
+                }
             </tbody>
         )
     }
@@ -204,6 +240,7 @@ export default connect(function(state) {
         lang: state.HeaderSetting.currentLang,
         users: users,
         pagination: state.UsersTable.pagination,
+        responsive: state.HeaderSetting.responsive,
         timeStamp: Date.now()
     };
 })(tBody);

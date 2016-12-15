@@ -19,11 +19,11 @@ export function notifyCreate(data) {
 }
 
 export function notifyHide(data) {
-    return {type: NOTIFY_HIDE, payload: {id: data}};
+    return {type: NOTIFY_HIDE, payload: data};
 }
 
 export function notifyRemove(data) {
-    return {type: NOTIFY_REMOVE, payload: {id: data}};
+    return {type: NOTIFY_REMOVE, payload: data};
 }
 
 export function notifyTrigger() {

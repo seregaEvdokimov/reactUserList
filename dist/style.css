@@ -1,12 +1,26 @@
-.header {
-  overflow: hidden;
-  margin-bottom: 10px;
+.languages-wrapper {
+  display: inline-block;
+  float: left;
+  margin-left: 12%;
 }
-.header .search {
+.languages-wrapper a {
+  color: #333;
+  font-size: 14px;
+  cursor: pointer;
+  text-transform: uppercase;
+  margin: 0 3px;
+  padding: 6px;
+  display: inline-block;
+}
+.languages-wrapper a.active {
+  background: #333;
+  color: #eee;
+}
+.search {
   float: right;
   overflow: hidden;
 }
-.header .search input {
+.search input {
   float: left;
   padding: 4px 5px;
   margin: 1px;
@@ -14,11 +28,11 @@
   color: #999;
   border: 1px solid #999;
 }
-.header .search input:focus,
-.header .search input:hover {
+.search input:focus,
+.search input:hover {
   outline: 0;
 }
-.header .search button {
+.search button {
   cursor: pointer;
   float: right;
   display: block;
@@ -30,43 +44,96 @@
   border: 0;
   width: 100px;
 }
-.header .search button:focus,
-.header .search button:hover {
+.search button:focus,
+.search button:hover {
   outline: 0;
 }
-.header .switch-notify {
+.switch-notify {
   display: inline-block;
   float: left;
 }
-.header .switch-notify input {
+.switch-notify input {
   position: relative;
   top: 2px;
   margin: 0 5px;
 }
-.header .switch-notify label {
+.switch-notify label {
   color: #333;
   font-size: 14px;
   display: inline-block;
   font-weight: bold;
   cursor: pointer;
 }
-.header .languages-wrapper {
-  display: inline-block;
-  float: left;
-  margin-left: 245px;
+.header {
+  overflow: hidden;
+  margin-bottom: 10px;
 }
-.header .languages-wrapper a {
-  color: #333;
-  font-size: 14px;
+.header .toggle-icon {
+  width: 30px;
+  height: 30px;
+  background: url("media/img/menu.png") left top no-repeat;
+  background-size: contain;
+  position: relative;
+  left: 15px;
   cursor: pointer;
-  text-transform: uppercase;
-  margin: 0 3px;
-  padding: 6px;
-  display: inline-block;
 }
-.header .languages-wrapper a.active {
+.header .hamburger-menu {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  min-height: 100vh;
+  width: 320px;
   background: #333;
+  color: #ebebeb;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(-100%);
+  transition: transform .25s;
+}
+.header .hamburger-menu.show {
+  transform: translateX(0%);
+  transition: transform .25s;
+}
+.header .hamburger-menu div {
+  display: block;
+  float: none;
+}
+.header .hamburger-menu .switch-notify {
+  order: 1;
+  padding: 10px 5px;
+}
+.header .hamburger-menu .switch-notify label {
+  color: #ebebeb;
+}
+.header .hamburger-menu .languages-wrapper {
+  order: 0;
+  margin-left: 0;
+  padding: 10px 5px;
+}
+.header .hamburger-menu .languages-wrapper a {
   color: #eee;
+}
+.header .hamburger-menu .languages-wrapper a.active {
+  background: #eee;
+  color: #333;
+}
+.header .hamburger-menu .search {
+  order: 2;
+  padding: 10px 5px;
+}
+.header .hamburger-menu .search button {
+  float: left;
+}
+.header .hamburger-menu .close {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  background: url("media/img/close.png") left top no-repeat;
+  background-size: contain;
 }
 thead {
   background: #333;
@@ -75,7 +142,7 @@ thead {
 thead tr th {
   padding: 10px 5px;
   text-align: center;
-  font-size: 15px;
+  font-size: 12px;
 }
 thead tr th[data-sort-by] {
   cursor: pointer;
@@ -87,21 +154,21 @@ thead tr th.active {
 thead tr th.active.asc:before {
   content: '';
   position: absolute;
-  top: 15px;
-  right: 15px;
+  top: 14px;
+  right: 6px;
   background: url("media/img/sort-up.png") left top no-repeat;
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   background-size: contain;
 }
 thead tr th.active.desc:before {
   content: '';
   position: absolute;
-  top: 15px;
-  right: 15px;
+  top: 14px;
+  right: 6px;
   background: url("media/img/sort-down.png") left top no-repeat;
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   background-size: contain;
 }
 tbody tr {
@@ -124,12 +191,12 @@ tbody tr.deleting {
 tbody tr.addition {
   transform: translateX(100%);
 }
-tbody tr td {
+tbody tr.row td {
   font-size: 12px;
-  padding: 0 5px;
+  padding: 0 2px;
   text-align: left;
 }
-tbody tr td a {
+tbody tr.row td a {
   display: block;
   background: #666;
   color: #eee;
@@ -138,7 +205,50 @@ tbody tr td a {
   text-align: center;
   padding: 5px 0;
 }
-tbody tr td a:hover {
+tbody tr.row td a:hover {
+  background: #000;
+}
+tbody tr.row td .left-time {
+  font-size: 10px;
+}
+tbody tr.block {
+  border-bottom: 2px solid #ccc;
+  overflow: hidden;
+  padding: 4px 0;
+  display: block;
+}
+tbody tr.block td {
+  font-size: 12px;
+  line-height: 20px;
+  padding: 0 15px;
+}
+tbody tr.block td.avatar {
+  float: left;
+}
+tbody tr.block td.avatar img {
+  max-width: 100px;
+}
+tbody tr.block td.info {
+  display: table;
+}
+tbody tr.block td.info .id {
+  display: none;
+}
+tbody tr.block td.controls {
+  float: left;
+  padding: 4px 0;
+}
+tbody tr.block td.controls a {
+  width: 110px;
+  text-align: center;
+  background: #333;
+  color: #ebebeb;
+  display: inline-block;
+  margin: 4px;
+  padding: 2px 0;
+  cursor: pointer;
+}
+tbody tr.block td.controls a:hover {
   background: #000;
 }
 .option {
@@ -201,13 +311,13 @@ tbody tr td a:hover {
   width: 100px;
 }
 .userList table .email {
-  width: 200px;
+  width: 160px;
 }
 .userList table .birth {
   width: 145px;
 }
 .userList table .date {
-  width: 355px;
+  width: 300px;
   position: relative;
   overflow: hidden;
 }
@@ -217,10 +327,10 @@ tbody tr td a:hover {
   left: 0;
   height: 100%;
 }
-.userList table .overlay.positive {
+.userList table .date .overlay.positive {
   background: rgba(100, 255, 100, 0.4);
 }
-.userList table .overlay.negative {
+.userList table .date .overlay.negative {
   background: rgba(255, 80, 80, 0.4);
 }
 .userList table .del,
@@ -423,7 +533,15 @@ tbody tr td a:hover {
 #app {
   display: table;
   margin: 50px auto;
-  min-width: 1160px;
+  min-width: 1090px;
+}
+#app.tablet {
+  min-width: inherit;
+  width: 100%;
+}
+#app.phone {
+  min-width: inherit;
+  width: 100%;
 }
 * {
   margin: 0;

@@ -29006,6 +29006,17 @@
 	                return {
 	                    v: _extends({}, state, { currentLang: action.payload.lang })
 	                };
+	            case actions.RESPONSIVE_PARAMS:
+	                // console.log('Action', actions.RESPONSIVE_PARAMS, action.payload);
+	                return {
+	                    v: _extends({}, state, { responsive: action.payload })
+	                };
+	            case actions.TOGGLE_HAMBURGER:
+	                // console.log('Action', actions.TOGGLE_HAMBURGER, action.payload);
+	                state.menuActive = !state.menuActive;
+	                return {
+	                    v: _extends({}, state)
+	                };
 	        }
 	    }();
 	
@@ -29024,7 +29035,12 @@
 	        str: '',
 	        users: null
 	    },
-	    currentLang: 'ru'
+	    currentLang: 'ru',
+	    responsive: {
+	        device: null,
+	        orientation: null
+	    },
+	    menuActive: false
 	};
 
 /***/ },
@@ -29038,12 +29054,16 @@
 	});
 	exports.searchUsers = searchUsers;
 	exports.changeLanguage = changeLanguage;
+	exports.setResponsiveParams = setResponsiveParams;
+	exports.toggleHamburger = toggleHamburger;
 	/**
 	 * Created by s.evdokimov on 08.12.2016.
 	 */
 	
 	var SEARCH_USERS = exports.SEARCH_USERS = 'SEARCH_USERS';
 	var CHANGE_LANGUAGE = exports.CHANGE_LANGUAGE = 'CHANGE_LANGUAGE';
+	var RESPONSIVE_PARAMS = exports.RESPONSIVE_PARAMS = 'RESPONSIVE_PARAMS';
+	var TOGGLE_HAMBURGER = exports.TOGGLE_HAMBURGER = 'TOGGLE_HAMBURGER';
 	
 	function searchUsers(data) {
 	    return { type: SEARCH_USERS, payload: data };
@@ -29051,6 +29071,14 @@
 	
 	function changeLanguage(data) {
 	    return { type: CHANGE_LANGUAGE, payload: data };
+	}
+	
+	function setResponsiveParams(data) {
+	    return { type: RESPONSIVE_PARAMS, payload: data };
+	}
+	
+	function toggleHamburger() {
+	    return { type: TOGGLE_HAMBURGER };
 	}
 
 /***/ },
@@ -29340,12 +29368,9 @@
 	    switch (action.type) {
 	        case actions.NOTIFY_SHOW:
 	            // console.log('ACTION', actions.NOTIFY_SHOW, action.payload);
-	            state.items.push(state.newItem);
-	            state.newItem = null;
 	            return _extends({}, state);
 	        case actions.NOTIFY_CREATE:
-	            // console.log('ACTION', actions.NOTIFY_CREATE, action.payload);
-	            if (state.isShow) state.newItem = { id: Date.now(), text: action.payload.str };
+	            if (state.isShow) state.items.push({ id: Date.now(), text: action.payload.str, active: true });
 	            return _extends({}, state);
 	        case actions.NOTIFY_HIDE:
 	            // console.log('ACTION', actions.NOTIFY_HIDE, action.payload);
@@ -29375,7 +29400,6 @@
 	
 	var initialState = {
 	    isShow: true,
-	    newItem: null,
 	    items: []
 	};
 
@@ -29414,11 +29438,11 @@
 	}
 	
 	function notifyHide(data) {
-	    return { type: NOTIFY_HIDE, payload: { id: data } };
+	    return { type: NOTIFY_HIDE, payload: data };
 	}
 	
 	function notifyRemove(data) {
-	    return { type: NOTIFY_REMOVE, payload: { id: data } };
+	    return { type: NOTIFY_REMOVE, payload: data };
 	}
 	
 	function notifyTrigger() {
@@ -29716,6 +29740,12 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
+	var _reactRedux = __webpack_require__(246);
+	
+	var _actions = __webpack_require__(288);
+	
+	var headerActions = _interopRequireWildcard(_actions);
+	
 	var _index = __webpack_require__(299);
 	
 	var _index2 = _interopRequireDefault(_index);
@@ -29727,6 +29757,8 @@
 	var _index5 = __webpack_require__(306);
 	
 	var _index6 = _interopRequireDefault(_index5);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -29748,6 +29780,48 @@
 	    }
 	
 	    _createClass(App, [{
+	        key: 'getDevice',
+	        value: function getDevice(width) {
+	            var device = '';
+	
+	            if (width > 415 && width <= 1024) device = 'tablet';
+	            if (width > 320 && width <= 415) device = 'phone';
+	
+	            return device;
+	        }
+	    }, {
+	        key: 'getOrientation',
+	        value: function getOrientation(width, device) {
+	            var orientation = '';
+	
+	            switch (device) {
+	                case 'tablet':
+	                    if (width > 768 && width <= 1024) orientation = 'landscape';
+	                    if (width > 480 && width <= 768) orientation = 'portrait';
+	                    break;
+	                case 'phone':
+	                    // if(width > 480 && width <= 740) orientation = 'landscape';
+	                    if (width > 320 && width <= 480) orientation = 'portrait';
+	                    break;
+	            }
+	
+	            return orientation;
+	        }
+	    }, {
+	        key: 'componentWillMount',
+	        value: function componentWillMount() {
+	            var dispatch = this.props.dispatch;
+	
+	            var container = document.body.querySelector('#app');
+	            var containerWidth = window.innerWidth;
+	
+	            var device = this.getDevice(containerWidth);
+	            var orientation = this.getOrientation(containerWidth, device);
+	
+	            container.className = device + " " + orientation;
+	            dispatch(headerActions.setResponsiveParams({ device: device, orientation: orientation }));
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 	            var children = this.props.children;
@@ -29766,7 +29840,9 @@
 	    return App;
 	}(_react.Component);
 	
-	exports.default = App;
+	exports.default = (0, _reactRedux.connect)(function (state) {
+	    return {};
+	})(App);
 
 /***/ },
 /* 299 */
@@ -29780,16 +29856,6 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	exports.default = function () {
-	    return _react2.default.createElement(
-	        'div',
-	        { className: 'header' },
-	        _react2.default.createElement(SwitcherComponent, null),
-	        _react2.default.createElement(LanguageComponent, null),
-	        _react2.default.createElement(SearchComponent, null)
-	    );
-	};
-	
 	var _react = __webpack_require__(14);
 	
 	var _react2 = _interopRequireDefault(_react);
@@ -29800,13 +29866,17 @@
 	
 	var actions = _interopRequireWildcard(_actions);
 	
-	var _actions2 = __webpack_require__(294);
+	var _index = __webpack_require__(315);
 	
-	var notifyActions = _interopRequireWildcard(_actions2);
+	var _index2 = _interopRequireDefault(_index);
 	
-	var _Dictionary = __webpack_require__(296);
+	var _index3 = __webpack_require__(316);
 	
-	var _Dictionary2 = _interopRequireDefault(_Dictionary);
+	var _index4 = _interopRequireDefault(_index3);
+	
+	var _index5 = __webpack_require__(317);
+	
+	var _index6 = _interopRequireDefault(_index5);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -29820,157 +29890,78 @@
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by s.evdokimov on 06.12.2016.
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
 	
-	var Switcher = function (_Component) {
-	    _inherits(Switcher, _Component);
+	function HeaderMenu() {
+	    return _react2.default.createElement(
+	        'div',
+	        { className: 'header-menu' },
+	        _react2.default.createElement(_index4.default, null),
+	        _react2.default.createElement(_index2.default, null),
+	        _react2.default.createElement(_index6.default, null)
+	    );
+	}
 	
-	    function Switcher(props) {
-	        _classCallCheck(this, Switcher);
+	function HamburgerMenu(_ref) {
+	    var active = _ref.active,
+	        onclick = _ref.onclick;
 	
-	        return _possibleConstructorReturn(this, (Switcher.__proto__ || Object.getPrototypeOf(Switcher)).call(this, props));
+	    return _react2.default.createElement(
+	        'div',
+	        { className: "hamburger-menu " + (active ? 'show' : '') },
+	        _react2.default.createElement(_index4.default, null),
+	        _react2.default.createElement(_index2.default, null),
+	        _react2.default.createElement(_index6.default, null),
+	        _react2.default.createElement('div', { className: 'close', onClick: onclick })
+	    );
+	}
+	
+	function ToggleHumburger(_ref2) {
+	    var onclick = _ref2.onclick;
+	
+	    return _react2.default.createElement('div', { className: 'toggle-icon', onClick: onclick });
+	}
+	
+	var Header = function (_Component) {
+	    _inherits(Header, _Component);
+	
+	    function Header(props) {
+	        _classCallCheck(this, Header);
+	
+	        return _possibleConstructorReturn(this, (Header.__proto__ || Object.getPrototypeOf(Header)).call(this, props));
 	    }
 	
-	    _createClass(Switcher, [{
-	        key: 'handlerTriggerNotify',
-	        value: function handlerTriggerNotify(self, event) {
-	            var dispatch = this.props.dispatch;
+	    _createClass(Header, [{
+	        key: 'handlerToggleMenu',
+	        value: function handlerToggleMenu(self, event) {
+	            var dispatch = self.props.dispatch;
 	
-	            dispatch(notifyActions.notifyTrigger());
+	            dispatch(actions.toggleHamburger());
 	        }
 	    }, {
 	        key: 'render',
 	        value: function render() {
 	            var _props = this.props,
-	                lang = _props.lang,
-	                notify = _props.notify;
+	                responsive = _props.responsive,
+	                menuActive = _props.menuActive;
 	
 	
 	            return _react2.default.createElement(
 	                'div',
-	                { className: 'switch-notify' },
-	                _react2.default.createElement('input', { type: 'checkbox', id: 'switch', checked: !notify, onChange: this.handlerTriggerNotify.bind(this, this) }),
-	                _react2.default.createElement(
-	                    'label',
-	                    { htmlFor: 'switch' },
-	                    _Dictionary2.default.t(['header', 'settings', 'label'], lang)
-	                )
+	                { className: 'header' },
+	                responsive.device === 'tablet' || responsive.device === 'phone' ? _react2.default.createElement(ToggleHumburger, { onclick: this.handlerToggleMenu.bind(this, this) }) : null,
+	                responsive.device === 'tablet' || responsive.device === 'phone' ? _react2.default.createElement(HamburgerMenu, { onclick: this.handlerToggleMenu.bind(this, this), active: menuActive }) : _react2.default.createElement(HeaderMenu, null)
 	            );
 	        }
 	    }]);
 	
-	    return Switcher;
+	    return Header;
 	}(_react.Component);
 	
-	;
-	
-	var SwitcherComponent = (0, _reactRedux.connect)(function (state) {
+	exports.default = (0, _reactRedux.connect)(function (state) {
 	    return {
-	        lang: state.HeaderSetting.currentLang,
-	        notify: state.Notify.isShow
+	        responsive: state.HeaderSetting.responsive,
+	        menuActive: state.HeaderSetting.menuActive
 	    };
-	})(Switcher);
-	
-	var Language = function (_Component2) {
-	    _inherits(Language, _Component2);
-	
-	    function Language(props) {
-	        _classCallCheck(this, Language);
-	
-	        return _possibleConstructorReturn(this, (Language.__proto__ || Object.getPrototypeOf(Language)).call(this, props));
-	    }
-	
-	    _createClass(Language, [{
-	        key: 'handlerChangeLanguage',
-	        value: function handlerChangeLanguage(self, event) {
-	            var el = event.target;
-	            if (el.tagName !== 'A') return false;
-	
-	            var lang = el.dataset.language;
-	            var dispatch = self.props.dispatch;
-	
-	            dispatch(actions.changeLanguage({ lang: lang }));
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            var lang = this.props.lang;
-	
-	
-	            return _react2.default.createElement(
-	                'div',
-	                { className: 'languages-wrapper', onClick: this.handlerChangeLanguage.bind(this, this) },
-	                _react2.default.createElement(
-	                    'a',
-	                    { 'data-language': 'en', className: lang === 'en' ? 'active' : null },
-	                    'EN'
-	                ),
-	                _react2.default.createElement(
-	                    'a',
-	                    { 'data-language': 'ru', className: lang === 'ru' ? 'active' : null },
-	                    'RU'
-	                )
-	            );
-	        }
-	    }]);
-	
-	    return Language;
-	}(_react.Component);
-	
-	;
-	
-	var LanguageComponent = (0, _reactRedux.connect)(function (state) {
-	    return { lang: state.HeaderSetting.currentLang };
-	})(Language);
-	
-	var Search = function (_Component3) {
-	    _inherits(Search, _Component3);
-	
-	    function Search(props) {
-	        _classCallCheck(this, Search);
-	
-	        // componentWillUpdate
-	        return _possibleConstructorReturn(this, (Search.__proto__ || Object.getPrototypeOf(Search)).call(this, props));
-	    }
-	
-	    _createClass(Search, [{
-	        key: 'handlerSearchBtn',
-	        value: function handlerSearchBtn(self, event) {
-	            var _self$props = self.props,
-	                dispatch = _self$props.dispatch,
-	                users = _self$props.users;
-	            var search = self.refs.search;
-	
-	            var strSearch = search.value;
-	
-	            dispatch(actions.searchUsers({ strSearch: strSearch, users: users }));
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            var lang = this.props.lang;
-	
-	
-	            return _react2.default.createElement(
-	                'div',
-	                { className: 'search' },
-	                _react2.default.createElement('input', { name: 'search', ref: 'search' }),
-	                _react2.default.createElement(
-	                    'button',
-	                    { onClick: this.handlerSearchBtn.bind(this, this) },
-	                    _Dictionary2.default.t(['header', 'search', 'button'], lang)
-	                )
-	            );
-	        }
-	    }]);
-	
-	    return Search;
-	}(_react.Component);
-	
-	var SearchComponent = (0, _reactRedux.connect)(function (state) {
-	    return {
-	        users: state.UsersTable.users,
-	        lang: state.HeaderSetting.currentLang
-	    };
-	})(Search);
+	})(Header);
 
 /***/ },
 /* 300 */
@@ -31034,21 +31025,12 @@
 	        key: 'componentDidMount',
 	        value: function componentDidMount() {
 	            var _props = this.props,
-	                dispatch = _props.dispatch,
 	                item = _props.item,
-	                isNew = _props.isNew;
-	            var el = this.refs.el;
-	
+	                dispatch = _props.dispatch;
 	
 	            this.idTimeout = setTimeout(function () {
-	                dispatch(actions.notifyHide(item.id));
-	                el.style.opacity = 0;
+	                return dispatch(actions.notifyRemove({ id: item.id }));
 	            }, 50000);
-	
-	            if (isNew) {
-	                el.style.opacity = 1;
-	                dispatch(actions.notifyShow(item.id));
-	            }
 	        }
 	    }, {
 	        key: 'componentWillUnmount',
@@ -31058,17 +31040,12 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            var _props2 = this.props,
-	                item = _props2.item,
-	                isNew = _props2.isNew;
+	            var item = this.props.item;
 	
-	            var style = {};
-	
-	            if (isNew) style.opacity = 0;
 	
 	            return _react2.default.createElement(
 	                'div',
-	                { className: 'notify', ref: 'el', style: style, 'data-notify-id': item.id },
+	                { className: 'notify', 'data-notify-id': item.id },
 	                item.text
 	            );
 	        }
@@ -31092,19 +31069,7 @@
 	            var dispatch = this.props.dispatch;
 	
 	            var id = el.dataset.notifyId;
-	
-	            dispatch(actions.notifyHide(id));
-	            el.style.opacity = 0;
-	        };
-	
-	        _this2.handlerNotifyRemove = function (self, event) {
-	            var el = event.target;
-	
-	            var dispatch = self.props.dispatch;
-	
-	            var id = el.dataset.notifyId;
-	
-	            dispatch(actions.notifyRemove(id));
+	            dispatch(actions.notifyRemove({ id: id }));
 	        };
 	
 	        return _this2;
@@ -31113,16 +31078,14 @@
 	    _createClass(Notify, [{
 	        key: 'render',
 	        value: function render() {
-	            var _props3 = this.props,
-	                items = _props3.items,
-	                newItem = _props3.newItem,
-	                dispatch = _props3.dispatch;
+	            var _props2 = this.props,
+	                items = _props2.items,
+	                dispatch = _props2.dispatch;
 	
 	
 	            return _react2.default.createElement(
 	                'section',
-	                { className: 'notify-wrapper', onClick: this.handlerNotifyHide.bind(this, this), onTransitionEnd: this.handlerNotifyRemove.bind(this, this) },
-	                newItem ? _react2.default.createElement(Item, { key: newItem.id, item: newItem, dispatch: dispatch, isNew: true }) : null,
+	                { className: 'notify-wrapper', onClick: this.handlerNotifyHide.bind(this, this) },
 	                items.map(function (item) {
 	                    return _react2.default.createElement(Item, { key: item.id, item: item, dispatch: dispatch });
 	                })
@@ -31136,7 +31099,7 @@
 	exports.default = (0, _reactRedux.connect)(function (state) {
 	    return {
 	        items: state.Notify.items,
-	        newItem: state.Notify.newItem
+	        timeStamp: Date.now()
 	    };
 	})(Notify);
 
@@ -31237,7 +31200,9 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            var pagination = this.props.pagination;
+	            var _props = this.props,
+	                pagination = _props.pagination,
+	                responsive = _props.responsive;
 	
 	
 	            return _react2.default.createElement(
@@ -31251,7 +31216,7 @@
 	                        onMouseOut: this.handlerTooltip.bind(this, this),
 	                        onMouseOver: this.handlerTooltip.bind(this, this)
 	                    },
-	                    _react2.default.createElement(_index2.default, null),
+	                    responsive.device === 'tablet' || responsive.device === 'phone' ? null : _react2.default.createElement(_index2.default, null),
 	                    _react2.default.createElement(_index4.default, null)
 	                ),
 	                _react2.default.createElement(_index8.default, null),
@@ -31264,7 +31229,10 @@
 	}(_react.Component);
 	
 	exports.default = (0, _reactRedux.connect)(function (state) {
-	    return state.UsersTable;
+	    return {
+	        pagination: state.UsersTable.pagination,
+	        responsive: state.HeaderSetting.responsive
+	    };
 	})(Table);
 
 /***/ },
@@ -31490,27 +31458,104 @@
 	    return dateString;
 	}
 	
-	var Row = function (_Component) {
-	    _inherits(Row, _Component);
+	var Block = function (_Component) {
+	    _inherits(Block, _Component);
+	
+	    function Block(props) {
+	        _classCallCheck(this, Block);
+	
+	        return _possibleConstructorReturn(this, (Block.__proto__ || Object.getPrototypeOf(Block)).call(this, props));
+	    }
+	
+	    _createClass(Block, [{
+	        key: 'render',
+	        value: function render() {
+	            var _props = this.props,
+	                lang = _props.lang,
+	                user = _props.user,
+	                responsive = _props.responsive;
+	
+	
+	            var date = new Date(user.date);
+	            date = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
+	
+	            return _react2.default.createElement(
+	                'tr',
+	                { className: 'block' },
+	                responsive.device !== 'phone' ? _react2.default.createElement(
+	                    'td',
+	                    { className: 'avatar' },
+	                    _react2.default.createElement('img', { src: user.avatar, alt: '' })
+	                ) : null,
+	                _react2.default.createElement(
+	                    'td',
+	                    { className: 'info' },
+	                    _react2.default.createElement(
+	                        'p',
+	                        { className: 'id' },
+	                        user.id
+	                    ),
+	                    _react2.default.createElement(
+	                        'p',
+	                        null,
+	                        'Date/Time: ',
+	                        date
+	                    ),
+	                    _react2.default.createElement(
+	                        'p',
+	                        null,
+	                        'Person: ',
+	                        user.name
+	                    ),
+	                    _react2.default.createElement(
+	                        'p',
+	                        null,
+	                        'Email: ',
+	                        user.email
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    'td',
+	                    { className: 'controls' },
+	                    _react2.default.createElement(
+	                        'a',
+	                        { className: 'delete-btn' },
+	                        _Dictionary2.default.t(['userTable', 'tBody', 'delete'], lang)
+	                    ),
+	                    _react2.default.createElement(
+	                        'a',
+	                        { className: 'edit-btn' },
+	                        _Dictionary2.default.t(['userTable', 'tBody', 'edit'], lang)
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+	
+	    return Block;
+	}(_react.Component);
+	
+	var Row = function (_Component2) {
+	    _inherits(Row, _Component2);
 	
 	    function Row(props) {
 	        _classCallCheck(this, Row);
 	
-	        var _this = _possibleConstructorReturn(this, (Row.__proto__ || Object.getPrototypeOf(Row)).call(this, props)); // componentWillMount
+	        var _this2 = _possibleConstructorReturn(this, (Row.__proto__ || Object.getPrototypeOf(Row)).call(this, props)); // componentWillMount
 	
 	
 	        var user = props.user;
 	
-	        _this.timer = new _Timer2.default({ start: user.birth, end: user.date }, _this.calcTime.bind(_this));
-	        return _this;
+	        _this2.timer = new _Timer2.default({ start: user.birth, end: user.date }, _this2.calcTime.bind(_this2));
+	        return _this2;
 	    }
 	
 	    _createClass(Row, [{
 	        key: 'componentDidMount',
 	        value: function componentDidMount() {
-	            var _props = this.props,
-	                user = _props.user,
-	                isNew = _props.isNew;
+	            var _props2 = this.props,
+	                user = _props2.user,
+	                isNew = _props2.isNew;
 	            var _refs = this.refs,
 	                overlay = _refs.overlay,
 	                el = _refs.el;
@@ -31550,10 +31595,10 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            var _props2 = this.props,
-	                user = _props2.user,
-	                isNew = _props2.isNew,
-	                lang = _props2.lang;
+	            var _props3 = this.props,
+	                user = _props3.user,
+	                isNew = _props3.isNew,
+	                lang = _props3.lang;
 	
 	            var date = parseTime(user.date);
 	
@@ -31562,7 +31607,7 @@
 	
 	            return _react2.default.createElement(
 	                'tr',
-	                { className: isNew ? 'addition' : null, ref: 'el' },
+	                { className: 'row ' + (isNew ? 'addition' : ''), ref: 'el' },
 	                _react2.default.createElement(
 	                    'td',
 	                    { className: 'id' },
@@ -31622,13 +31667,13 @@
 	    return Row;
 	}(_react.Component);
 	
-	var tBody = function (_Component2) {
-	    _inherits(tBody, _Component2);
+	var tBody = function (_Component3) {
+	    _inherits(tBody, _Component3);
 	
 	    function tBody(props) {
 	        _classCallCheck(this, tBody);
 	
-	        var _this2 = _possibleConstructorReturn(this, (tBody.__proto__ || Object.getPrototypeOf(tBody)).call(this, props)); // componentWillMount
+	        var _this3 = _possibleConstructorReturn(this, (tBody.__proto__ || Object.getPrototypeOf(tBody)).call(this, props)); // componentWillMount
 	
 	
 	        var users = props.users,
@@ -31636,8 +31681,8 @@
 	
 	        if (!users.length) actions.loadUsersRequest(dispatch);
 	
-	        _this2.usersTotal = users.length;
-	        return _this2;
+	        _this3.usersTotal = users.length;
+	        return _this3;
 	    }
 	
 	    _createClass(tBody, [{
@@ -31649,14 +31694,13 @@
 	            var _self$props = self.props,
 	                dispatch = _self$props.dispatch,
 	                users = _self$props.users,
-	                newUser = _self$props.newUser,
 	                lang = _self$props.lang;
 	
 	            var row = self.getRowId(el);
 	            var id = parseInt(row.querySelector('.id').textContent);
 	            var userFind = users.filter(function (user) {
 	                return user.id === id;
-	            })[0] || newUser;
+	            })[0];
 	
 	            (function () {
 	                switch (el.className) {
@@ -31704,20 +31748,23 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            var _props3 = this.props,
-	                users = _props3.users,
-	                lang = _props3.lang;
+	            var _props4 = this.props,
+	                users = _props4.users,
+	                lang = _props4.lang,
+	                responsive = _props4.responsive;
 	
 	
 	            users = users.slice();
-	            var newUser = users.shift();
+	            var newUser = users.shift() || {};
 	
 	            return _react2.default.createElement(
 	                'tbody',
 	                { className: 'tBody', onScroll: this.lazyLoadUsers.bind(this, this), onClick: this.rowBtnControls.bind(this, this) },
-	                newUser ? _react2.default.createElement(Row, { key: newUser.id, user: newUser, lang: lang, isNew: true }) : null,
-	                users.map(function (user) {
-	                    return _react2.default.createElement(Row, { key: user.id, user: user, lang: lang });
+	                responsive.device === 'tablet' || responsive.device === 'phone' ? _react2.default.createElement(Block, { key: newUser.id, user: newUser, lang: lang, responsive: responsive, isNew: true }) : _react2.default.createElement(Row, { key: newUser.id, user: newUser, lang: lang, responsive: responsive, isNew: true }),
+	                responsive.device === 'tablet' || responsive.device === 'phone' ? users.map(function (user) {
+	                    return _react2.default.createElement(Block, { key: user.id, user: user, responsive: responsive, lang: lang });
+	                }) : users.map(function (user) {
+	                    return _react2.default.createElement(Row, { key: user.id, user: user, responsive: responsive, lang: lang });
 	                })
 	            );
 	        }
@@ -31733,6 +31780,7 @@
 	        lang: state.HeaderSetting.currentLang,
 	        users: users,
 	        pagination: state.UsersTable.pagination,
+	        responsive: state.HeaderSetting.responsive,
 	        timeStamp: Date.now()
 	    };
 	})(tBody);
@@ -32223,6 +32271,264 @@
 	exports.default = (0, _reactRedux.connect)(function (state) {
 	    return { users: state.UsersTable.users };
 	})(UserProfile);
+
+/***/ },
+/* 315 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(14);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactRedux = __webpack_require__(246);
+	
+	var _actions = __webpack_require__(288);
+	
+	var actions = _interopRequireWildcard(_actions);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by s.evdokimov on 15.12.2016.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+	
+	var Language = function (_Component) {
+	    _inherits(Language, _Component);
+	
+	    function Language(props) {
+	        _classCallCheck(this, Language);
+	
+	        return _possibleConstructorReturn(this, (Language.__proto__ || Object.getPrototypeOf(Language)).call(this, props));
+	    }
+	
+	    _createClass(Language, [{
+	        key: 'handlerChangeLanguage',
+	        value: function handlerChangeLanguage(self, event) {
+	            var el = event.target;
+	            if (el.tagName !== 'A') return false;
+	
+	            var lang = el.dataset.language;
+	            var dispatch = self.props.dispatch;
+	
+	            dispatch(actions.changeLanguage({ lang: lang }));
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var lang = this.props.lang;
+	
+	
+	            return _react2.default.createElement(
+	                'div',
+	                { className: 'languages-wrapper', onClick: this.handlerChangeLanguage.bind(this, this) },
+	                _react2.default.createElement(
+	                    'a',
+	                    { 'data-language': 'en', className: lang === 'en' ? 'active' : null },
+	                    'EN'
+	                ),
+	                _react2.default.createElement(
+	                    'a',
+	                    { 'data-language': 'ru', className: lang === 'ru' ? 'active' : null },
+	                    'RU'
+	                )
+	            );
+	        }
+	    }]);
+	
+	    return Language;
+	}(_react.Component);
+	
+	exports.default = (0, _reactRedux.connect)(function (state) {
+	    return { lang: state.HeaderSetting.currentLang };
+	})(Language);
+
+/***/ },
+/* 316 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(14);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactRedux = __webpack_require__(246);
+	
+	var _Dictionary = __webpack_require__(296);
+	
+	var _Dictionary2 = _interopRequireDefault(_Dictionary);
+	
+	var _actions = __webpack_require__(294);
+	
+	var notifyActions = _interopRequireWildcard(_actions);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by s.evdokimov on 15.12.2016.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+	
+	var Trigger = function (_Component) {
+	    _inherits(Trigger, _Component);
+	
+	    function Trigger(props) {
+	        _classCallCheck(this, Trigger);
+	
+	        return _possibleConstructorReturn(this, (Trigger.__proto__ || Object.getPrototypeOf(Trigger)).call(this, props));
+	    }
+	
+	    _createClass(Trigger, [{
+	        key: 'handlerTriggerNotify',
+	        value: function handlerTriggerNotify(self, event) {
+	            var dispatch = this.props.dispatch;
+	
+	            dispatch(notifyActions.notifyTrigger());
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var _props = this.props,
+	                lang = _props.lang,
+	                notify = _props.notify;
+	
+	
+	            return _react2.default.createElement(
+	                'div',
+	                { className: 'switch-notify' },
+	                _react2.default.createElement('input', { type: 'checkbox', id: 'switch', checked: !notify, onChange: this.handlerTriggerNotify.bind(this, this) }),
+	                _react2.default.createElement(
+	                    'label',
+	                    { htmlFor: 'switch' },
+	                    _Dictionary2.default.t(['header', 'settings', 'label'], lang)
+	                )
+	            );
+	        }
+	    }]);
+	
+	    return Trigger;
+	}(_react.Component);
+	
+	exports.default = (0, _reactRedux.connect)(function (state) {
+	    return {
+	        lang: state.HeaderSetting.currentLang,
+	        notify: state.Notify.isShow
+	    };
+	})(Trigger);
+
+/***/ },
+/* 317 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(14);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactRedux = __webpack_require__(246);
+	
+	var _Dictionary = __webpack_require__(296);
+	
+	var _Dictionary2 = _interopRequireDefault(_Dictionary);
+	
+	var _actions = __webpack_require__(288);
+	
+	var actions = _interopRequireWildcard(_actions);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by s.evdokimov on 15.12.2016.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+	
+	var Search = function (_Component) {
+	    _inherits(Search, _Component);
+	
+	    function Search(props) {
+	        _classCallCheck(this, Search);
+	
+	        // componentWillUpdate
+	        return _possibleConstructorReturn(this, (Search.__proto__ || Object.getPrototypeOf(Search)).call(this, props));
+	    }
+	
+	    _createClass(Search, [{
+	        key: 'handlerSearchBtn',
+	        value: function handlerSearchBtn(self, event) {
+	            var _self$props = self.props,
+	                dispatch = _self$props.dispatch,
+	                users = _self$props.users;
+	            var search = self.refs.search;
+	
+	            var strSearch = search.value;
+	
+	            dispatch(actions.searchUsers({ strSearch: strSearch, users: users }));
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var lang = this.props.lang;
+	
+	
+	            return _react2.default.createElement(
+	                'div',
+	                { className: 'search' },
+	                _react2.default.createElement('input', { name: 'search', ref: 'search' }),
+	                _react2.default.createElement(
+	                    'button',
+	                    { onClick: this.handlerSearchBtn.bind(this, this) },
+	                    _Dictionary2.default.t(['header', 'search', 'button'], lang)
+	                )
+	            );
+	        }
+	    }]);
+	
+	    return Search;
+	}(_react.Component);
+	
+	exports.default = (0, _reactRedux.connect)(function (state) {
+	    return {
+	        users: state.UsersTable.users,
+	        lang: state.HeaderSetting.currentLang
+	    };
+	})(Search);
 
 /***/ }
 /******/ ]);
