@@ -21,7 +21,7 @@ import Notify from './additional/notify/index.jsx';
         let device = '';
 
         if(width > 415 && width <= 1024) device = 'tablet';
-        if(width > 320 && width <= 415) device = 'phone';
+        if(width > 319 && width <= 415) device = 'phone';
 
         return device;
     }

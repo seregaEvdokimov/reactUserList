@@ -228,9 +228,6 @@ tbody tr.block td.avatar {
 tbody tr.block td.avatar img {
   max-width: 100px;
 }
-tbody tr.block td.info {
-  display: table;
-}
 tbody tr.block td.info .id {
   display: none;
 }
@@ -539,23 +536,36 @@ tbody tr.block td.controls a:hover {
 }
 #app.tablet {
   min-width: inherit;
-  width: 100%;
+  height: 100%;
+}
+#app.tablet > div {
+  height: 100%;
 }
 #app.tablet .header {
   overflow: inherit;
   position: fixed;
   top: 0;
+  left: 0;
   z-index: 2;
   width: 100%;
   padding: 10px 0;
 }
 #app.tablet .userList {
-  padding: 50px 0 0 0;
+  padding: 55px 0 0 0;
+  height: 100%;
+}
+#app.tablet .userList table {
+  height: 100%;
+  display: block;
 }
 #app.tablet .userList table.lazyLoad tbody {
-  height: auto;
   display: flex;
   flex-direction: column;
+  min-height: 100%;
+  min-width: 100%;
+}
+#app.tablet .userList table.lazyLoad tbody .block {
+  min-height: 100px;
 }
 #app.tablet .modal .modal-window {
   width: 100%;
@@ -563,7 +573,10 @@ tbody tr.block td.controls a:hover {
 }
 #app.phone {
   min-width: inherit;
-  width: 100%;
+  height: 100%;
+}
+#app.phone > div {
+  height: 100%;
 }
 #app.phone .header {
   overflow: inherit;
@@ -575,12 +588,21 @@ tbody tr.block td.controls a:hover {
   padding: 10px 0;
 }
 #app.phone .userList {
-  padding: 50px 0 0 0;
+  padding: 55px 0 0 0;
+  height: 100%;
+}
+#app.phone .userList table {
+  height: 100%;
+  display: block;
 }
 #app.phone .userList table.lazyLoad tbody {
-  height: auto;
   display: flex;
   flex-direction: column;
+  min-height: 100%;
+  min-width: 100%;
+}
+#app.phone .userList table.lazyLoad tbody .block {
+  min-height: 100px;
 }
 #app.phone .modal .modal-window {
   width: 100%;
@@ -590,4 +612,8 @@ tbody tr.block td.controls a:hover {
   margin: 0;
   padding: 0;
   font-family: 'Arial', sans-serif;
+}
+html,
+body {
+  height: 100%;
 }
