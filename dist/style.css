@@ -77,6 +77,7 @@
   position: relative;
   left: 15px;
   cursor: pointer;
+  display: inline-block;
 }
 .header .hamburger-menu {
   position: absolute;
@@ -215,7 +216,6 @@ tbody tr.block {
   border-bottom: 2px solid #ccc;
   overflow: hidden;
   padding: 4px 0;
-  display: block;
 }
 tbody tr.block td {
   font-size: 12px;
@@ -549,15 +549,13 @@ tbody tr.block td.controls a:hover {
   width: 100%;
   padding: 10px 0;
 }
-#app.tablet .userList table.lazyLoad tbody {
-  height: 92vh;
+#app.tablet .userList {
   padding: 50px 0 0 0;
 }
-#app.tablet .userList .option {
-  position: fixed;
-  bottom: 0;
-  z-index: 1;
-  width: 100%;
+#app.tablet .userList table.lazyLoad tbody {
+  height: auto;
+  display: flex;
+  flex-direction: column;
 }
 #app.tablet .modal .modal-window {
   width: 100%;
@@ -571,19 +569,18 @@ tbody tr.block td.controls a:hover {
   overflow: inherit;
   position: fixed;
   top: 0;
+  left: 0;
   z-index: 2;
   width: 100%;
   padding: 10px 0;
 }
-#app.phone .userList table.lazyLoad tbody {
-  height: 85vh;
+#app.phone .userList {
   padding: 50px 0 0 0;
 }
-#app.phone .userList .option {
-  position: fixed;
-  bottom: 0;
-  z-index: 1;
-  width: 100%;
+#app.phone .userList table.lazyLoad tbody {
+  height: auto;
+  display: flex;
+  flex-direction: column;
 }
 #app.phone .modal .modal-window {
   width: 100%;
