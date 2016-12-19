@@ -53,12 +53,12 @@
 }
 
 .modal-window-group {
-  img {
+  .modal-window-group__picture {
     display: block;
     margin-bottom: 10px;
   }
 
-  label {
+  .modal-window-group__label {
     display: block;
     color: #ddd;
     margin-bottom: 10px;
@@ -66,7 +66,7 @@
     line-height: 14px;
   }
 
-  input {
+  .modal-window-group__input {
     padding: 6px 10px;
     color: #333;
     background: #fff;
@@ -89,27 +89,27 @@
     }
   }
 
+  .modal-window-group__button {
+    color: #ddd;
+    background: #555;
+    border: 0;
+    padding: 10px 10px;
+    font-size: 14px;
+    margin: 0 5px;
+    width: 93px;
+    cursor: pointer;
+
+    &:hover {
+      background: #222;
+    }
+
+    &:focus {
+      outline: 0;
+    }
+  }
+
   &_control {
     display: table;
     margin: 0 auto;
-
-    button {
-      color: #ddd;
-      background: #555;
-      border: 0;
-      padding: 10px 10px;
-      font-size: 14px;
-      margin: 0 5px;
-      width: 93px;
-      cursor: pointer;
-
-      &:hover {
-        background: #222;
-      }
-
-      &:focus {
-        outline: 0;
-      }
-    }
   }
 }

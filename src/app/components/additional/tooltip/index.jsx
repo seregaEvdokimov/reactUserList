@@ -18,15 +18,15 @@ class Tooltip extends Component {
 
         switch(type) {
             case 'name':
-                html = <div className={"tooltip-" + type}>
-                            <img src={data.img} />
-                            <p>{data.text}</p>
+                html = <div className={"tooltip__item tooltip_" + type}>
+                            <img className="tooltip__picture" src={data.img} />
+                            <p className="tooltip__paragraph">{data.text}</p>
                         </div>;
                 break;
             case 'email':
                 let str = Dictionary.getMessage({number: data.text}, ['tooltip', 'email'], lang);
-                html = <div className={"tooltip-" + type}>
-                            <p>{str}</p>
+                html = <div className={"tooltip__item tooltip_" + type}>
+                            <p className="tooltip__email">{str}</p>
                         </div>;
                 break;
         }
@@ -66,7 +66,7 @@ class Tooltip extends Component {
         let {tooltip} = this.props;
         let {type, data, show, left, top} = tooltip;
         return (
-            <div ref="tooltip" className={"tooltip " + (show ? 'show' : '')} style={{top: this.getY(top), left: this.getX(left)}}>
+            <div ref="tooltip" className={"tooltip " + (show ? 'tooltip_show' : '')} style={{top: this.getY(top), left: this.getX(left)}}>
                 {this.getStructureTooltip(type, data)}
             </div>
         )

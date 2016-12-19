@@ -33,14 +33,14 @@ class tHead extends Component {
 
         return (
             <thead className="table__thead" onClick={this.handlerSortBy.bind(this, this)}>
-                <tr className="row row_thead">
-                    <th className={"id" + (sort.param === 'id' ? className : '')} data-sort-by="id">{Dictionary.t(['userTable', 'tHead', 'id'], lang)}</th>
-                    <th className={"name" + (sort.param === 'name' ? className : '')} data-sort-by="name">{Dictionary.t(['userTable', 'tHead', 'name'], lang)}</th>
-                    <th className={"email" + (sort.param === 'email' ? className : '')} data-sort-by="email">{Dictionary.t(['userTable', 'tHead', 'email'], lang)}</th>
-                    <th className={"birth" + (sort.param === 'birth' ? className : '')} data-sort-by="birth">{Dictionary.t(['userTable', 'tHead', 'birth'], lang)}</th>
-                    <th className={"date" + (sort.param === 'date' ? className : '')} data-sort-by="date">{Dictionary.t(['userTable', 'tHead', 'time'], lang)}</th>
-                    <th className="delete">{Dictionary.t(['userTable', 'tHead', 'delete'], lang)}</th>
-                    <th className="edit">{Dictionary.t(['userTable', 'tHead', 'edit'], lang)}</th>
+                <tr className="row row_type_head">
+                    <th className={"row__id" + (sort.param === 'id' ? className : '')} data-sort-by="id">{Dictionary.t(['userTable', 'tHead', 'id'], lang)}</th>
+                    <th className={"row__name" + (sort.param === 'name' ? className : '')} data-sort-by="name">{Dictionary.t(['userTable', 'tHead', 'name'], lang)}</th>
+                    <th className={"row__email" + (sort.param === 'email' ? className : '')} data-sort-by="email">{Dictionary.t(['userTable', 'tHead', 'email'], lang)}</th>
+                    <th className={"row__birth" + (sort.param === 'birth' ? className : '')} data-sort-by="birth">{Dictionary.t(['userTable', 'tHead', 'birth'], lang)}</th>
+                    <th className={"row__date" + (sort.param === 'date' ? className : '')} data-sort-by="date">{Dictionary.t(['userTable', 'tHead', 'time'], lang)}</th>
+                    <th className="row__delete">{Dictionary.t(['userTable', 'tHead', 'delete'], lang)}</th>
+                    <th className="row__edit">{Dictionary.t(['userTable', 'tHead', 'edit'], lang)}</th>
                 </tr>
             </thead>
         )

@@ -26,8 +26,8 @@ class Language extends Component {
 
         return (
             <div className="language" onClick={this.handlerChangeLanguage.bind(this,  this)}>
-                <a data-language="en" className={lang === 'en' ? 'active' : null }>EN</a>
-                <a data-language="ru" className={lang === 'ru' ? 'active' : null }>RU</a>
+                <a className={"language__link " + (lang === 'en' ? 'language__link_active' : null)} data-language="en">EN</a>
+                <a className={"language__link " + (lang === 'ru' ? 'language__link_active' : null)} data-language="ru">RU</a>
             </div>
         )
     }

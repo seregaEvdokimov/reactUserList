@@ -29,28 +29,28 @@
 
 
 .row {
-  .id {
+  .row__id {
     width: 70px;
 
-    a {
+    .row__link {
       background: none;
       color: black;
     }
   }
 
-  .name {
+  .row__name {
     width: 100px;
   }
 
-  .email {
+  .row__email {
     width: 160px;
   }
 
-  .birth {
+  .row__birth {
     width: 145px;
   }
 
-  .date {
+  .row__date {
     width: 300px;
     position: relative;
     overflow: hidden;
@@ -71,15 +71,21 @@
     }
   }
 
-  .del,
-  .delete,
-  .edit {
+  .row__del,
+  .row__delete,
+  .row__edit {
     width: 130px;
     padding: 0 !important;
   }
 
-  &_thead {
-    th {
+  &_type_head {
+    .row__id,
+    .row__name,
+    .row__email,
+    .row__birth,
+    .row__date,
+    .row__delete,
+    .row__edit {
       padding: 10px 5px;
       text-align: center;
       font-size: 12px;
@@ -120,7 +126,7 @@
     }
   }
 
-  &_tbody {
+  &_type_body {
     border-bottom: 1px solid #ccc;
     position: relative;
     transition: transform .35s;
@@ -144,73 +150,89 @@
     &.addition {
       transform: translateX(100%);
     }
+  }
 
-    &_type_row {
-      td {
-        font-size: 12px;
-        padding: 0 2px;
-        text-align: left;
+  &_display_type_row {
+    .row__id,
+    .row__name,
+    .row__email,
+    .row__birth,
+    .row__date,
+    .row__del,
+    .row__edit {
+      font-size: 12px;
+      padding: 0 2px;
+      text-align: left;
 
-        a {
-          display: block;
-          background: #666;
-          color: #eee;
-          margin: 1px;
-          cursor: pointer;
-          text-align: center;
-          padding: 5px 0;
-
-          &:hover {
-            background: #000;
-          }
-        }
-
-        .left-time {
-          font-size: 10px;
-        }
+      .left-time {
+        font-size: 10px;
       }
     }
 
-    &_type_block {
-      border-bottom: 2px solid #ccc;
-      overflow: hidden;
+    .row__link {
+      display: block;
+      background: #666;
+      color: #eee;
+      margin: 1px;
+      cursor: pointer;
+      text-align: center;
+      padding: 5px 0;
+    }
+
+    .row__button {
+      display: block;
+      background: #666;
+      color: #eee;
+      margin: 1px;
+      cursor: pointer;
+      text-align: center;
+      padding: 5px 0;
+
+      &:hover {
+        background: #000;
+      }
+    }
+  }
+
+  &_display_type_block {
+    border-bottom: 2px solid #ccc;
+    overflow: hidden;
+    padding: 4px 0;
+
+    .row__avatar,
+    .row__info,
+    .row__control {
+      font-size: 12px;
+      line-height: 20px;
+      padding: 0 15px;
+    }
+
+    .row__avatar {
+      float: left;
+      .row__picture {
+        max-width: 100px;
+      }
+    }
+
+    .row-info {
+      .row-info-id {display: none;}
+    }
+
+    .row__control {
+      float: left;
       padding: 4px 0;
+      .row__control-button {
+        width: 110px;
+        text-align: center;
+        background: #333;
+        color: #ebebeb;
+        display: inline-block;
+        margin: 4px;
+        padding: 2px 0;
+        cursor: pointer;
 
-      td {
-        font-size: 12px;
-        line-height: 20px;
-        padding: 0 15px;
-
-        &.avatar {
-          float: left;
-          img {
-            max-width: 100px;
-          }
-        }
-
-        &.info {
-          .id {
-            display: none;
-          }
-        }
-
-        &.controls {
-          float: left;
-          padding: 4px 0;
-          a {
-            width: 110px;
-            text-align: center;
-            background: #333;
-            color: #ebebeb;
-            display: inline-block;
-            margin: 4px;
-            padding: 2px 0;
-            cursor: pointer;
-
-            &:hover {
-              background: #000;
-            }
-          }
+        &:hover {
+          background: #000;
         }
       }
     }
@@ -241,7 +263,7 @@
     display: inline-block;
     margin: 0 235px;
 
-    .page {
+    .option__page {
       display: inline-block;
       color: #ddd;
       background: #666;

@@ -5,45 +5,39 @@
   top: 0;
   left: 0;
 
-  &.show {
+  &_show {
     display: block;
   }
 
-  .tooltip-name {
-    background: #333;
+  .tooltip__item {
+    &.tooltip_name {
+      background: #333;
+    }
 
-    p {
+    &.tooltip_email {
+      width: 275px;
+      background: #333;
+    }
+  }
+
+  .tooltip__picture {
+      display: table;
+      margin: 0 auto;
+      max-width: 100%;
+  }
+
+  .tooltip__paragraph {
       text-align: center;
       color: #fff;
       padding: 10px 5px;
       font-size: 14px;
-    }
-
-    img {
-      display: table;
-      margin: 0 auto;
-      max-width: 100%;
-    }
   }
 
-  .tooltip-email {
-    width: 275px;
-    background: #333;
-
-    p {
+  .tooltip__email {
       color: #fff;
       padding: 10px 0;
       font-size: 14px;
       text-align: center;
-
-      mark {
-        background: none;
-        color: #fff;
-        display: block;
-        font-size: 22px;
-        text-align: center;
-        padding: 5px 0;
-      }
-    }
   }
+
 }

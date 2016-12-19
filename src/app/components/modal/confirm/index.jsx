@@ -19,7 +19,7 @@ class Confirm extends Component {
         if (el.tagName != 'BUTTON') return false;
 
         let {params, dispatch} = this.props;
-        switch(el.className) {
+        switch(el.classList[1]) {
             case 'ok':
                 params.callback();
                 dispatch(actions.hideModalAll());
@@ -39,8 +39,8 @@ class Confirm extends Component {
                 <h3 className="modal-window__caption">{Dictionary.t(['modal', 'confirm', 'message'], lang)}</h3>
                 <div className="modal-window__group modal-window__group_control" onClick={this.handlerControlsBtn.bind(this, this)}>
                     <div className="modal-window-group modal-window-group_control">
-                        <button className="ok">{Dictionary.t(['modal', 'confirm', 'save'], lang)}</button>
-                        <button className="cancel">{Dictionary.t(['modal', 'confirm', 'cancel'], lang)}</button>
+                        <button className="modal-window-group__button ok">{Dictionary.t(['modal', 'confirm', 'save'], lang)}</button>
+                        <button className="modal-window-group__button cancel">{Dictionary.t(['modal', 'confirm', 'cancel'], lang)}</button>
                     </div>
                 </div>
             </div>

@@ -27,8 +27,8 @@ class Search extends Component {
 
         return (
             <div className="search">
-                <input name="search" ref="search" />
-                <button onClick={this.handlerSearchBtn.bind(this,  this)}>{Dictionary.t(['header', 'search', 'button'], lang)}</button>
+                <input className="search__input" name="search" ref="search" />
+                <button className="search__button" onClick={this.handlerSearchBtn.bind(this,  this)}>{Dictionary.t(['header', 'search', 'button'], lang)}</button>
             </div>
         )
     }

@@ -67,17 +67,17 @@ class Block extends Component {
         date = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
 
         return (
-            <tr className="row row_tbody row_tbody_type_block">
-                {(responsive.device !== 'phone') ? <td className="avatar"><img src={user.avatar} alt=""/></td> : null }
-                <td className="info">
-                    <p className="id">{user.id}</p>
-                    <p>Date/Time: {date}</p>
-                    <p>Person: {user.name}</p>
-                    <p>Email: {user.email}</p>
+            <tr className="row row_type_body row_display_type_block">
+                {(responsive.device !== 'phone') ? <td className="row__avatar"><img className="row__picture" src={user.avatar} alt=""/></td> : null }
+                <td className="row__info">
+                    <p className="row__link">{user.id}</p>
+                    <p className="row__info-date">Date/Time: {date}</p>
+                    <p className="row__info-name">Person: {user.name}</p>
+                    <p className="row__info-email">Email: {user.email}</p>
                 </td>
-                <td className="controls">
-                    <a className="delete-btn">{Dictionary.t(['userTable', 'tBody', 'delete'], lang)}</a>
-                    <a className="edit-btn">{Dictionary.t(['userTable', 'tBody', 'edit'], lang)}</a>
+                <td className="row__control">
+                    <a className="row__control-button delete-btn">{Dictionary.t(['userTable', 'tBody', 'delete'], lang)}</a>
+                    <a className="row__control-button edit-btn">{Dictionary.t(['userTable', 'tBody', 'edit'], lang)}</a>
                 </td>
             </tr>
         );
@@ -129,20 +129,20 @@ class Row extends Component {
         birth = birth.getDate() + '. ' + (birth.getMonth() + 1) + '. ' + birth.getFullYear();
 
         return (
-            <tr className={'row row_tbody row_tbody_type_row ' + (isNew ? 'addition' : '')} ref="el">
-                <td className="id"><Link to={`/user/${user.id}`}>{user.id}</Link></td>
-                <td className="name" data-tooltip="name">{user.name}</td>
-                <td className="email" data-tooltip="email">{user.email}</td>
-                <td className="birth">{birth}</td>
-                <td className="date">
+            <tr className={'row row_type_body row_display_type_row ' + (isNew ? 'addition' : '')} ref="el">
+                <td className="row__id"><Link className="row__link" to={`/user/${user.id}`}>{user.id}</Link></td>
+                <td className="row__name" data-tooltip="name">{user.name}</td>
+                <td className="row__email" data-tooltip="email">{user.email}</td>
+                <td className="row__birth">{birth}</td>
+                <td className="row__date">
                     <div className="left-time" ref='date'>{date}</div>
                     <div className="overlay positive" ref='overlay' style={{width: '0%'}}></div>
                 </td>
-                <td className="del">
-                    <a className="delete-btn">{Dictionary.t(['userTable', 'tBody', 'delete'], lang)}</a>
+                <td className="row__del">
+                    <a className="row__button delete-btn">{Dictionary.t(['userTable', 'tBody', 'delete'], lang)}</a>
                 </td>
-                <td className="edit">
-                    <a className="edit-btn">{Dictionary.t(['userTable', 'tBody', 'edit'], lang)}</a>
+                <td className="row__edit">
+                    <a className="row__button edit-btn">{Dictionary.t(['userTable', 'tBody', 'edit'], lang)}</a>
                 </td>
             </tr>
         );
@@ -166,12 +166,12 @@ class tBody extends Component {
 
         let {dispatch, users, lang} = self.props;
         let row = self.getRowId(el);
-        let id = parseInt(row.querySelector('.id').textContent);
+        let id = parseInt(row.querySelector('.row__link').textContent);
         let userFind = users.filter(function(user) {
             return user.id === id;
         })[0];
 
-        switch(el.className) {
+        switch(el.classList[1]) {
             case 'delete-btn':
                 let str = Dictionary.getMessage(userFind, ['notify', 'deleteUser'], lang);
                 row.classList.add('deleting');

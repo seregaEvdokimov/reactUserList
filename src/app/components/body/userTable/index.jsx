@@ -26,7 +26,7 @@ class Table extends Component {
         if(el.tagName == 'TD' && el.dataset.tooltip) {
             let {dispatch} = self.props;
             let tooltipType = el.dataset.tooltip;
-            let id = el.parentNode.querySelector('.id').textContent;
+            let id = el.parentNode.querySelector('.row__id').textContent;
             let coords = {x: event.pageX, y: event.pageY};
 
             switch(type) {

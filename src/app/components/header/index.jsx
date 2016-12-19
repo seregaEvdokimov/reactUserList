@@ -43,7 +43,7 @@ function HamburgerMenu({active, onclick}) {
                 <div className="hamburger-menu__search">
                     <Search />
                 </div>
-                <div className="close" onClick={onclick}></div>
+                <div className="hamburger-menu__close" onClick={onclick}></div>
             </div>
         </div>
     )

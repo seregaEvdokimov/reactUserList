@@ -40,7 +40,7 @@
 
 
 .language {
-  a {
+  .language__link {
     color: #333;
     font-size: 14px;
     cursor: pointer;
@@ -49,7 +49,7 @@
     padding: 6px;
     display: inline-block;
 
-    &.active {
+    &_active {
       background: #333;
       color: #eee;
     }
@@ -59,7 +59,7 @@
 .search {
   overflow: hidden;
 
-  input {
+  .search__input {
     float: left;
     padding: 4px 5px;
     margin: 1px;
@@ -73,7 +73,7 @@
     }
   }
 
-  button {
+  .search__button {
     cursor: pointer;
     float: right;
     display: block;
@@ -93,13 +93,13 @@
 }
 
 .switch-notify {
-  input {
+  .switch-notify__checkbox {
     position: relative;
     top: 2px;
     margin: 0 5px;
   }
 
-  label {
+  .switch-notify__label {
     color: #333;
     font-size: 14px;
     display: inline-block;
@@ -128,16 +128,12 @@
     transition: transform .25s;
   }
 
-  div {
-    display: block;
-    float: none;
-  }
 
   .hamburger-menu__switch {
     order: 1;
     padding: 10px 5px;
-    label {
-      color: #ebebeb;
+    .switch-notify {
+      .switch-notify__label {color: #ebebeb;}
     }
   }
 
@@ -145,11 +141,13 @@
     order: 0;
     margin-left: 0;
     padding: 10px 5px;
-    a {
-      color: #eee;
-      &.active {
-        background: #eee;
-        color: #333;
+    .language {
+      .language__link {
+        color: #eee;
+        &_active {
+          background: #eee;
+          color: #333;
+        }
       }
     }
   }
@@ -157,12 +155,12 @@
   .hamburger-menu__search {
     order: 2;
     padding: 10px 5px;
-    button {
-      float: left;
+    .search {
+      .search__button {float: left;}
     }
   }
 
-  .close {
+  .hamburger-menu__close {
     width: 30px;
     height: 30px;
     position: absolute;

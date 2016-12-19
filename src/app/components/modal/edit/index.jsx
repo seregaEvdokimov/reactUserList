@@ -25,7 +25,7 @@ class Edit extends Component{
         let el = event.target;
         if(el.tagName !== 'BUTTON') return false;
 
-        switch(el.className) {
+        switch(el.classList[1]) {
             case 'add-btn':
                 self.dataValidate();
                 break;
@@ -208,40 +208,40 @@ class Edit extends Component{
                 <h3 className="modal-window__caption">{Dictionary.t(['modal', 'edit', 'caption'], lang)}</h3>
                 <div className="modal-window__group">
                     <div className="modal-window-group">
-                        <label>{Dictionary.t(['modal', 'edit', 'avatar'], lang)}</label>
-                        <img src="" alt="" ref="imgAvatar" />
-                        <input type="file" ref="avatar" name="avatar" onChange={this.handlerUploadFile.bind(this, this)} />
+                        <label className="modal-window-group__label">{Dictionary.t(['modal', 'edit', 'avatar'], lang)}</label>
+                        <img className="modal-window-group__picture" src="" alt="" ref="imgAvatar" />
+                        <input className="modal-window-group__input" type="file" ref="avatar" name="avatar" onChange={this.handlerUploadFile.bind(this, this)} />
                     </div>
                 </div>
                 <div className="modal-window__group">
                     <div className="modal-window-group">
-                        <label>{Dictionary.t(['modal', 'edit', 'name'], lang)}</label>
-                        <input type="text" name="name" ref="name" />
+                        <label className="modal-window-group__label">{Dictionary.t(['modal', 'edit', 'name'], lang)}</label>
+                        <input className="modal-window-group__input" type="text" name="name" ref="name" />
                     </div>
                 </div>
                 <div className="modal-window__group">
                     <div className="modal-window-group">
-                        <label>{Dictionary.t(['modal', 'edit', 'email'], lang)}</label>
-                        <input type="text" name="email" ref="email" />
+                        <label className="modal-window-group__label">{Dictionary.t(['modal', 'edit', 'email'], lang)}</label>
+                        <input className="modal-window-group__input" type="text" name="email" ref="email" />
                     </div>
                 </div>
                 <div className="modal-window__group">
                     <div className="modal-window-group">
-                        <label>{Dictionary.t(['modal', 'edit', 'birth'], lang)}</label>
-                        <input type="date" name="birth" ref="birth" />
+                        <label className="modal-window-group__label">{Dictionary.t(['modal', 'edit', 'birth'], lang)}</label>
+                        <input className="modal-window-group__input" type="date" name="birth" ref="birth" />
                     </div>
                 </div>
                 <div className="modal-window__group">
                     <div className="modal-window-group">
-                        <label>{Dictionary.t(['modal', 'edit', 'time'], lang)}</label>
-                        <input type="date" name="date" ref="date" />
-                        <input type="time" name="time" ref="time" />
+                        <label className="modal-window-group__label">{Dictionary.t(['modal', 'edit', 'time'], lang)}</label>
+                        <input className="modal-window-group__input" type="date" name="date" ref="date" />
+                        <input className="modal-window-group__input" type="time" name="time" ref="time" />
                     </div>
                 </div>
                 <div className="modal-window__group modal-window__group_control" onClick={this.handlerBtnControls.bind(this, this)}>
                     <div className="modal-window-group modal-window-group_control">
-                        <button className="add-btn">{Dictionary.t(['modal', 'edit', 'save'], lang)}</button>
-                        <button className="cancel-btn">{Dictionary.t(['modal', 'edit', 'cancel'], lang)}</button>
+                        <button className="modal-window-group__button add-btn">{Dictionary.t(['modal', 'edit', 'save'], lang)}</button>
+                        <button className="modal-window-group__button cancel-btn">{Dictionary.t(['modal', 'edit', 'cancel'], lang)}</button>
                     </div>
                 </div>
                 <input type="hidden" name="id" className="id-input" ref="id" />

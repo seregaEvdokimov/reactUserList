@@ -25,11 +25,11 @@ class UserProfile extends Component {
 
         return (
             <div className="person-wrapper">
-                <img src={find.avatar} alt=""/>
-                <div className="info">
-                    <p className="id">{find.id}</p>
-                    <p className="id">{find.name}</p>
-                    <p className="id">{find.email}</p>
+                <img className="person-wrapper__avatar" src={find.avatar} alt=""/>
+                <div className="person-wrapper__info">
+                    <p className="person-wrapper__paragraph">{find.id}</p>
+                    <p className="person-wrapper__paragraph">{find.name}</p>
+                    <p className="person-wrapper__paragraph">{find.email}</p>
                 </div>
             </div>
         )

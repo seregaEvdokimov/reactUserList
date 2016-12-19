@@ -21,7 +21,7 @@
   display: flex;
   justify-content: space-between;
 }
-.language a {
+.language .language__link {
   color: #333;
   font-size: 14px;
   cursor: pointer;
@@ -30,14 +30,14 @@
   padding: 6px;
   display: inline-block;
 }
-.language a.active {
+.language .language__link_active {
   background: #333;
   color: #eee;
 }
 .search {
   overflow: hidden;
 }
-.search input {
+.search .search__input {
   float: left;
   padding: 4px 5px;
   margin: 1px;
@@ -45,11 +45,11 @@
   color: #999;
   border: 1px solid #999;
 }
-.search input:focus,
-.search input:hover {
+.search .search__input:focus,
+.search .search__input:hover {
   outline: 0;
 }
-.search button {
+.search .search__button {
   cursor: pointer;
   float: right;
   display: block;
@@ -61,16 +61,16 @@
   border: 0;
   width: 100px;
 }
-.search button:focus,
-.search button:hover {
+.search .search__button:focus,
+.search .search__button:hover {
   outline: 0;
 }
-.switch-notify input {
+.switch-notify .switch-notify__checkbox {
   position: relative;
   top: 2px;
   margin: 0 5px;
 }
-.switch-notify label {
+.switch-notify .switch-notify__label {
   color: #333;
   font-size: 14px;
   display: inline-block;
@@ -94,15 +94,11 @@
   transform: translateX(0%);
   transition: transform .25s;
 }
-.hamburger-menu div {
-  display: block;
-  float: none;
-}
 .hamburger-menu .hamburger-menu__switch {
   order: 1;
   padding: 10px 5px;
 }
-.hamburger-menu .hamburger-menu__switch label {
+.hamburger-menu .hamburger-menu__switch .switch-notify .switch-notify__label {
   color: #ebebeb;
 }
 .hamburger-menu .hamburger-menu__language {
@@ -110,10 +106,10 @@
   margin-left: 0;
   padding: 10px 5px;
 }
-.hamburger-menu .hamburger-menu__language a {
+.hamburger-menu .hamburger-menu__language .language .language__link {
   color: #eee;
 }
-.hamburger-menu .hamburger-menu__language a.active {
+.hamburger-menu .hamburger-menu__language .language .language__link_active {
   background: #eee;
   color: #333;
 }
@@ -121,10 +117,10 @@
   order: 2;
   padding: 10px 5px;
 }
-.hamburger-menu .hamburger-menu__search button {
+.hamburger-menu .hamburger-menu__search .search .search__button {
   float: left;
 }
-.hamburger-menu .close {
+.hamburger-menu .hamburger-menu__close {
   width: 30px;
   height: 30px;
   position: absolute;
@@ -150,58 +146,82 @@
   height: 250px;
   overflow: auto;
 }
-.row .id {
+.row .row__id {
   width: 70px;
 }
-.row .id a {
+.row .row__id .row__link {
   background: none;
   color: black;
 }
-.row .name {
+.row .row__name {
   width: 100px;
 }
-.row .email {
+.row .row__email {
   width: 160px;
 }
-.row .birth {
+.row .row__birth {
   width: 145px;
 }
-.row .date {
+.row .row__date {
   width: 300px;
   position: relative;
   overflow: hidden;
 }
-.row .date .overlay {
+.row .row__date .overlay {
   position: absolute;
   top: 0;
   left: 0;
   height: 100%;
 }
-.row .date .overlay.positive {
+.row .row__date .overlay.positive {
   background: rgba(100, 255, 100, 0.4);
 }
-.row .date .overlay.negative {
+.row .row__date .overlay.negative {
   background: rgba(255, 80, 80, 0.4);
 }
-.row .del,
-.row .delete,
-.row .edit {
+.row .row__del,
+.row .row__delete,
+.row .row__edit {
   width: 130px;
   padding: 0 !important;
 }
-.row_thead th {
+.row_type_head .row__id,
+.row_type_head .row__name,
+.row_type_head .row__email,
+.row_type_head .row__birth,
+.row_type_head .row__date,
+.row_type_head .row__delete,
+.row_type_head .row__edit {
   padding: 10px 5px;
   text-align: center;
   font-size: 12px;
 }
-.row_thead th[data-sort-by] {
+.row_type_head .row__id[data-sort-by],
+.row_type_head .row__name[data-sort-by],
+.row_type_head .row__email[data-sort-by],
+.row_type_head .row__birth[data-sort-by],
+.row_type_head .row__date[data-sort-by],
+.row_type_head .row__delete[data-sort-by],
+.row_type_head .row__edit[data-sort-by] {
   cursor: pointer;
 }
-.row_thead th.active {
+.row_type_head .row__id.active,
+.row_type_head .row__name.active,
+.row_type_head .row__email.active,
+.row_type_head .row__birth.active,
+.row_type_head .row__date.active,
+.row_type_head .row__delete.active,
+.row_type_head .row__edit.active {
   background: #000;
   position: relative;
 }
-.row_thead th.active.asc:before {
+.row_type_head .row__id.active.asc:before,
+.row_type_head .row__name.active.asc:before,
+.row_type_head .row__email.active.asc:before,
+.row_type_head .row__birth.active.asc:before,
+.row_type_head .row__date.active.asc:before,
+.row_type_head .row__delete.active.asc:before,
+.row_type_head .row__edit.active.asc:before {
   content: '';
   position: absolute;
   top: 14px;
@@ -211,7 +231,13 @@
   height: 6px;
   background-size: contain;
 }
-.row_thead th.active.desc:before {
+.row_type_head .row__id.active.desc:before,
+.row_type_head .row__name.active.desc:before,
+.row_type_head .row__email.active.desc:before,
+.row_type_head .row__birth.active.desc:before,
+.row_type_head .row__date.active.desc:before,
+.row_type_head .row__delete.active.desc:before,
+.row_type_head .row__edit.active.desc:before {
   content: '';
   position: absolute;
   top: 14px;
@@ -221,32 +247,47 @@
   height: 6px;
   background-size: contain;
 }
-.row_tbody {
+.row_type_body {
   border-bottom: 1px solid #ccc;
   position: relative;
   transition: transform .35s;
 }
-.row_tbody:nth-child(even) {
+.row_type_body:nth-child(even) {
   background: #eee;
 }
-.row_tbody:nth-child(odd) {
+.row_type_body:nth-child(odd) {
   background: #ddd;
 }
-.row_tbody:hover {
+.row_type_body:hover {
   background: #fff;
 }
-.row_tbody.deleting {
+.row_type_body.deleting {
   transform: translateX(-100%);
 }
-.row_tbody.addition {
+.row_type_body.addition {
   transform: translateX(100%);
 }
-.row_tbody_type_row td {
+.row_display_type_row .row__id,
+.row_display_type_row .row__name,
+.row_display_type_row .row__email,
+.row_display_type_row .row__birth,
+.row_display_type_row .row__date,
+.row_display_type_row .row__del,
+.row_display_type_row .row__edit {
   font-size: 12px;
   padding: 0 2px;
   text-align: left;
 }
-.row_tbody_type_row td a {
+.row_display_type_row .row__id .left-time,
+.row_display_type_row .row__name .left-time,
+.row_display_type_row .row__email .left-time,
+.row_display_type_row .row__birth .left-time,
+.row_display_type_row .row__date .left-time,
+.row_display_type_row .row__del .left-time,
+.row_display_type_row .row__edit .left-time {
+  font-size: 10px;
+}
+.row_display_type_row .row__link {
   display: block;
   background: #666;
   color: #eee;
@@ -255,36 +296,44 @@
   text-align: center;
   padding: 5px 0;
 }
-.row_tbody_type_row td a:hover {
+.row_display_type_row .row__button {
+  display: block;
+  background: #666;
+  color: #eee;
+  margin: 1px;
+  cursor: pointer;
+  text-align: center;
+  padding: 5px 0;
+}
+.row_display_type_row .row__button:hover {
   background: #000;
 }
-.row_tbody_type_row td .left-time {
-  font-size: 10px;
-}
-.row_tbody_type_block {
+.row_display_type_block {
   border-bottom: 2px solid #ccc;
   overflow: hidden;
   padding: 4px 0;
 }
-.row_tbody_type_block td {
+.row_display_type_block .row__avatar,
+.row_display_type_block .row__info,
+.row_display_type_block .row__control {
   font-size: 12px;
   line-height: 20px;
   padding: 0 15px;
 }
-.row_tbody_type_block td.avatar {
+.row_display_type_block .row__avatar {
   float: left;
 }
-.row_tbody_type_block td.avatar img {
+.row_display_type_block .row__avatar .row__picture {
   max-width: 100px;
 }
-.row_tbody_type_block td.info .id {
+.row_display_type_block .row-info .row-info-id {
   display: none;
 }
-.row_tbody_type_block td.controls {
+.row_display_type_block .row__control {
   float: left;
   padding: 4px 0;
 }
-.row_tbody_type_block td.controls a {
+.row_display_type_block .row__control .row__control-button {
   width: 110px;
   text-align: center;
   background: #333;
@@ -294,7 +343,7 @@
   padding: 2px 0;
   cursor: pointer;
 }
-.row_tbody_type_block td.controls a:hover {
+.row_display_type_block .row__control .row__control-button:hover {
   background: #000;
 }
 .option {
@@ -318,7 +367,7 @@
   display: inline-block;
   margin: 0 235px;
 }
-.option .option__pagination .page {
+.option .option__pagination .option__page {
   display: inline-block;
   color: #ddd;
   background: #666;
@@ -330,8 +379,8 @@
   margin: 0 2px;
   cursor: pointer;
 }
-.option .option__pagination .page:hover,
-.option .option__pagination .page.active {
+.option .option__pagination .option__page:hover,
+.option .option__pagination .option__page.active {
   background: #222;
 }
 .person-wrapper {
@@ -340,15 +389,15 @@
   padding: 15px;
   background: #666;
 }
-.person-wrapper img {
+.person-wrapper .person-wrapper__avatar {
   float: left;
 }
-.person-wrapper .info {
+.person-wrapper .person-wrapper__info {
   padding: 28px 0;
   float: left;
   margin-left: 15px;
 }
-.person-wrapper .info p {
+.person-wrapper .person-wrapper__paragraph {
   width: auto;
   color: #ebebeb;
   font-size: 16px;
@@ -402,18 +451,18 @@
   clear: both;
   min-width: 100%;
 }
-.modal-window-group img {
+.modal-window-group .modal-window-group__picture {
   display: block;
   margin-bottom: 10px;
 }
-.modal-window-group label {
+.modal-window-group .modal-window-group__label {
   display: block;
   color: #ddd;
   margin-bottom: 10px;
   font-size: 14px;
   line-height: 14px;
 }
-.modal-window-group input {
+.modal-window-group .modal-window-group__input {
   padding: 6px 10px;
   color: #333;
   background: #fff;
@@ -423,20 +472,16 @@
   display: block;
   margin-bottom: 10px;
 }
-.modal-window-group input.error {
+.modal-window-group .modal-window-group__input.error {
   border-color: red !important;
 }
-.modal-window-group input.success {
+.modal-window-group .modal-window-group__input.success {
   border-color: green;
 }
-.modal-window-group input:focus {
+.modal-window-group .modal-window-group__input:focus {
   outline: 0;
 }
-.modal-window-group_control {
-  display: table;
-  margin: 0 auto;
-}
-.modal-window-group_control button {
+.modal-window-group .modal-window-group__button {
   color: #ddd;
   background: #555;
   border: 0;
@@ -446,11 +491,15 @@
   width: 93px;
   cursor: pointer;
 }
-.modal-window-group_control button:hover {
+.modal-window-group .modal-window-group__button:hover {
   background: #222;
 }
-.modal-window-group_control button:focus {
+.modal-window-group .modal-window-group__button:focus {
   outline: 0;
+}
+.modal-window-group_control {
+  display: table;
+  margin: 0 auto;
 }
 .tooltip {
   display: none;
@@ -459,40 +508,32 @@
   top: 0;
   left: 0;
 }
-.tooltip.show {
+.tooltip_show {
   display: block;
 }
-.tooltip .tooltip-name {
+.tooltip .tooltip__item.tooltip_name {
   background: #333;
 }
-.tooltip .tooltip-name p {
+.tooltip .tooltip__item.tooltip_email {
+  width: 275px;
+  background: #333;
+}
+.tooltip .tooltip__picture {
+  display: table;
+  margin: 0 auto;
+  max-width: 100%;
+}
+.tooltip .tooltip__paragraph {
   text-align: center;
   color: #fff;
   padding: 10px 5px;
   font-size: 14px;
 }
-.tooltip .tooltip-name img {
-  display: table;
-  margin: 0 auto;
-  max-width: 100%;
-}
-.tooltip .tooltip-email {
-  width: 275px;
-  background: #333;
-}
-.tooltip .tooltip-email p {
+.tooltip .tooltip__email {
   color: #fff;
   padding: 10px 0;
   font-size: 14px;
   text-align: center;
-}
-.tooltip .tooltip-email p mark {
-  background: none;
-  color: #fff;
-  display: block;
-  font-size: 22px;
-  text-align: center;
-  padding: 5px 0;
 }
 .notify-wrapper {
   position: fixed;
@@ -541,14 +582,14 @@
   height: 100%;
   display: block;
 }
-#app.tablet .user-list .user-list__table .table_lazyload tbody {
+#app.tablet .user-list .user-list__table .table_lazyload .table__tbody {
   display: flex;
   flex-direction: column;
   min-height: 100%;
   min-width: 100%;
 }
-#app.tablet .user-list .user-list__table .table_lazyload tbody .row {
-  min-height: 100px;
+#app.tablet .user-list .user-list__table .table_lazyload .table__tbody .row {
+  min-height: 125px;
 }
 #app.tablet .modal-bg .modal-window {
   width: 100%;
@@ -579,14 +620,14 @@
   height: 100%;
   display: block;
 }
-#app.phone .user-list .user-list__table .table_lazyload tbody {
+#app.phone .user-list .user-list__table .table_lazyload .table__tbody {
   display: flex;
   flex-direction: column;
   min-height: 100%;
   min-width: 100%;
 }
-#app.phone .user-list .user-list__table .table_lazyload tbody .row {
-  min-height: 100px;
+#app.phone .user-list .user-list__table .table_lazyload .table__tbody .row {
+  min-height: 125px;
 }
 #app.phone .modal-bg .modal-window {
   width: 100%;

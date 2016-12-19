@@ -29941,7 +29941,7 @@
 	                { className: 'hamburger-menu__search' },
 	                _react2.default.createElement(_index6.default, null)
 	            ),
-	            _react2.default.createElement('div', { className: 'close', onClick: onclick })
+	            _react2.default.createElement('div', { className: 'hamburger-menu__close', onClick: onclick })
 	        )
 	    );
 	}
@@ -30172,7 +30172,7 @@
 	            var el = event.target;
 	            if (el.tagName !== 'BUTTON') return false;
 	
-	            switch (el.className) {
+	            switch (el.classList[1]) {
 	                case 'add-btn':
 	                    self.dataValidate();
 	                    break;
@@ -30309,10 +30309,10 @@
 	                        { className: 'modal-window-group' },
 	                        _react2.default.createElement(
 	                            'label',
-	                            null,
+	                            { className: 'modal-window-group__label' },
 	                            _Dictionary2.default.t(['modal', 'create', 'avatar'], lang)
 	                        ),
-	                        _react2.default.createElement('input', { type: 'file', name: 'avatar', ref: 'avatar', onChange: this.handlerUploadFile.bind(this, this) })
+	                        _react2.default.createElement('input', { className: 'modal-window-group__input', type: 'file', name: 'avatar', ref: 'avatar', onChange: this.handlerUploadFile.bind(this, this) })
 	                    )
 	                ),
 	                _react2.default.createElement(
@@ -30323,10 +30323,10 @@
 	                        { className: 'modal-window-group' },
 	                        _react2.default.createElement(
 	                            'label',
-	                            null,
+	                            { className: 'modal-window-group__label' },
 	                            _Dictionary2.default.t(['modal', 'create', 'name'], lang)
 	                        ),
-	                        _react2.default.createElement('input', { type: 'text', name: 'name', ref: 'name' })
+	                        _react2.default.createElement('input', { className: 'modal-window-group__input', type: 'text', name: 'name', ref: 'name' })
 	                    )
 	                ),
 	                _react2.default.createElement(
@@ -30337,10 +30337,10 @@
 	                        { className: 'modal-window-group' },
 	                        _react2.default.createElement(
 	                            'label',
-	                            null,
+	                            { className: 'modal-window-group__label' },
 	                            _Dictionary2.default.t(['modal', 'create', 'email'], lang)
 	                        ),
-	                        _react2.default.createElement('input', { type: 'text', name: 'email', ref: 'email' })
+	                        _react2.default.createElement('input', { className: 'modal-window-group__input', type: 'text', name: 'email', ref: 'email' })
 	                    )
 	                ),
 	                _react2.default.createElement(
@@ -30351,10 +30351,10 @@
 	                        { className: 'modal-window-group' },
 	                        _react2.default.createElement(
 	                            'label',
-	                            null,
+	                            { className: 'modal-window-group__label' },
 	                            _Dictionary2.default.t(['modal', 'create', 'birth'], lang)
 	                        ),
-	                        _react2.default.createElement('input', { type: 'date', name: 'birth', ref: 'birth' })
+	                        _react2.default.createElement('input', { className: 'modal-window-group__input', type: 'date', name: 'birth', ref: 'birth' })
 	                    )
 	                ),
 	                _react2.default.createElement(
@@ -30365,11 +30365,11 @@
 	                        { className: 'modal-window-group' },
 	                        _react2.default.createElement(
 	                            'label',
-	                            null,
+	                            { className: 'modal-window-group__label' },
 	                            _Dictionary2.default.t(['modal', 'create', 'time'], lang)
 	                        ),
-	                        _react2.default.createElement('input', { type: 'date', name: 'date', ref: 'date' }),
-	                        _react2.default.createElement('input', { type: 'time', name: 'time', ref: 'time' })
+	                        _react2.default.createElement('input', { className: 'modal-window-group__input', type: 'date', name: 'date', ref: 'date' }),
+	                        _react2.default.createElement('input', { className: 'modal-window-group__input', type: 'time', name: 'time', ref: 'time' })
 	                    )
 	                ),
 	                _react2.default.createElement(
@@ -30380,12 +30380,12 @@
 	                        { className: 'modal-window-group modal-window-group_control' },
 	                        _react2.default.createElement(
 	                            'button',
-	                            { className: 'add-btn' },
+	                            { className: 'modal-window-group__button add-btn' },
 	                            _Dictionary2.default.t(['modal', 'create', 'save'], lang)
 	                        ),
 	                        _react2.default.createElement(
 	                            'button',
-	                            { className: 'cancel-btn' },
+	                            { className: 'modal-window-group__button cancel-btn' },
 	                            _Dictionary2.default.t(['modal', 'create', 'cancel'], lang)
 	                        )
 	                    )
@@ -30673,7 +30673,7 @@
 	            var el = event.target;
 	            if (el.tagName !== 'BUTTON') return false;
 	
-	            switch (el.className) {
+	            switch (el.classList[1]) {
 	                case 'add-btn':
 	                    self.dataValidate();
 	                    break;
@@ -30846,11 +30846,11 @@
 	                        { className: 'modal-window-group' },
 	                        _react2.default.createElement(
 	                            'label',
-	                            null,
+	                            { className: 'modal-window-group__label' },
 	                            _Dictionary2.default.t(['modal', 'edit', 'avatar'], lang)
 	                        ),
-	                        _react2.default.createElement('img', { src: '', alt: '', ref: 'imgAvatar' }),
-	                        _react2.default.createElement('input', { type: 'file', ref: 'avatar', name: 'avatar', onChange: this.handlerUploadFile.bind(this, this) })
+	                        _react2.default.createElement('img', { className: 'modal-window-group__picture', src: '', alt: '', ref: 'imgAvatar' }),
+	                        _react2.default.createElement('input', { className: 'modal-window-group__input', type: 'file', ref: 'avatar', name: 'avatar', onChange: this.handlerUploadFile.bind(this, this) })
 	                    )
 	                ),
 	                _react2.default.createElement(
@@ -30861,10 +30861,10 @@
 	                        { className: 'modal-window-group' },
 	                        _react2.default.createElement(
 	                            'label',
-	                            null,
+	                            { className: 'modal-window-group__label' },
 	                            _Dictionary2.default.t(['modal', 'edit', 'name'], lang)
 	                        ),
-	                        _react2.default.createElement('input', { type: 'text', name: 'name', ref: 'name' })
+	                        _react2.default.createElement('input', { className: 'modal-window-group__input', type: 'text', name: 'name', ref: 'name' })
 	                    )
 	                ),
 	                _react2.default.createElement(
@@ -30875,10 +30875,10 @@
 	                        { className: 'modal-window-group' },
 	                        _react2.default.createElement(
 	                            'label',
-	                            null,
+	                            { className: 'modal-window-group__label' },
 	                            _Dictionary2.default.t(['modal', 'edit', 'email'], lang)
 	                        ),
-	                        _react2.default.createElement('input', { type: 'text', name: 'email', ref: 'email' })
+	                        _react2.default.createElement('input', { className: 'modal-window-group__input', type: 'text', name: 'email', ref: 'email' })
 	                    )
 	                ),
 	                _react2.default.createElement(
@@ -30889,10 +30889,10 @@
 	                        { className: 'modal-window-group' },
 	                        _react2.default.createElement(
 	                            'label',
-	                            null,
+	                            { className: 'modal-window-group__label' },
 	                            _Dictionary2.default.t(['modal', 'edit', 'birth'], lang)
 	                        ),
-	                        _react2.default.createElement('input', { type: 'date', name: 'birth', ref: 'birth' })
+	                        _react2.default.createElement('input', { className: 'modal-window-group__input', type: 'date', name: 'birth', ref: 'birth' })
 	                    )
 	                ),
 	                _react2.default.createElement(
@@ -30903,11 +30903,11 @@
 	                        { className: 'modal-window-group' },
 	                        _react2.default.createElement(
 	                            'label',
-	                            null,
+	                            { className: 'modal-window-group__label' },
 	                            _Dictionary2.default.t(['modal', 'edit', 'time'], lang)
 	                        ),
-	                        _react2.default.createElement('input', { type: 'date', name: 'date', ref: 'date' }),
-	                        _react2.default.createElement('input', { type: 'time', name: 'time', ref: 'time' })
+	                        _react2.default.createElement('input', { className: 'modal-window-group__input', type: 'date', name: 'date', ref: 'date' }),
+	                        _react2.default.createElement('input', { className: 'modal-window-group__input', type: 'time', name: 'time', ref: 'time' })
 	                    )
 	                ),
 	                _react2.default.createElement(
@@ -30918,12 +30918,12 @@
 	                        { className: 'modal-window-group modal-window-group_control' },
 	                        _react2.default.createElement(
 	                            'button',
-	                            { className: 'add-btn' },
+	                            { className: 'modal-window-group__button add-btn' },
 	                            _Dictionary2.default.t(['modal', 'edit', 'save'], lang)
 	                        ),
 	                        _react2.default.createElement(
 	                            'button',
-	                            { className: 'cancel-btn' },
+	                            { className: 'modal-window-group__button cancel-btn' },
 	                            _Dictionary2.default.t(['modal', 'edit', 'cancel'], lang)
 	                        )
 	                    )
@@ -31001,7 +31001,7 @@
 	                params = _props.params,
 	                dispatch = _props.dispatch;
 	
-	            switch (el.className) {
+	            switch (el.classList[1]) {
 	                case 'ok':
 	                    params.callback();
 	                    dispatch(actions.hideModalAll());
@@ -31035,12 +31035,12 @@
 	                        { className: 'modal-window-group modal-window-group_control' },
 	                        _react2.default.createElement(
 	                            'button',
-	                            { className: 'ok' },
+	                            { className: 'modal-window-group__button ok' },
 	                            _Dictionary2.default.t(['modal', 'confirm', 'save'], lang)
 	                        ),
 	                        _react2.default.createElement(
 	                            'button',
-	                            { className: 'cancel' },
+	                            { className: 'modal-window-group__button cancel' },
 	                            _Dictionary2.default.t(['modal', 'confirm', 'cancel'], lang)
 	                        )
 	                    )
@@ -31261,7 +31261,7 @@
 	                    var dispatch = self.props.dispatch;
 	
 	                    var tooltipType = el.dataset.tooltip;
-	                    var id = el.parentNode.querySelector('.id').textContent;
+	                    var id = el.parentNode.querySelector('.row__id').textContent;
 	                    var coords = { x: event.pageX, y: event.pageY };
 	
 	                    switch (type) {
@@ -31406,40 +31406,40 @@
 	                { className: 'table__thead', onClick: this.handlerSortBy.bind(this, this) },
 	                _react2.default.createElement(
 	                    'tr',
-	                    { className: 'row row_thead' },
+	                    { className: 'row row_type_head' },
 	                    _react2.default.createElement(
 	                        'th',
-	                        { className: "id" + (sort.param === 'id' ? className : ''), 'data-sort-by': 'id' },
+	                        { className: "row__id" + (sort.param === 'id' ? className : ''), 'data-sort-by': 'id' },
 	                        _Dictionary2.default.t(['userTable', 'tHead', 'id'], lang)
 	                    ),
 	                    _react2.default.createElement(
 	                        'th',
-	                        { className: "name" + (sort.param === 'name' ? className : ''), 'data-sort-by': 'name' },
+	                        { className: "row__name" + (sort.param === 'name' ? className : ''), 'data-sort-by': 'name' },
 	                        _Dictionary2.default.t(['userTable', 'tHead', 'name'], lang)
 	                    ),
 	                    _react2.default.createElement(
 	                        'th',
-	                        { className: "email" + (sort.param === 'email' ? className : ''), 'data-sort-by': 'email' },
+	                        { className: "row__email" + (sort.param === 'email' ? className : ''), 'data-sort-by': 'email' },
 	                        _Dictionary2.default.t(['userTable', 'tHead', 'email'], lang)
 	                    ),
 	                    _react2.default.createElement(
 	                        'th',
-	                        { className: "birth" + (sort.param === 'birth' ? className : ''), 'data-sort-by': 'birth' },
+	                        { className: "row__birth" + (sort.param === 'birth' ? className : ''), 'data-sort-by': 'birth' },
 	                        _Dictionary2.default.t(['userTable', 'tHead', 'birth'], lang)
 	                    ),
 	                    _react2.default.createElement(
 	                        'th',
-	                        { className: "date" + (sort.param === 'date' ? className : ''), 'data-sort-by': 'date' },
+	                        { className: "row__date" + (sort.param === 'date' ? className : ''), 'data-sort-by': 'date' },
 	                        _Dictionary2.default.t(['userTable', 'tHead', 'time'], lang)
 	                    ),
 	                    _react2.default.createElement(
 	                        'th',
-	                        { className: 'delete' },
+	                        { className: 'row__delete' },
 	                        _Dictionary2.default.t(['userTable', 'tHead', 'delete'], lang)
 	                    ),
 	                    _react2.default.createElement(
 	                        'th',
-	                        { className: 'edit' },
+	                        { className: 'row__edit' },
 	                        _Dictionary2.default.t(['userTable', 'tHead', 'edit'], lang)
 	                    )
 	                )
@@ -31575,50 +31575,50 @@
 	
 	            return _react2.default.createElement(
 	                'tr',
-	                { className: 'row row_tbody row_tbody_type_block' },
+	                { className: 'row row_type_body row_display_type_block' },
 	                responsive.device !== 'phone' ? _react2.default.createElement(
 	                    'td',
-	                    { className: 'avatar' },
-	                    _react2.default.createElement('img', { src: user.avatar, alt: '' })
+	                    { className: 'row__avatar' },
+	                    _react2.default.createElement('img', { className: 'row__picture', src: user.avatar, alt: '' })
 	                ) : null,
 	                _react2.default.createElement(
 	                    'td',
-	                    { className: 'info' },
+	                    { className: 'row__info' },
 	                    _react2.default.createElement(
 	                        'p',
-	                        { className: 'id' },
+	                        { className: 'row__link' },
 	                        user.id
 	                    ),
 	                    _react2.default.createElement(
 	                        'p',
-	                        null,
+	                        { className: 'row__info-date' },
 	                        'Date/Time: ',
 	                        date
 	                    ),
 	                    _react2.default.createElement(
 	                        'p',
-	                        null,
+	                        { className: 'row__info-name' },
 	                        'Person: ',
 	                        user.name
 	                    ),
 	                    _react2.default.createElement(
 	                        'p',
-	                        null,
+	                        { className: 'row__info-email' },
 	                        'Email: ',
 	                        user.email
 	                    )
 	                ),
 	                _react2.default.createElement(
 	                    'td',
-	                    { className: 'controls' },
+	                    { className: 'row__control' },
 	                    _react2.default.createElement(
 	                        'a',
-	                        { className: 'delete-btn' },
+	                        { className: 'row__control-button delete-btn' },
 	                        _Dictionary2.default.t(['userTable', 'tBody', 'delete'], lang)
 	                    ),
 	                    _react2.default.createElement(
 	                        'a',
-	                        { className: 'edit-btn' },
+	                        { className: 'row__control-button edit-btn' },
 	                        _Dictionary2.default.t(['userTable', 'tBody', 'edit'], lang)
 	                    )
 	                )
@@ -31701,34 +31701,34 @@
 	
 	            return _react2.default.createElement(
 	                'tr',
-	                { className: 'row row_tbody row_tbody_type_row ' + (isNew ? 'addition' : ''), ref: 'el' },
+	                { className: 'row row_type_body row_display_type_row ' + (isNew ? 'addition' : ''), ref: 'el' },
 	                _react2.default.createElement(
 	                    'td',
-	                    { className: 'id' },
+	                    { className: 'row__id' },
 	                    _react2.default.createElement(
 	                        _reactRouter.Link,
-	                        { to: '/user/' + user.id },
+	                        { className: 'row__link', to: '/user/' + user.id },
 	                        user.id
 	                    )
 	                ),
 	                _react2.default.createElement(
 	                    'td',
-	                    { className: 'name', 'data-tooltip': 'name' },
+	                    { className: 'row__name', 'data-tooltip': 'name' },
 	                    user.name
 	                ),
 	                _react2.default.createElement(
 	                    'td',
-	                    { className: 'email', 'data-tooltip': 'email' },
+	                    { className: 'row__email', 'data-tooltip': 'email' },
 	                    user.email
 	                ),
 	                _react2.default.createElement(
 	                    'td',
-	                    { className: 'birth' },
+	                    { className: 'row__birth' },
 	                    birth
 	                ),
 	                _react2.default.createElement(
 	                    'td',
-	                    { className: 'date' },
+	                    { className: 'row__date' },
 	                    _react2.default.createElement(
 	                        'div',
 	                        { className: 'left-time', ref: 'date' },
@@ -31738,19 +31738,19 @@
 	                ),
 	                _react2.default.createElement(
 	                    'td',
-	                    { className: 'del' },
+	                    { className: 'row__del' },
 	                    _react2.default.createElement(
 	                        'a',
-	                        { className: 'delete-btn' },
+	                        { className: 'row__button delete-btn' },
 	                        _Dictionary2.default.t(['userTable', 'tBody', 'delete'], lang)
 	                    )
 	                ),
 	                _react2.default.createElement(
 	                    'td',
-	                    { className: 'edit' },
+	                    { className: 'row__edit' },
 	                    _react2.default.createElement(
 	                        'a',
-	                        { className: 'edit-btn' },
+	                        { className: 'row__button edit-btn' },
 	                        _Dictionary2.default.t(['userTable', 'tBody', 'edit'], lang)
 	                    )
 	                )
@@ -31791,13 +31791,13 @@
 	                lang = _self$props.lang;
 	
 	            var row = self.getRowId(el);
-	            var id = parseInt(row.querySelector('.id').textContent);
+	            var id = parseInt(row.querySelector('.row__link').textContent);
 	            var userFind = users.filter(function (user) {
 	                return user.id === id;
 	            })[0];
 	
 	            (function () {
-	                switch (el.className) {
+	                switch (el.classList[1]) {
 	                    case 'delete-btn':
 	                        var str = _Dictionary2.default.getMessage(userFind, ['notify', 'deleteUser'], lang);
 	                        row.classList.add('deleting');
@@ -32053,7 +32053,7 @@
 	
 	    return _react2.default.createElement(
 	        'div',
-	        { className: "page " + (currentPage === page ? 'active' : ''), 'data-page': page },
+	        { className: "option__page " + (currentPage === page ? 'active' : ''), 'data-page': page },
 	        page
 	    );
 	}
@@ -32187,11 +32187,11 @@
 	                case 'name':
 	                    html = _react2.default.createElement(
 	                        'div',
-	                        { className: "tooltip-" + type },
-	                        _react2.default.createElement('img', { src: data.img }),
+	                        { className: "tooltip__item tooltip_" + type },
+	                        _react2.default.createElement('img', { className: 'tooltip__picture', src: data.img }),
 	                        _react2.default.createElement(
 	                            'p',
-	                            null,
+	                            { className: 'tooltip__paragraph' },
 	                            data.text
 	                        )
 	                    );
@@ -32200,10 +32200,10 @@
 	                    var str = _Dictionary2.default.getMessage({ number: data.text }, ['tooltip', 'email'], lang);
 	                    html = _react2.default.createElement(
 	                        'div',
-	                        { className: "tooltip-" + type },
+	                        { className: "tooltip__item tooltip_" + type },
 	                        _react2.default.createElement(
 	                            'p',
-	                            null,
+	                            { className: 'tooltip__email' },
 	                            str
 	                        )
 	                    );
@@ -32256,7 +32256,7 @@
 	
 	            return _react2.default.createElement(
 	                'div',
-	                { ref: 'tooltip', className: "tooltip " + (show ? 'show' : ''), style: { top: this.getY(top), left: this.getX(left) } },
+	                { ref: 'tooltip', className: "tooltip " + (show ? 'tooltip_show' : ''), style: { top: this.getY(top), left: this.getX(left) } },
 	                this.getStructureTooltip(type, data)
 	            );
 	        }
@@ -32335,23 +32335,23 @@
 	            return _react2.default.createElement(
 	                'div',
 	                { className: 'person-wrapper' },
-	                _react2.default.createElement('img', { src: find.avatar, alt: '' }),
+	                _react2.default.createElement('img', { className: 'person-wrapper__avatar', src: find.avatar, alt: '' }),
 	                _react2.default.createElement(
 	                    'div',
-	                    { className: 'info' },
+	                    { className: 'person-wrapper__info' },
 	                    _react2.default.createElement(
 	                        'p',
-	                        { className: 'id' },
+	                        { className: 'person-wrapper__paragraph' },
 	                        find.id
 	                    ),
 	                    _react2.default.createElement(
 	                        'p',
-	                        { className: 'id' },
+	                        { className: 'person-wrapper__paragraph' },
 	                        find.name
 	                    ),
 	                    _react2.default.createElement(
 	                        'p',
-	                        { className: 'id' },
+	                        { className: 'person-wrapper__paragraph' },
 	                        find.email
 	                    )
 	                )
@@ -32431,12 +32431,12 @@
 	                { className: 'language', onClick: this.handlerChangeLanguage.bind(this, this) },
 	                _react2.default.createElement(
 	                    'a',
-	                    { 'data-language': 'en', className: lang === 'en' ? 'active' : null },
+	                    { className: "language__link " + (lang === 'en' ? 'language__link_active' : null), 'data-language': 'en' },
 	                    'EN'
 	                ),
 	                _react2.default.createElement(
 	                    'a',
-	                    { 'data-language': 'ru', className: lang === 'ru' ? 'active' : null },
+	                    { className: "language__link " + (lang === 'ru' ? 'language__link_active' : null), 'data-language': 'ru' },
 	                    'RU'
 	                )
 	            );
@@ -32515,10 +32515,10 @@
 	            return _react2.default.createElement(
 	                'div',
 	                { className: 'switch-notify' },
-	                _react2.default.createElement('input', { type: 'checkbox', id: 'switch', checked: !notify, onChange: this.handlerTriggerNotify.bind(this, this) }),
+	                _react2.default.createElement('input', { className: 'switch-notify__checkbox', type: 'checkbox', id: 'switch', checked: !notify, onChange: this.handlerTriggerNotify.bind(this, this) }),
 	                _react2.default.createElement(
 	                    'label',
-	                    { htmlFor: 'switch' },
+	                    { className: 'switch-notify__label', htmlFor: 'switch' },
 	                    _Dictionary2.default.t(['header', 'settings', 'label'], lang)
 	                )
 	            );
@@ -32604,10 +32604,10 @@
 	            return _react2.default.createElement(
 	                'div',
 	                { className: 'search' },
-	                _react2.default.createElement('input', { name: 'search', ref: 'search' }),
+	                _react2.default.createElement('input', { className: 'search__input', name: 'search', ref: 'search' }),
 	                _react2.default.createElement(
 	                    'button',
-	                    { onClick: this.handlerSearchBtn.bind(this, this) },
+	                    { className: 'search__button', onClick: this.handlerSearchBtn.bind(this, this) },
 	                    _Dictionary2.default.t(['header', 'search', 'button'], lang)
 	                )
 	            );

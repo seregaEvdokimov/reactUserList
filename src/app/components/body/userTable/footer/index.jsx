@@ -12,7 +12,7 @@ import Dictionary from './../../../../lib/Dictionary';
 
 function Page({page, currentPage}) {
     return(
-        <div className={"page " + (currentPage === page ? 'active' : '')} data-page={page}>{page}</div>
+        <div className={"option__page " + (currentPage === page ? 'active' : '')} data-page={page}>{page}</div>
     )
 }
 

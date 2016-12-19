@@ -24,8 +24,8 @@ class Trigger extends Component {
 
         return (
             <div className="switch-notify">
-                <input type="checkbox" id="switch" checked={!notify} onChange={this.handlerTriggerNotify.bind(this,  this)} />
-                <label htmlFor="switch">{Dictionary.t(['header', 'settings', 'label'], lang)}</label>
+                <input className="switch-notify__checkbox" type="checkbox" id="switch" checked={!notify} onChange={this.handlerTriggerNotify.bind(this,  this)} />
+                <label className="switch-notify__label" htmlFor="switch">{Dictionary.t(['header', 'settings', 'label'], lang)}</label>
             </div>
         )
     }
