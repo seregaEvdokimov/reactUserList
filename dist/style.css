@@ -98,22 +98,22 @@
   display: block;
   float: none;
 }
-.hamburger-menu .hamburger-menu_switch {
+.hamburger-menu .hamburger-menu__switch {
   order: 1;
   padding: 10px 5px;
 }
-.hamburger-menu .hamburger-menu_switch label {
+.hamburger-menu .hamburger-menu__switch label {
   color: #ebebeb;
 }
-.hamburger-menu .hamburger-menu_language {
+.hamburger-menu .hamburger-menu__language {
   order: 0;
   margin-left: 0;
   padding: 10px 5px;
 }
-.hamburger-menu .hamburger-menu_language a {
+.hamburger-menu .hamburger-menu__language a {
   color: #eee;
 }
-.hamburger-menu .hamburger-menu_language a.active {
+.hamburger-menu .hamburger-menu__language a.active {
   background: #eee;
   color: #333;
 }
@@ -550,7 +550,7 @@
 #app.tablet .user-list .user-list__table .table_lazyload tbody .row {
   min-height: 100px;
 }
-#app.tablet .modal .modal-window {
+#app.tablet .modal-bg .modal-window {
   width: 100%;
   justify-content: center;
 }
@@ -588,7 +588,7 @@
 #app.phone .user-list .user-list__table .table_lazyload tbody .row {
   min-height: 100px;
 }
-#app.phone .modal .modal-window {
+#app.phone .modal-bg .modal-window {
   width: 100%;
   justify-content: center;
 }

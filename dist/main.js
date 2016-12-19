@@ -29928,12 +29928,12 @@
 	            { className: "hamburger-menu " + (active ? 'hamburger-menu_show' : '') },
 	            _react2.default.createElement(
 	                'div',
-	                { className: 'hamburger-menu_switch' },
+	                { className: 'hamburger-menu__switch' },
 	                _react2.default.createElement(_index4.default, null)
 	            ),
 	            _react2.default.createElement(
 	                'div',
-	                { className: 'hamburger-menu_language' },
+	                { className: 'hamburger-menu__language' },
 	                _react2.default.createElement(_index2.default, null)
 	            ),
 	            _react2.default.createElement(

@@ -34,10 +34,10 @@ function HamburgerMenu({active, onclick}) {
     return (
         <div className="header__menu">
             <div className={"hamburger-menu " + (active ? 'hamburger-menu_show' : '')}>
-                <div className="hamburger-menu_switch">
+                <div className="hamburger-menu__switch">
                     <SwitchNotify />
                 </div>
-                <div className="hamburger-menu_language">
+                <div className="hamburger-menu__language">
                     <Language />
                 </div>
                 <div className="hamburger-menu__search">
