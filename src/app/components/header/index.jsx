@@ -8,30 +8,50 @@ import {connect} from 'react-redux';
 import * as actions from './actions'
 
 import Language from './language/index.jsx';
-import TriggerNotify from './trigger/index.jsx';
+import SwitchNotify from './trigger/index.jsx';
 import Search from './search/index.jsx';
 
 
 function HeaderMenu() {
-    return (<div className="header-menu">
-        <TriggerNotify />
-        <Language />
-        <Search />
-    </div>)
+    return (
+        <div className="header__menu">
+            <div className="header-menu">
+                <div className="header-menu__switch">
+                    <SwitchNotify />
+                </div>
+                <div className="header-menu__language">
+                    <Language />
+                </div>
+                <div className="header-menu__search">
+                    <Search />
+                </div>
+            </div>
+        </div>
+    )
 }
 
 function HamburgerMenu({active, onclick}) {
-    return (<div className={"hamburger-menu " + (active ? 'show' : '')}>
-        <TriggerNotify />
-        <Language />
-        <Search />
-        <div className="close" onClick={onclick}></div>
-    </div>)
+    return (
+        <div className="header__menu">
+            <div className={"hamburger-menu " + (active ? 'hamburger-menu_show' : '')}>
+                <div className="hamburger-menu_switch">
+                    <SwitchNotify />
+                </div>
+                <div className="hamburger-menu_language">
+                    <Language />
+                </div>
+                <div className="hamburger-menu__search">
+                    <Search />
+                </div>
+                <div className="close" onClick={onclick}></div>
+            </div>
+        </div>
+    )
 }
 
 function ToggleHumburger({onclick}) {
     return (
-        <div className="toggle-icon" onClick={onclick}></div>
+        <div className="header__toggle-icon" onClick={onclick}></div>
     )
 }
 

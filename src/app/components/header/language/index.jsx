@@ -25,7 +25,7 @@ class Language extends Component {
         let {lang} = this.props;
 
         return (
-            <div className="languages-wrapper" onClick={this.handlerChangeLanguage.bind(this,  this)}>
+            <div className="language" onClick={this.handlerChangeLanguage.bind(this,  this)}>
                 <a data-language="en" className={lang === 'en' ? 'active' : null }>EN</a>
                 <a data-language="ru" className={lang === 'ru' ? 'active' : null }>RU</a>
             </div>

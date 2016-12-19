@@ -50,9 +50,9 @@ class Footer extends Component {
 
         return (
             <div className="option">
-                <button className="add-user" onClick={this.handlerAddClient.bind(this, this)}>{Dictionary.t(['option', 'adduser'], lang)}</button>
+                <button className="option__add-user" onClick={this.handlerAddClient.bind(this, this)}>{Dictionary.t(['option', 'adduser'], lang)}</button>
                 { (pagination.type === 'pagination')
-                    ?  <div className="pagination" onClick={this.handlerChangePage.bind(this, this)}>
+                    ?  <div className="option__pagination" onClick={this.handlerChangePage.bind(this, this)}>
                             {pages.map((page) => <Page key={page} page={page} currentPage={pagination.currentPage} />)}
                         </div>
                     : null}

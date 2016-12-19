@@ -67,7 +67,7 @@ class Block extends Component {
         date = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
 
         return (
-            <tr className="block">
+            <tr className="row row_tbody row_tbody_type_block">
                 {(responsive.device !== 'phone') ? <td className="avatar"><img src={user.avatar} alt=""/></td> : null }
                 <td className="info">
                     <p className="id">{user.id}</p>
@@ -129,7 +129,7 @@ class Row extends Component {
         birth = birth.getDate() + '. ' + (birth.getMonth() + 1) + '. ' + birth.getFullYear();
 
         return (
-            <tr className={'row ' + (isNew ? 'addition' : '')} ref="el">
+            <tr className={'row row_tbody row_tbody_type_row ' + (isNew ? 'addition' : '')} ref="el">
                 <td className="id"><Link to={`/user/${user.id}`}>{user.id}</Link></td>
                 <td className="name" data-tooltip="name">{user.name}</td>
                 <td className="email" data-tooltip="email">{user.email}</td>
@@ -215,7 +215,7 @@ class tBody extends Component {
         let newUser = users.shift() || {};
 
         return (
-            <tbody className="tBody" onScroll={this.lazyLoadUsers.bind(this, this)} onClick={this.rowBtnControls.bind(this, this)}>
+            <tbody className="table__tbody" onScroll={this.lazyLoadUsers.bind(this, this)} onClick={this.rowBtnControls.bind(this, this)}>
                 {(responsive.device === 'tablet' || responsive.device === 'phone')
                     ? <Block key={newUser.id} user={newUser} lang={lang} responsive={responsive} isNew={true}/>
                     : <Row key={newUser.id} user={newUser} lang={lang} responsive={responsive} isNew={true}/>

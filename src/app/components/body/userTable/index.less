@@ -1,73 +1,262 @@
-@import 'tHead/index'; // tHead
-@import 'tBody/index'; // tBody
-@import 'footer/index'; // footer
+.user-list {
+  .user-list__table {}
+  .user-list__tooltip {}
+  .user-list__options {}
+}
 
-.userList {
 
-  table {
-    border: 1px solid #ccc;
-    border-collapse: collapse;
+.table {
+  border: 1px solid #ccc;
+  border-collapse: collapse;
 
-    &.lazyLoad {
+  .table__thead {
+    background: #333;
+    color: #ddd;
+  }
+
+  .table__tbody {}
+
+  &_lazyload {
+    display: block;
+
+    .table__tbody {
       display: block;
+      height: 250px;
+      overflow: auto;
+    }
+  }
+}
 
-      tbody {
-        display: block;
-        height: 250px;
-        overflow: auto;
+
+.row {
+  .id {
+    width: 70px;
+
+    a {
+      background: none;
+      color: black;
+    }
+  }
+
+  .name {
+    width: 100px;
+  }
+
+  .email {
+    width: 160px;
+  }
+
+  .birth {
+    width: 145px;
+  }
+
+  .date {
+    width: 300px;
+    position: relative;
+    overflow: hidden;
+
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+
+      &.positive {
+        background: rgba(100, 255, 100, .4);
+      }
+
+      &.negative {
+        background: rgba(255, 80, 80, .4);
+      }
+    }
+  }
+
+  .del,
+  .delete,
+  .edit {
+    width: 130px;
+    padding: 0 !important;
+  }
+
+  &_thead {
+    th {
+      padding: 10px 5px;
+      text-align: center;
+      font-size: 12px;
+
+      &[data-sort-by] {
+        cursor: pointer;
+      }
+
+      &.active {
+        background: #000;
+        position: relative;
+
+        &.asc {
+          &:before {
+            content: '';
+            position: absolute;
+            top: 14px;
+            right: 6px;
+            background: url("../../../../media/img/sort-up.png") left top no-repeat;
+            width: 6px;
+            height: 6px;
+            background-size: contain;
+          }
+        }
+        &.desc {
+          &:before {
+            content: '';
+            position: absolute;
+            top: 14px;
+            right: 6px;
+            background: url("../../../../media/img/sort-down.png") left top no-repeat;
+            width: 6px;
+            height: 6px;
+            background-size: contain;
+          }
+        }
+      }
+    }
+  }
+
+  &_tbody {
+    border-bottom: 1px solid #ccc;
+    position: relative;
+    transition: transform .35s;
+
+    &:nth-child(even){
+      background: #eee;
+    }
+
+    &:nth-child(odd){
+      background: #ddd;
+    }
+
+    &:hover {
+      background: #fff;
+    }
+
+    &.deleting {
+      transform: translateX(-100%);
+    }
+
+    &.addition {
+      transform: translateX(100%);
+    }
+
+    &_type_row {
+      td {
+        font-size: 12px;
+        padding: 0 2px;
+        text-align: left;
+
+        a {
+          display: block;
+          background: #666;
+          color: #eee;
+          margin: 1px;
+          cursor: pointer;
+          text-align: center;
+          padding: 5px 0;
+
+          &:hover {
+            background: #000;
+          }
+        }
+
+        .left-time {
+          font-size: 10px;
+        }
       }
     }
 
-    .id {
-      width: 70px;
-
-      a {
-        background: none;
-        color: black;
-      }
-    }
-
-    .name {
-      width: 100px;
-    }
-
-    .email {
-      width: 160px;
-    }
-
-    .birth {
-      width: 145px;
-    }
-
-    .date {
-      width: 300px;
-      position: relative;
+    &_type_block {
+      border-bottom: 2px solid #ccc;
       overflow: hidden;
+      padding: 4px 0;
 
-      .overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: 100%;
+      td {
+        font-size: 12px;
+        line-height: 20px;
+        padding: 0 15px;
 
-        &.positive {
-          background: rgba(100, 255, 100, .4);
+        &.avatar {
+          float: left;
+          img {
+            max-width: 100px;
+          }
         }
 
-        &.negative {
-          background: rgba(255, 80, 80, .4);
+        &.info {
+          .id {
+            display: none;
+          }
+        }
+
+        &.controls {
+          float: left;
+          padding: 4px 0;
+          a {
+            width: 110px;
+            text-align: center;
+            background: #333;
+            color: #ebebeb;
+            display: inline-block;
+            margin: 4px;
+            padding: 2px 0;
+            cursor: pointer;
+
+            &:hover {
+              background: #000;
+            }
+          }
         }
       }
     }
+  }
+}
 
-    .del, .delete {
-      width: 130px;
-      padding: 0 !important;
+
+.option {
+  background: #ddd;
+  padding: 15px 5px;
+
+  .option__add-user {
+    color: #ddd;
+    background: #222;
+    border: 0;
+    padding: 10px 10px;
+    font-size: 14px;
+    margin: 0 5px;
+    min-width: 105px;
+    cursor: pointer;
+
+    &:focus {
+      outline: 0;
     }
+  }
 
-    .edit {
-      width: 130px;
-      padding: 0 !important;
+  .option__pagination {
+    display: inline-block;
+    margin: 0 235px;
+
+    .page {
+      display: inline-block;
+      color: #ddd;
+      background: #666;
+      border: 0;
+      text-align: center;
+      width: 30px;
+      line-height: 35px;
+      font-size: 15px;
+      margin: 0 2px;
+      cursor: pointer;
+
+      &:hover,
+      &.active {
+        background: #222;
+      }
     }
   }
 }

@@ -28,7 +28,7 @@ class Modal extends Component {
         let {params} = this.props;
 
         return (
-            <section className={"modal " + (params.show ? 'show' : '')} onClick={this.handlerHideModalAll.bind(this, this)}>
+            <section className={"modal-bg " + (params.show ? 'modal-bg_show' : '')} onClick={this.handlerHideModalAll.bind(this, this)}>
                 <Create />
                 <Edit />
                 <Confirm />

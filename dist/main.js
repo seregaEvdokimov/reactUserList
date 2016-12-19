@@ -29893,10 +29893,26 @@
 	function HeaderMenu() {
 	    return _react2.default.createElement(
 	        'div',
-	        { className: 'header-menu' },
-	        _react2.default.createElement(_index4.default, null),
-	        _react2.default.createElement(_index2.default, null),
-	        _react2.default.createElement(_index6.default, null)
+	        { className: 'header__menu' },
+	        _react2.default.createElement(
+	            'div',
+	            { className: 'header-menu' },
+	            _react2.default.createElement(
+	                'div',
+	                { className: 'header-menu__switch' },
+	                _react2.default.createElement(_index4.default, null)
+	            ),
+	            _react2.default.createElement(
+	                'div',
+	                { className: 'header-menu__language' },
+	                _react2.default.createElement(_index2.default, null)
+	            ),
+	            _react2.default.createElement(
+	                'div',
+	                { className: 'header-menu__search' },
+	                _react2.default.createElement(_index6.default, null)
+	            )
+	        )
 	    );
 	}
 	
@@ -29906,18 +29922,34 @@
 	
 	    return _react2.default.createElement(
 	        'div',
-	        { className: "hamburger-menu " + (active ? 'show' : '') },
-	        _react2.default.createElement(_index4.default, null),
-	        _react2.default.createElement(_index2.default, null),
-	        _react2.default.createElement(_index6.default, null),
-	        _react2.default.createElement('div', { className: 'close', onClick: onclick })
+	        { className: 'header__menu' },
+	        _react2.default.createElement(
+	            'div',
+	            { className: "hamburger-menu " + (active ? 'hamburger-menu_show' : '') },
+	            _react2.default.createElement(
+	                'div',
+	                { className: 'hamburger-menu_switch' },
+	                _react2.default.createElement(_index4.default, null)
+	            ),
+	            _react2.default.createElement(
+	                'div',
+	                { className: 'hamburger-menu_language' },
+	                _react2.default.createElement(_index2.default, null)
+	            ),
+	            _react2.default.createElement(
+	                'div',
+	                { className: 'hamburger-menu__search' },
+	                _react2.default.createElement(_index6.default, null)
+	            ),
+	            _react2.default.createElement('div', { className: 'close', onClick: onclick })
+	        )
 	    );
 	}
 	
 	function ToggleHumburger(_ref2) {
 	    var onclick = _ref2.onclick;
 	
-	    return _react2.default.createElement('div', { className: 'toggle-icon', onClick: onclick });
+	    return _react2.default.createElement('div', { className: 'header__toggle-icon', onClick: onclick });
 	}
 	
 	var Header = function (_Component) {
@@ -30037,7 +30069,7 @@
 	
 	            return _react2.default.createElement(
 	                'section',
-	                { className: "modal " + (params.show ? 'show' : ''), onClick: this.handlerHideModalAll.bind(this, this) },
+	                { className: "modal-bg " + (params.show ? 'modal-bg_show' : ''), onClick: this.handlerHideModalAll.bind(this, this) },
 	                _react2.default.createElement(_index2.default, null),
 	                _react2.default.createElement(_index4.default, null),
 	                _react2.default.createElement(_index6.default, null)
@@ -30263,75 +30295,99 @@
 	
 	            return _react2.default.createElement(
 	                'div',
-	                { className: "modal-window modal-create " + (params.show ? 'show' : '') },
+	                { className: "modal-window " + (params.show ? 'modal-window_show' : '') },
 	                _react2.default.createElement(
 	                    'h3',
-	                    { className: 'caption' },
+	                    { className: 'modal-window__caption' },
 	                    _Dictionary2.default.t(['modal', 'create', 'caption'], lang)
 	                ),
 	                _react2.default.createElement(
 	                    'div',
-	                    { className: 'group avatar-group' },
+	                    { className: 'modal-window__group' },
 	                    _react2.default.createElement(
-	                        'label',
-	                        { className: 'avatar-label' },
-	                        _Dictionary2.default.t(['modal', 'create', 'avatar'], lang)
-	                    ),
-	                    _react2.default.createElement('input', { type: 'file', name: 'avatar', ref: 'avatar', className: 'file-input', onChange: this.handlerUploadFile.bind(this, this) })
+	                        'div',
+	                        { className: 'modal-window-group' },
+	                        _react2.default.createElement(
+	                            'label',
+	                            null,
+	                            _Dictionary2.default.t(['modal', 'create', 'avatar'], lang)
+	                        ),
+	                        _react2.default.createElement('input', { type: 'file', name: 'avatar', ref: 'avatar', onChange: this.handlerUploadFile.bind(this, this) })
+	                    )
 	                ),
 	                _react2.default.createElement(
 	                    'div',
-	                    { className: 'group name-group' },
+	                    { className: 'modal-window__group' },
 	                    _react2.default.createElement(
-	                        'label',
-	                        { className: 'name-label' },
-	                        _Dictionary2.default.t(['modal', 'create', 'name'], lang)
-	                    ),
-	                    _react2.default.createElement('input', { type: 'text', name: 'name', ref: 'name', className: 'name-input' })
+	                        'div',
+	                        { className: 'modal-window-group' },
+	                        _react2.default.createElement(
+	                            'label',
+	                            null,
+	                            _Dictionary2.default.t(['modal', 'create', 'name'], lang)
+	                        ),
+	                        _react2.default.createElement('input', { type: 'text', name: 'name', ref: 'name' })
+	                    )
 	                ),
 	                _react2.default.createElement(
 	                    'div',
-	                    { className: 'group email-group' },
+	                    { className: 'modal-window__group' },
 	                    _react2.default.createElement(
-	                        'label',
-	                        { className: 'email-label' },
-	                        _Dictionary2.default.t(['modal', 'create', 'email'], lang)
-	                    ),
-	                    _react2.default.createElement('input', { type: 'text', name: 'email', ref: 'email', className: 'email-input' })
+	                        'div',
+	                        { className: 'modal-window-group' },
+	                        _react2.default.createElement(
+	                            'label',
+	                            null,
+	                            _Dictionary2.default.t(['modal', 'create', 'email'], lang)
+	                        ),
+	                        _react2.default.createElement('input', { type: 'text', name: 'email', ref: 'email' })
+	                    )
 	                ),
 	                _react2.default.createElement(
 	                    'div',
-	                    { className: 'group date-group' },
+	                    { className: 'modal-window__group' },
 	                    _react2.default.createElement(
-	                        'label',
-	                        { className: 'date-label' },
-	                        _Dictionary2.default.t(['modal', 'create', 'birth'], lang)
-	                    ),
-	                    _react2.default.createElement('input', { type: 'date', name: 'birth', ref: 'birth', className: 'birth-input' })
+	                        'div',
+	                        { className: 'modal-window-group' },
+	                        _react2.default.createElement(
+	                            'label',
+	                            null,
+	                            _Dictionary2.default.t(['modal', 'create', 'birth'], lang)
+	                        ),
+	                        _react2.default.createElement('input', { type: 'date', name: 'birth', ref: 'birth' })
+	                    )
 	                ),
 	                _react2.default.createElement(
 	                    'div',
-	                    { className: 'group date-group' },
+	                    { className: 'modal-window__group' },
 	                    _react2.default.createElement(
-	                        'label',
-	                        { className: 'date-label' },
-	                        _Dictionary2.default.t(['modal', 'create', 'time'], lang)
-	                    ),
-	                    _react2.default.createElement('input', { type: 'date', name: 'date', ref: 'date', className: 'date-input' }),
-	                    _react2.default.createElement('input', { type: 'time', name: 'time', ref: 'time', className: 'time-input' })
+	                        'div',
+	                        { className: 'modal-window-group' },
+	                        _react2.default.createElement(
+	                            'label',
+	                            null,
+	                            _Dictionary2.default.t(['modal', 'create', 'time'], lang)
+	                        ),
+	                        _react2.default.createElement('input', { type: 'date', name: 'date', ref: 'date' }),
+	                        _react2.default.createElement('input', { type: 'time', name: 'time', ref: 'time' })
+	                    )
 	                ),
 	                _react2.default.createElement(
 	                    'div',
-	                    { className: 'group control-group', onClick: this.handlerBtnControls.bind(this, this) },
+	                    { className: 'modal-window__group modal-window__group_control', onClick: this.handlerBtnControls.bind(this, this) },
 	                    _react2.default.createElement(
-	                        'button',
-	                        { className: 'add-btn' },
-	                        _Dictionary2.default.t(['modal', 'create', 'save'], lang)
-	                    ),
-	                    _react2.default.createElement(
-	                        'button',
-	                        { className: 'cancel-btn' },
-	                        _Dictionary2.default.t(['modal', 'create', 'cancel'], lang)
+	                        'div',
+	                        { className: 'modal-window-group modal-window-group_control' },
+	                        _react2.default.createElement(
+	                            'button',
+	                            { className: 'add-btn' },
+	                            _Dictionary2.default.t(['modal', 'create', 'save'], lang)
+	                        ),
+	                        _react2.default.createElement(
+	                            'button',
+	                            { className: 'cancel-btn' },
+	                            _Dictionary2.default.t(['modal', 'create', 'cancel'], lang)
+	                        )
 	                    )
 	                )
 	            );
@@ -30776,76 +30832,100 @@
 	
 	            return _react2.default.createElement(
 	                'div',
-	                { className: "modal-window modal-edit " + (show ? 'show' : '') },
+	                { className: "modal-window " + (show ? 'modal-window_show' : '') },
 	                _react2.default.createElement(
 	                    'h3',
-	                    { className: 'caption' },
+	                    { className: 'modal-window__caption' },
 	                    _Dictionary2.default.t(['modal', 'edit', 'caption'], lang)
 	                ),
 	                _react2.default.createElement(
 	                    'div',
-	                    { className: 'group avatar-group' },
+	                    { className: 'modal-window__group' },
 	                    _react2.default.createElement(
-	                        'label',
-	                        { className: 'avatar-label' },
-	                        _Dictionary2.default.t(['modal', 'edit', 'avatar'], lang)
-	                    ),
-	                    _react2.default.createElement('img', { src: '', alt: '', ref: 'imgAvatar' }),
-	                    _react2.default.createElement('input', { type: 'file', ref: 'avatar', name: 'avatar', className: 'file-input', onChange: this.handlerUploadFile.bind(this, this) })
+	                        'div',
+	                        { className: 'modal-window-group' },
+	                        _react2.default.createElement(
+	                            'label',
+	                            null,
+	                            _Dictionary2.default.t(['modal', 'edit', 'avatar'], lang)
+	                        ),
+	                        _react2.default.createElement('img', { src: '', alt: '', ref: 'imgAvatar' }),
+	                        _react2.default.createElement('input', { type: 'file', ref: 'avatar', name: 'avatar', onChange: this.handlerUploadFile.bind(this, this) })
+	                    )
 	                ),
 	                _react2.default.createElement(
 	                    'div',
-	                    { className: 'group name-group' },
+	                    { className: 'modal-window__group' },
 	                    _react2.default.createElement(
-	                        'label',
-	                        { className: 'name-label' },
-	                        _Dictionary2.default.t(['modal', 'edit', 'name'], lang)
-	                    ),
-	                    _react2.default.createElement('input', { type: 'text', name: 'name', className: 'name-input', ref: 'name' })
+	                        'div',
+	                        { className: 'modal-window-group' },
+	                        _react2.default.createElement(
+	                            'label',
+	                            null,
+	                            _Dictionary2.default.t(['modal', 'edit', 'name'], lang)
+	                        ),
+	                        _react2.default.createElement('input', { type: 'text', name: 'name', ref: 'name' })
+	                    )
 	                ),
 	                _react2.default.createElement(
 	                    'div',
-	                    { className: 'group email-group' },
+	                    { className: 'modal-window__group' },
 	                    _react2.default.createElement(
-	                        'label',
-	                        { className: 'email-label' },
-	                        _Dictionary2.default.t(['modal', 'edit', 'email'], lang)
-	                    ),
-	                    _react2.default.createElement('input', { type: 'text', name: 'email', className: 'email-input', ref: 'email' })
+	                        'div',
+	                        { className: 'modal-window-group' },
+	                        _react2.default.createElement(
+	                            'label',
+	                            null,
+	                            _Dictionary2.default.t(['modal', 'edit', 'email'], lang)
+	                        ),
+	                        _react2.default.createElement('input', { type: 'text', name: 'email', ref: 'email' })
+	                    )
 	                ),
 	                _react2.default.createElement(
 	                    'div',
-	                    { className: 'group date-group' },
+	                    { className: 'modal-window__group' },
 	                    _react2.default.createElement(
-	                        'label',
-	                        { className: 'date-label' },
-	                        _Dictionary2.default.t(['modal', 'edit', 'birth'], lang)
-	                    ),
-	                    _react2.default.createElement('input', { type: 'date', name: 'birth', className: 'birth-input', ref: 'birth' })
+	                        'div',
+	                        { className: 'modal-window-group' },
+	                        _react2.default.createElement(
+	                            'label',
+	                            null,
+	                            _Dictionary2.default.t(['modal', 'edit', 'birth'], lang)
+	                        ),
+	                        _react2.default.createElement('input', { type: 'date', name: 'birth', ref: 'birth' })
+	                    )
 	                ),
 	                _react2.default.createElement(
 	                    'div',
-	                    { className: 'group date-group' },
+	                    { className: 'modal-window__group' },
 	                    _react2.default.createElement(
-	                        'label',
-	                        { className: 'date-label' },
-	                        _Dictionary2.default.t(['modal', 'edit', 'time'], lang)
-	                    ),
-	                    _react2.default.createElement('input', { type: 'date', name: 'date', className: 'date-input', ref: 'date' }),
-	                    _react2.default.createElement('input', { type: 'time', name: 'time', className: 'time-input', ref: 'time' })
+	                        'div',
+	                        { className: 'modal-window-group' },
+	                        _react2.default.createElement(
+	                            'label',
+	                            null,
+	                            _Dictionary2.default.t(['modal', 'edit', 'time'], lang)
+	                        ),
+	                        _react2.default.createElement('input', { type: 'date', name: 'date', ref: 'date' }),
+	                        _react2.default.createElement('input', { type: 'time', name: 'time', ref: 'time' })
+	                    )
 	                ),
 	                _react2.default.createElement(
 	                    'div',
-	                    { className: 'group control-group', onClick: this.handlerBtnControls.bind(this, this) },
+	                    { className: 'modal-window__group modal-window__group_control', onClick: this.handlerBtnControls.bind(this, this) },
 	                    _react2.default.createElement(
-	                        'button',
-	                        { className: 'add-btn' },
-	                        _Dictionary2.default.t(['modal', 'edit', 'save'], lang)
-	                    ),
-	                    _react2.default.createElement(
-	                        'button',
-	                        { className: 'cancel-btn' },
-	                        _Dictionary2.default.t(['modal', 'edit', 'cancel'], lang)
+	                        'div',
+	                        { className: 'modal-window-group modal-window-group_control' },
+	                        _react2.default.createElement(
+	                            'button',
+	                            { className: 'add-btn' },
+	                            _Dictionary2.default.t(['modal', 'edit', 'save'], lang)
+	                        ),
+	                        _react2.default.createElement(
+	                            'button',
+	                            { className: 'cancel-btn' },
+	                            _Dictionary2.default.t(['modal', 'edit', 'cancel'], lang)
+	                        )
 	                    )
 	                ),
 	                _react2.default.createElement('input', { type: 'hidden', name: 'id', className: 'id-input', ref: 'id' })
@@ -30941,24 +31021,28 @@
 	
 	            return _react2.default.createElement(
 	                'div',
-	                { className: "modal-window modal-confirm " + (params.show ? 'show' : '') },
+	                { className: "modal-window " + (params.show ? 'modal-window_show' : '') },
 	                _react2.default.createElement(
 	                    'h3',
-	                    { className: 'caption' },
+	                    { className: 'modal-window__caption' },
 	                    _Dictionary2.default.t(['modal', 'confirm', 'message'], lang)
 	                ),
 	                _react2.default.createElement(
 	                    'div',
-	                    { className: 'control-group', onClick: this.handlerControlsBtn.bind(this, this) },
+	                    { className: 'modal-window__group modal-window__group_control', onClick: this.handlerControlsBtn.bind(this, this) },
 	                    _react2.default.createElement(
-	                        'button',
-	                        { className: 'ok' },
-	                        _Dictionary2.default.t(['modal', 'confirm', 'save'], lang)
-	                    ),
-	                    _react2.default.createElement(
-	                        'button',
-	                        { className: 'cancel' },
-	                        _Dictionary2.default.t(['modal', 'confirm', 'cancel'], lang)
+	                        'div',
+	                        { className: 'modal-window-group modal-window-group_control' },
+	                        _react2.default.createElement(
+	                            'button',
+	                            { className: 'ok' },
+	                            _Dictionary2.default.t(['modal', 'confirm', 'save'], lang)
+	                        ),
+	                        _react2.default.createElement(
+	                            'button',
+	                            { className: 'cancel' },
+	                            _Dictionary2.default.t(['modal', 'confirm', 'cancel'], lang)
+	                        )
 	                    )
 	                )
 	            );
@@ -31207,20 +31291,30 @@
 	
 	            return _react2.default.createElement(
 	                'div',
-	                { className: 'userList' },
+	                { className: 'user-list' },
 	                _react2.default.createElement(
-	                    'table',
-	                    {
-	                        className: "table " + (pagination.type === 'lazyLoad' ? 'lazyLoad' : null),
-	                        onMouseMove: this.handlerTooltip.bind(this, this),
-	                        onMouseOut: this.handlerTooltip.bind(this, this),
-	                        onMouseOver: this.handlerTooltip.bind(this, this)
-	                    },
-	                    responsive.device === 'tablet' || responsive.device === 'phone' ? null : _react2.default.createElement(_index2.default, null),
-	                    _react2.default.createElement(_index4.default, null)
+	                    'div',
+	                    { className: 'user-list__table' },
+	                    _react2.default.createElement(
+	                        'table',
+	                        { className: "table " + (pagination.type === 'lazyLoad' ? 'table_lazyload' : null),
+	                            onMouseMove: this.handlerTooltip.bind(this, this),
+	                            onMouseOut: this.handlerTooltip.bind(this, this),
+	                            onMouseOver: this.handlerTooltip.bind(this, this) },
+	                        responsive.device === 'tablet' || responsive.device === 'phone' ? null : _react2.default.createElement(_index2.default, null),
+	                        _react2.default.createElement(_index4.default, null)
+	                    )
 	                ),
-	                _react2.default.createElement(_index8.default, null),
-	                _react2.default.createElement(_index6.default, null)
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'user-list__tooltip' },
+	                    _react2.default.createElement(_index8.default, null)
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'user-list__options' },
+	                    _react2.default.createElement(_index6.default, null)
+	                )
 	            );
 	        }
 	    }]);
@@ -31309,10 +31403,10 @@
 	
 	            return _react2.default.createElement(
 	                'thead',
-	                { className: 'tHead', onClick: this.handlerSortBy.bind(this, this) },
+	                { className: 'table__thead', onClick: this.handlerSortBy.bind(this, this) },
 	                _react2.default.createElement(
 	                    'tr',
-	                    null,
+	                    { className: 'row row_thead' },
 	                    _react2.default.createElement(
 	                        'th',
 	                        { className: "id" + (sort.param === 'id' ? className : ''), 'data-sort-by': 'id' },
@@ -31481,7 +31575,7 @@
 	
 	            return _react2.default.createElement(
 	                'tr',
-	                { className: 'block' },
+	                { className: 'row row_tbody row_tbody_type_block' },
 	                responsive.device !== 'phone' ? _react2.default.createElement(
 	                    'td',
 	                    { className: 'avatar' },
@@ -31607,7 +31701,7 @@
 	
 	            return _react2.default.createElement(
 	                'tr',
-	                { className: 'row ' + (isNew ? 'addition' : ''), ref: 'el' },
+	                { className: 'row row_tbody row_tbody_type_row ' + (isNew ? 'addition' : ''), ref: 'el' },
 	                _react2.default.createElement(
 	                    'td',
 	                    { className: 'id' },
@@ -31759,7 +31853,7 @@
 	
 	            return _react2.default.createElement(
 	                'tbody',
-	                { className: 'tBody', onScroll: this.lazyLoadUsers.bind(this, this), onClick: this.rowBtnControls.bind(this, this) },
+	                { className: 'table__tbody', onScroll: this.lazyLoadUsers.bind(this, this), onClick: this.rowBtnControls.bind(this, this) },
 	                responsive.device === 'tablet' || responsive.device === 'phone' ? _react2.default.createElement(Block, { key: newUser.id, user: newUser, lang: lang, responsive: responsive, isNew: true }) : _react2.default.createElement(Row, { key: newUser.id, user: newUser, lang: lang, responsive: responsive, isNew: true }),
 	                responsive.device === 'tablet' || responsive.device === 'phone' ? users.map(function (user) {
 	                    return _react2.default.createElement(Block, { key: user.id, user: user, responsive: responsive, lang: lang });
@@ -32017,12 +32111,12 @@
 	                { className: 'option' },
 	                _react2.default.createElement(
 	                    'button',
-	                    { className: 'add-user', onClick: this.handlerAddClient.bind(this, this) },
+	                    { className: 'option__add-user', onClick: this.handlerAddClient.bind(this, this) },
 	                    _Dictionary2.default.t(['option', 'adduser'], lang)
 	                ),
 	                pagination.type === 'pagination' ? _react2.default.createElement(
 	                    'div',
-	                    { className: 'pagination', onClick: this.handlerChangePage.bind(this, this) },
+	                    { className: 'option__pagination', onClick: this.handlerChangePage.bind(this, this) },
 	                    pages.map(function (page) {
 	                        return _react2.default.createElement(Page, { key: page, page: page, currentPage: pagination.currentPage });
 	                    })
@@ -32334,7 +32428,7 @@
 	
 	            return _react2.default.createElement(
 	                'div',
-	                { className: 'languages-wrapper', onClick: this.handlerChangeLanguage.bind(this, this) },
+	                { className: 'language', onClick: this.handlerChangeLanguage.bind(this, this) },
 	                _react2.default.createElement(
 	                    'a',
 	                    { 'data-language': 'en', className: lang === 'en' ? 'active' : null },

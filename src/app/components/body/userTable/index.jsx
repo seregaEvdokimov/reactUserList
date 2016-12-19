@@ -48,18 +48,22 @@ class Table extends Component {
         let {pagination, responsive} = this.props;
 
         return (
-            <div className="userList">
-                <table
-                    className={"table " + (pagination.type === 'lazyLoad' ? 'lazyLoad' : null)}
-                    onMouseMove={this.handlerTooltip.bind(this, this)}
-                    onMouseOut={this.handlerTooltip.bind(this, this)}
-                    onMouseOver={this.handlerTooltip.bind(this, this)}
-                >
-                    {(responsive.device === 'tablet' || responsive.device === 'phone') ? null : <TableHeader /> }
-                    <TableBody />
-                </table>
-                <Tooltip />
-                <Footer />
+            <div className="user-list">
+                <div className="user-list__table">
+                    <table className={"table " + (pagination.type === 'lazyLoad' ? 'table_lazyload' : null)}
+                        onMouseMove={this.handlerTooltip.bind(this, this)}
+                        onMouseOut={this.handlerTooltip.bind(this, this)}
+                        onMouseOver={this.handlerTooltip.bind(this, this)} >
+                        {(responsive.device === 'tablet' || responsive.device === 'phone') ? null : <TableHeader /> }
+                        <TableBody />
+                    </table>
+                </div>
+                <div className="user-list__tooltip">
+                    <Tooltip />
+                </div>
+                <div className="user-list__options">
+                    <Footer />
+                </div>
             </div>
         )
     }

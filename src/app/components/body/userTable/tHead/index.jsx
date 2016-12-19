@@ -32,8 +32,8 @@ class tHead extends Component {
         let className = ' active ' + sort.direction;
 
         return (
-            <thead className="tHead" onClick={this.handlerSortBy.bind(this, this)}>
-                <tr>
+            <thead className="table__thead" onClick={this.handlerSortBy.bind(this, this)}>
+                <tr className="row row_thead">
                     <th className={"id" + (sort.param === 'id' ? className : '')} data-sort-by="id">{Dictionary.t(['userTable', 'tHead', 'id'], lang)}</th>
                     <th className={"name" + (sort.param === 'name' ? className : '')} data-sort-by="name">{Dictionary.t(['userTable', 'tHead', 'name'], lang)}</th>
                     <th className={"email" + (sort.param === 'email' ? className : '')} data-sort-by="email">{Dictionary.t(['userTable', 'tHead', 'email'], lang)}</th>
